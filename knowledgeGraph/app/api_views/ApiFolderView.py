@@ -1,0 +1,84 @@
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status
+from ..services.folder_service import FolderService
+from ..serializers import FolderSerializer
+
+class FolderListView(APIView):
+    def get(self, request):
+        search = request.data.get('search')
+        page = request.data.get('page')
+        
+        if search and page:
+            folders = FolderService.findFolderByName(search, page)
+            if not folders['folders']:
+                return Response(
+                    {"error": "No folders found matching the search criteria."}, 
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = FolderSerializer(folders['folders'], many=True)  
+            return Response(
+                {
+                'folders': serializer.data,
+                'total_pages': folders['total_pages'],
+                'current_page': folders['current_page'],
+                'has_next': folders['has_next'],
+                'has_previous': folders['has_previous'],
+                },
+                status=status.HTTP_200_OK
+            )
+
+        folders = FolderService.getAllFolder()
+        serializer = FolderSerializer(folders, many=True)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK
+        )
+class FolderCreateView(APIView):
+    def post(self, request):
+        serializer = FolderSerializer(data=request.data)
+        if serializer.is_valid():
+            folder = FolderService().addFolder(serializer.validated_data['name'])
+            return Response(
+                FolderSerializer(folder).data, 
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            serializer.errors, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+class FolderUpdateView(APIView):
+    def put(self, request):
+        serializer = FolderSerializer(data=request.data)
+        id = request.data.get("id")
+        if serializer.is_valid():
+            updated_folder = FolderService().updateNameFolder(
+                id,
+                serializer.validated_data['name']
+            )
+            return Response(
+                FolderSerializer(updated_folder).data, 
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            serializer.errors, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+class FolderDeleteView(APIView):
+    def delete(self, request):
+        deleted = FolderService().deleteFolder(request.data.get('id'))
+        if not deleted:
+            return Response(
+                {
+                    "error": "Folder not found."
+                }, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        return Response(
+            {
+                "message","Delete success"
+            },
+            status=status.HTTP_204_NO_CONTENT
+        )
+
+    
