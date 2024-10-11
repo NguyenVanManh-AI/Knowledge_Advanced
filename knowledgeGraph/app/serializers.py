@@ -9,4 +9,4 @@ class FolderSerializer(serializers.ModelSerializer):
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
-        fields = ['id', 'id_folder', 'name', 'context_construct']
+        fields = ['id', 'id_folder', 'name', 'file','content','content_construct']

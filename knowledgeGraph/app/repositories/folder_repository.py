@@ -13,6 +13,8 @@ class FolderRepository:
     
     def update_name_folder(self,id_folder,new_name_folder) -> Folder:
         folder = self.get_folder_by_id(id_folder)
+        if not folder :
+            return None
         folder.update_name(new_name_folder)
         folder.save()
         return folder

@@ -56,6 +56,13 @@ class FolderUpdateView(APIView):
                 id,
                 serializer.validated_data['name']
             )
+            if not updated_folder:
+                return Response(
+                    {
+                        "error":"Folder is not found"
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
             return Response(
                 FolderSerializer(updated_folder).data, 
                 status=status.HTTP_200_OK
