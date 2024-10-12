@@ -53,7 +53,7 @@ class FileInforView(APIView):
             
         id = request.data.get('id')
         print("id",id)
-        file_data = FileService.viewFileById(id)
+        file_data = FileService().viewFileById(id)
         serializer = FileSerializer(file_data['file'])
         return Response(
             {
@@ -61,4 +61,43 @@ class FileInforView(APIView):
                 "folder" : file_data['folder']
             },
             status=status.HTTP_200_OK
+        )
+
+class FileUpdateView(APIView):
+    def put(self,request):
+        name = request.data.get('name')
+        id = request.data.get('id')
+        update_file = FileService().updateNameFile(
+                id,
+                name
+            )
+        if not update_file:
+                return Response(
+                    {
+                        "error":"File is not found"
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        return Response(
+            {
+                "message":"Update success"
+            }, 
+            status=status.HTTP_200_OK
+        )
+       
+class FileDeleteView(APIView):
+    def delete(self,request):
+        deleted = FileService().deleteFile(request.data.get('id'))
+        if not deleted:
+            return Response(
+                {
+                    "error": "File is not found."
+                }, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        return Response(
+            {
+                "message":"Delete success"
+            },
+            status=status.HTTP_204_NO_CONTENT
         )

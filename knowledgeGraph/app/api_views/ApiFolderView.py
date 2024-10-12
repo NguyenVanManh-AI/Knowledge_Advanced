@@ -49,27 +49,24 @@ class FolderCreateView(APIView):
         )
 class FolderUpdateView(APIView):
     def put(self, request):
-        serializer = FolderSerializer(data=request.data)
         id = request.data.get("id")
-        if serializer.is_valid():
-            updated_folder = FolderService().updateNameFolder(
-                id,
-                serializer.validated_data['name']
-            )
-            if not updated_folder:
-                return Response(
-                    {
-                        "error":"Folder is not found"
-                    },
-                    status=status.HTTP_404_NOT_FOUND
-                )
+        name = request.data.get("name")
+        updated_folder = FolderService().updateNameFolder(
+            id,
+            name
+        )
+        if not updated_folder:
             return Response(
-                FolderSerializer(updated_folder).data, 
-                status=status.HTTP_200_OK
+                {
+                    "error":"Folder is not found"
+                },
+                status=status.HTTP_404_NOT_FOUND
             )
         return Response(
-            serializer.errors, 
-            status=status.HTTP_400_BAD_REQUEST
+            {
+                "message":"Update success"
+            }, 
+            status=status.HTTP_200_OK
         )
 class FolderDeleteView(APIView):
     def delete(self, request):
@@ -77,7 +74,7 @@ class FolderDeleteView(APIView):
         if not deleted:
             return Response(
                 {
-                    "error": "Folder not found."
+                    "error": "Folder is not found."
                 }, 
                 status=status.HTTP_404_NOT_FOUND
             )

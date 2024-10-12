@@ -8,6 +8,8 @@ urlpatterns = [
     path('folder/update/', FolderUpdateView.as_view(), name='folder-update'),  
     path('folder/delete/', FolderDeleteView.as_view(), name='folder-delete'),  
     
-    path('file/',FileInforView.as_view(),name='file-list'),
-    path('file/add/',FileCreateView.as_view(), name='file-add'),
+    path('file/', FileInforView.as_view(),name='file-list'),
+    path('file/add/', FileCreateView.as_view(), name='file-add'),
+    path('file/update/', FileUpdateView.as_view(), name='file-update'),
+    path('file/delete/',FileDeleteView.as_view(), name='file-delete'),
 ]

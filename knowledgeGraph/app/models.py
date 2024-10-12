@@ -23,6 +23,22 @@ class File(models.Model):
     file = models.FileField(blank=True)
     content = models.TextField(blank=True, null=True)
     content_construct = models.JSONField(blank=True, null=True)
-
+    
+    def update_name(self,new_name):
+        self.name = new_name
+        self.save()
+    
+    def update_content_construct(self,new_content):
+        self.content_construct = new_content
+        self.save()
+        
+    def update_content(self,new_content):
+        self.content = new_content
+        self.save()
+        
+    def update_file(self,new_file):
+        self.file = new_file
+        self.save()
+        
     def __str__(self):
         return self.name

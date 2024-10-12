@@ -10,9 +10,14 @@ class FileService:
     def addFile(self,file,folder):
         return self.fileReposiroty.add_file(file,folder)
     
-    @staticmethod
-    def viewFileById(id_file):
-        return FileRepository.view_file_by_id(id_file)
+    def updateNameFile(self,id_file,new_name_file):
+        return self.fileReposiroty.update_name_file(id_file,new_name_file)
+    
+    def deleteFile(self,id_file):
+        return self.fileReposiroty.delete_file(id_file)
+    
+    def viewFileById(self,id_file):
+        return self.fileReposiroty.view_file_by_id(id_file)
     
     @staticmethod
     def findFileByName(search,page,num_item = 20) -> Dict:
