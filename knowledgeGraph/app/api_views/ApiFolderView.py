@@ -24,6 +24,7 @@ class FolderListView(APIView):
                 'current_page': folders['current_page'],
                 'has_next': folders['has_next'],
                 'has_previous': folders['has_previous'],
+                'total': folders['total']
                 },
                 status=status.HTTP_200_OK
             )

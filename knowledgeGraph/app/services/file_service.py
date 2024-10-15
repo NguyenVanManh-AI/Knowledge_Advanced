@@ -31,5 +31,6 @@ class FileService:
             'current_page': page.number,
             'has_next': page.has_next(),
             'has_previous': page.has_previous(),
+            'total' : len(files)
         }
         
