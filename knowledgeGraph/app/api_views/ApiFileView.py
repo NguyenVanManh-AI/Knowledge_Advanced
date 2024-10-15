@@ -28,57 +28,46 @@ class FileCreateView(APIView):
 
 class FileInforView(APIView):
     def get(self,request):
-        print("Request",request)
         search = request.data.get('search')
         page = request.data.get('page')
         id_folder = request.data.get('id_folder')
-        print("search",search!=None)
-        if search!="":
-            if search and page :
-                files = FileService.findFileByName(id_folder,search,page)
-                if not files['files']:
-                    return Response(
-                        {
-                            "error": "No file found matching the search criteria."
-                        }, 
-                        status=status.HTTP_404_NOT_FOUND
-                    )
-                serializer = FileSerializer(files['files'],many = True)
+        if search!=None and page!=None :
+            files = FileService.findFileByName(id_folder,search,page)
+            if not files['files']:
                 return Response(
                     {
+                        "error": "No file found matching the search criteria."
+                    }, 
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            serializer = FileSerializer(files['files'],many = True)
+            return Response(
+                {
                     'files': serializer.data,
                     'total_pages': files['total_pages'],
                     'current_page': files['current_page'],
                     'has_next': files['has_next'],
                     'has_previous': files['has_previous'],
-                    },
-                    status=status.HTTP_200_OK
-                )
+                },
+                status=status.HTTP_200_OK
+            )
                 
-            id = request.data.get('id')
-            if id :
-                
-                file_data = FileService().viewFileById(id)
-                serializer = FileSerializer(file_data['file'])
-                return Response(
-                    {
-                        "file" : serializer.data,
-                        "folder" : file_data['folder']
-                    },
-                    status=status.HTTP_200_OK
-                )
+        id = request.data.get('id')
+        if id!=None :            
+            file_data = FileService().viewFileById(id)
+            serializer = FileSerializer(file_data['file'])
             return Response(
                 {
-                    "error":"Bad request"
+                    "file" : serializer.data,
+                    "folder" : file_data['folder']
                 },
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_200_OK
             )
-        
         return Response(
             {
-                "error":"Search is not empty"
+                "error":"Bad request"
             },
-            status=status.HTTP_404_NOT_FOUND
+            status=status.HTTP_400_BAD_REQUEST
         )
 
 class FileUpdateView(APIView):
