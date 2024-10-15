@@ -20,8 +20,8 @@ class FileService:
         return self.fileReposiroty.view_file_by_id(id_file)
     
     @staticmethod
-    def findFileByName(search,page,num_item = 20) -> Dict:
-        files = FileRepository.find_file_by_name(search)
+    def findFileByName(id_folder,search,page,num_item = 20) -> Dict:
+        files = FileRepository.find_file_by_name(id_folder,search)
         paginator = Paginator(files, num_item)
         
         page = paginator.get_page(page)
