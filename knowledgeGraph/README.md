@@ -7,3 +7,11 @@
 
 **Run server**
 - python manage.py runserver
+
+**Install libraries**
+- pip install -r requirements.txt
+  
+**Install env**
+- virtualenv myenv
+- myenv\Scripts\activate
+
