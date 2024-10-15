@@ -48,6 +48,7 @@ class FileInforView(APIView):
                     'current_page': files['current_page'],
                     'has_next': files['has_next'],
                     'has_previous': files['has_previous'],
+                    'total': files['total']
                 },
                 status=status.HTTP_200_OK
             )

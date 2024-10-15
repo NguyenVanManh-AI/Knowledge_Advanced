@@ -20,7 +20,6 @@ class FolderService:
     def findFolderByName(search_name: str, page: int, num_item: int = 20) -> Dict:
         folders = FolderRepository.find_folder_by_name(search_name=search_name)
         paginator = Paginator(folders, num_item)
-        
         page = paginator.get_page(page)
         return {
             'folders': page.object_list,
@@ -28,6 +27,7 @@ class FolderService:
             'current_page': page.number,
             'has_next': page.has_next(),
             'has_previous': page.has_previous(),
+            'total':len(folders)
         }
         
     @staticmethod
