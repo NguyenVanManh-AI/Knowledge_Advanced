@@ -9,7 +9,7 @@ class FolderListView(APIView):
         search = request.data.get('search')
         page = request.data.get('page')
         
-        if search and page:
+        if search!=None and page!=None:
             folders = FolderService.findFolderByName(search, page)
             if not folders['folders']:
                 return Response(
