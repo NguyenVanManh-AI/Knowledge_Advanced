@@ -14,7 +14,7 @@ class FileCreateView(APIView):
         serializer = FileSerializer(data=data)
         if serializer.is_valid():
             file = FileService().addFile(
-                serializer.validated_data['file'],
+                file,
                 serializer.validated_data['id_folder']
             )
             return Response(
@@ -28,10 +28,12 @@ class FileCreateView(APIView):
 
 class FileInforView(APIView):
     def get(self,request):
+        print("Request",request)
         search = request.data.get('search')
         page = request.data.get('page')
+        id_folder = request.data.get('id_folder')
         if search and page :
-            files = FileService.findFileByName(search,page)
+            files = FileService.findFileByName(id_folder,search,page)
             if not files['files']:
                 return Response(
                     {
@@ -52,7 +54,6 @@ class FileInforView(APIView):
             )
             
         id = request.data.get('id')
-        print("id",id)
         file_data = FileService().viewFileById(id)
         serializer = FileSerializer(file_data['file'])
         return Response(

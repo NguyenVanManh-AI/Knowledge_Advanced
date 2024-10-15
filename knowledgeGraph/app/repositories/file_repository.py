@@ -5,14 +5,13 @@ class FileRepository:
     def add_file(self,file,folder) -> File:
         folder = Folder.objects.filter(id = folder.id).first()
         if not folder:
-            raise ValueError("Not folder {} is found".format(folder.id))
+            return None
         if file.content_type == 'text/plain':
             file_content = file.read().decode('utf-8')  
         else:
-            raise ValueError("only txt file")
+            return None
         newFile = File(
             id_folder = folder,
-            file = file,
             name = file.name,
             content = file_content
         )
@@ -41,7 +40,7 @@ class FileRepository:
     def view_file_by_id(self,id_file) -> Dict:
         file = self.get_file_by_id(id_file)
         if not file:
-            raise ValueError("File is not found")
+            return None
         folder = Folder.objects.filter(id=file.id_folder.id).first()
         
         data = {
@@ -51,7 +50,11 @@ class FileRepository:
         return data
     
     @staticmethod
-    def find_file_by_name(search_name) -> List[File]:
-        result_files = File.objects.filter(name__icontains=search_name)
+    def find_file_by_name(id_folder=None,search_name="") -> List[File]:
+        result_files = File()
+        if not id_folder:
+            result_files = File.objects.filter(name__icontains=search_name)
+        else :
+            result_files = File.objects.filter(name__icontains=search_name,id_folder=id_folder)
         return result_files
         

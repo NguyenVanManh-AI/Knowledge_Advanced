@@ -20,7 +20,6 @@ class File(models.Model):
         Folder, on_delete=models.CASCADE, related_name="files"
     )
     name = models.CharField(max_length=100)
-    file = models.FileField(blank=True)
     content = models.TextField(blank=True, null=True)
     content_construct = models.JSONField(blank=True, null=True)
     
@@ -34,10 +33,6 @@ class File(models.Model):
         
     def update_content(self,new_content):
         self.content = new_content
-        self.save()
-        
-    def update_file(self,new_file):
-        self.file = new_file
         self.save()
         
     def __str__(self):
