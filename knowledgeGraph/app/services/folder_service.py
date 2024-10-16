@@ -17,8 +17,14 @@ class FolderService:
         return self.repository.delete_folder(idFolder)
     
     @staticmethod
-    def findFolderByName(search_name: str, page: int, num_item: int = 20) -> Dict:
+    def findFolderByName(search_name: str, page: int, num_item: int = 20, order_by: str = 'id', order_direction: str = 'asc') -> Dict:
         folders = FolderRepository.find_folder_by_name(search_name=search_name)
+
+        if order_direction.lower() == 'desc':
+            folders = folders.order_by(f'-{order_by}')
+        else:
+            folders = folders.order_by(order_by)
+
         paginator = Paginator(folders, num_item)
         page = paginator.get_page(page)
         return {

@@ -5,20 +5,22 @@ from ..services.folder_service import FolderService
 from ..serializers import FolderSerializer
 
 class FolderListView(APIView):
-    def get(self, request):
+    def post(self, request):
         # search = request.data.get('search')
         # page = request.data.get('page')
-        search = request.query_params.get('search')
-        page = request.query_params.get('page')
-        per_page = request.query_params.get('per_page')
+        search = request.data.get('search')
+        page = request.data.get('page')
+        per_page = request.data.get('per_page')
+        order_by = request.data.get('order_by', 'id')  # Mặc định là 'id' nếu không có
+        order_direction = request.data.get('order_direction', 'asc')  # Mặc định là 'asc' nếu không có
 
-        if search!=None and page!=None and per_page!=None:
-            folders = FolderService.findFolderByName(search, page, per_page)
-            if not folders['folders']:
-                return Response(
-                    {"error": "No folders found matching the search criteria."}, 
-                    status=status.HTTP_404_NOT_FOUND
-                )
+        if page is not None:
+            folders = FolderService.findFolderByName(search, page, per_page, order_by, order_direction)
+            # if not folders['folders']:
+            #     return Response(
+            #         {"error": "No folders found matching the search criteria."}, 
+            #         status=status.HTTP_404_NOT_FOUND
+            #     )
             serializer = FolderSerializer(folders['folders'], many=True)  
             return Response(
                 {
@@ -40,6 +42,7 @@ class FolderListView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
 class FolderCreateView(APIView):
     def post(self, request):
         serializer = FolderSerializer(data=request.data)
