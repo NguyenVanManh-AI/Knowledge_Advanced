@@ -6,8 +6,8 @@ from ..serializers import FolderSerializer
 
 class FolderListView(APIView):
     def get(self, request):
-        search = request.data.get('search')
-        page = request.data.get('page')
+        search = request.GET.get('search')
+        page = request.GET.get('page')
         
         if search!=None and page!=None:
             folders = FolderService.findFolderByName(search, page)

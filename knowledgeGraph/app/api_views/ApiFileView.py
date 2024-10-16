@@ -6,7 +6,7 @@ from ..serializers import FileSerializer
 
 
 class FileCreateView(APIView):
-    def post(self, request):
+    def get(self, request):
         data = request.data.copy()
         file = request.FILES.get('file')
         data['file'] = file
@@ -28,9 +28,9 @@ class FileCreateView(APIView):
 
 class FileInforView(APIView):
     def get(self,request):
-        search = request.data.get('search')
-        page = request.data.get('page')
-        id_folder = request.data.get('id_folder')
+        search = request.GET.get('search')
+        page = request.GET.get('page')
+        id_folder = request.GET.get('id_folder')
         if search!=None and page!=None :
             files = FileService.findFileByName(id_folder,search,page)
             if not files['files']:
@@ -53,7 +53,7 @@ class FileInforView(APIView):
                 status=status.HTTP_200_OK
             )
                 
-        id = request.data.get('id')
+        id = request.GET.get('id')
         if id!=None :            
             file_data = FileService().viewFileById(id)
             serializer = FileSerializer(file_data['file'])
