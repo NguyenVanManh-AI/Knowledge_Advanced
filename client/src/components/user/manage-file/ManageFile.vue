@@ -57,7 +57,7 @@
                                     1 }}</th>
                                 <td class="table-cell displaytext break text-center">{{ record.id }}</td>
                                 <td class="table-cell displaytext break">{{ truncatedTitle(record.name) }}</td>
-                                <td class="table-cell displaytext break"><textarea class="form-control" rows="3">{{ record.content }}</textarea></td>
+                                <td class="table-cell displaytext break"><textarea class="form-control" rows="3" v-model="record.content"></textarea></td>
                                 <!-- <td class="table-cell text-center">{{ this.$formatDate2(record.created_at) }}</td> -->
                                 <!-- <td class="table-cell text-center">{{ this.$formatDate2(record.updated_at) }}</td> -->
                                 <td class="table-cell text-center">

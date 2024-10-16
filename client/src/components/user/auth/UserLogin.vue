@@ -10,7 +10,7 @@
 			<div id="big">
 				<div class="container">
 					<form @submit.prevent="login()">
-						<h4>LINE OA Login </h4><br>
+						<h4>Knowledge Login </h4><br>
 						<div class="input-form">
 							<input v-model="loginUser.email" required>
 							<div class="underline"></div>
@@ -100,8 +100,8 @@ export default {
 			},
 			isShow: false,
 			loginUser: {
-				email: 'nguyenvanmanh2001it1@gmail.com',
-				password: '123456'
+				email: 'admin@gmail.com',
+				password: 'admin'
 			},
 			resetPassword: {
 				email: ''
@@ -113,7 +113,7 @@ export default {
 		}
 	},
 	setup() {
-		document.title = "LINE OA Login | Knowledge";
+		document.title = "Knowledge Login | Knowledge";
 	},
 	mounted() {
 		var appMain = window.document.getElementById('appMain');
@@ -121,25 +121,36 @@ export default {
 	},
 	methods: {
 		login: function () {
-			UserRequest.post('user/login', this.loginUser, true)
-				.then(data => {
-					this.user = data.data;
-					window.localStorage.setItem('user', JSON.stringify(this.user));
-					data.messages.forEach(message => {
-						emitEvent('eventSuccess', message);
-					});
-					this.$router.push({ name: 'AccountSetting' }); 
-				})
-				.catch(error => {
-					if (error.errors) this.errors = error.errors;
-					else for (let key in this.errors) this.errors[key] = null;
 
-					if (error.messages) {
-						error.messages.forEach(message => {
-							emitEvent('eventError', message);
-						});
-					}
-				})
+			if(this.loginUser.email === 'admin@gmail.com' && this.loginUser.password === 'admin') {
+				this.user = {
+					id: 1,
+					email: "admin@gmail.com",
+					role: "admin",
+					line_user_id: "U1234567890abcdef",
+					channel_id: "C9876543210abcdef",
+					name: "Admin",
+					phone: "+1234567890",
+					avatar: "https://example.com/avatar.jpg",
+					address: "123 Main St, Springfield, USA",
+					gender: "male",
+					date_of_birth: "1990-01-15",
+					is_block: false,
+					is_delete: false,
+					email_verified_at: "2024-10-01 12:00:00",
+					created_at: "2023-01-01 10:00:00",
+					updated_at: "2024-10-15 15:30:00",
+					expires_in: 3600,
+					token_type: "Bearer",
+					access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+				}
+				window.localStorage.setItem('user', JSON.stringify(this.user));
+				emitEvent('eventSuccess', 'Log in successfully !');
+				this.$router.push({ name: 'ManageFile' }); 
+			}
+			else {
+				emitEvent('eventError', 'Login failed !');
+			}
 		},
 		userResetPassword: async function () {
 			try {
@@ -184,7 +195,7 @@ h4 {
 }
 
 .btn-outline-primary:hover {
-	background-color: #096a31 !important;
+	background-color: #0076e5 !important;
 	border-color: var(--user-color);
 }
 
@@ -433,7 +444,7 @@ body {
 
 .btn-pers:hover {
 	background-color: var(--user-color);
-	box-shadow: 0px 15px 20px #80ffb5;
+	box-shadow: 0px 15px 20px #2395ff;
 	color: #fff;
 	transform: translate(-50%, -7px);
 }
