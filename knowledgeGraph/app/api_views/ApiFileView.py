@@ -32,6 +32,8 @@ class FileInforView(APIView):
         page = request.data.get('page')
         id_folder = request.data.get('id_folder')
         per_page = request.data.get('per_page')
+        order_by = request.data.get('order_by', 'id')  # Mặc định là 'id' nếu không có
+        order_direction = request.data.get('order_direction', 'asc')  # Mặc định là 'asc' nếu không có
         # search = request.query_params.get('search')
         # page = request.query_params.get('page')
         # id_folder = request.query_params.get('id_folder')
@@ -39,7 +41,7 @@ class FileInforView(APIView):
         print(search, page, id_folder)
 
         if search!=None and page!=None :
-            files = FileService.findFileByName(id_folder,search,page, per_page)
+            files = FileService.findFileByName(id_folder,search,page, per_page, order_by, order_direction)
             # if not files['files']:
             #     return Response(
             #         {
