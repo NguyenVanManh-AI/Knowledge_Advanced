@@ -1,4 +1,4 @@
-describe('Create Folder', () => {
+describe('Folder | Create Folder', () => {
 	beforeEach(() => {
 		cy.visit('http://localhost:8080/login');
 		cy.get('input[name="email"]').clear().type('admin@gmail.com'); // Nhập email
@@ -49,7 +49,7 @@ describe('Create Folder', () => {
 });
 
 
-describe('Update Folder', () => {
+describe('Folder | Update Folder', () => {
 	beforeEach(() => {
 		cy.visit('http://localhost:8080/login');
 		cy.get('input[name="email"]').clear().type('admin@gmail.com'); // Nhập email
@@ -120,7 +120,7 @@ describe('Update Folder', () => {
 	});
 });
 
-describe('Delete Folder', () => {
+describe('Folder | Delete Folder', () => {
 	beforeEach(() => {
 		cy.visit('http://localhost:8080/login');
 		cy.get('input[name="email"]').clear().type('admin@gmail.com'); // Nhập email
@@ -181,5 +181,68 @@ describe('Delete Folder', () => {
 		cy.get('#table_body_folder tr')
 		  .should('not.contain', folderId);
 	});
+	
+});
+
+describe('Folder | Search Sort Pagination', () => {
+	beforeEach(() => {
+		cy.visit('http://localhost:8080/login');
+		cy.get('input[name="email"]').clear().type('admin@gmail.com'); // Nhập email
+		cy.get('input[name="password"]').clear().type('admin'); // Nhập mật khẩu
+		cy.get('#login_button').click(); // Click nút đăng nhập
+		cy.visit('http://localhost:8080/dashboard/manage-folder');
+	});
+
+	it('should update the number of records displayed per page', () => {
+		// Chọn giá trị '10' trong dropdown 'per_page'
+		cy.get('#folder_per_page').select('10');
+		
+		// Kiểm tra xem có đúng 10 bản ghi trong bảng không
+		cy.get('#table_body_folder tr').should('have.length', 10);
+	
+		// Chọn giá trị '20' trong dropdown 'per_page'
+		cy.get('#folder_per_page').select('20');
+	
+		// Kiểm tra xem có đúng 20 bản ghi trong bảng không
+		cy.get('#table_body_folder tr').should('have.length', 20);
+	});
+
+	it('should sort the records by the selected field', () => {
+		// Chọn 'Name' trong dropdown 'sort_by'
+		cy.get('#folder_sort_by').select('name');
+	
+		// Kiểm tra xem cột đầu tiên có được sắp xếp theo tên không
+		cy.get('#table_body_folder tr td:nth-child(3)').then(($cells) => {
+			const textValues = $cells.map((i, el) => Cypress.$(el).text()).get();
+			const sortedValues = [...textValues].sort().reverse(); // Sắp xếp theo thứ tự giảm dần
+			expect(textValues).to.deep.equal(sortedValues);
+		});
+	});
+	
+	it('should filter the table based on the search input', () => {
+		// Nhập từ khóa tìm kiếm vào ô tìm kiếm
+		const searchText = 'New Name Folder';
+		// cy.get('#folder_input_search').type(searchText);
+		cy.get('#folder_input_search').invoke('val', searchText).trigger('input');
+		
+		// Đợi một chút để cập nhật kết quả tìm kiếm
+		cy.wait(500);
+		
+		// Kiểm tra xem bảng chỉ hiển thị các bản ghi chứa từ khóa tìm kiếm
+		cy.get('#table_body_folder tr').each(($row) => {
+			cy.wrap($row).find('td:nth-child(3)').should('contain.text', searchText);
+		});
+		
+		// Xóa từ khóa và kiểm tra lại toàn bộ bảng
+		cy.get('#folder_input_search').clear().trigger('input');
+		
+		// Đợi một chút để cập nhật lại kết quả
+		cy.wait(500);
+		
+		// Kiểm tra lại bảng sau khi đã xóa từ khóa tìm kiếm
+		// trả về như cũ là bảng không rỗng và có ít nhất một bản ghi hiển thị.
+		cy.get('#table_body_folder tr').should('have.length.greaterThan', 0);
+	});
+	
 	
 });

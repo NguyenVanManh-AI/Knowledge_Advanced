@@ -7,7 +7,7 @@
             <div class="mt-3">
                 <div class="row m-0 pb-2 d-flex justify-content-end" id="search-sort">
                     <div class="col-1 pl-0" id="page">
-                        <select content="Pagination" v-tippy class="form-control" v-model="big_search.per_page">
+                        <select id="folder_per_page" content="Pagination" v-tippy class="form-control" v-model="big_search.per_page">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
@@ -15,13 +15,13 @@
                         </select>
                     </div>
                     <div class="col-2 pl-0">
-                        <select content="Sắp xếp theo" v-tippy class="form-control " v-model="big_search.order_by">
+                        <select id="folder_sort_by" content="Sắp xếp theo" v-tippy class="form-control " v-model="big_search.order_by">
                             <option value="id">ID</option>
                             <option value="name">Name</option>
                         </select>
                     </div>
                     <div class="col-2 pl-0">
-                        <select content="Kiểu sắp xếp" v-tippy class="form-control " v-model="big_search.order_direction">
+                        <select id="folder_sort_direction" content="Kiểu sắp xếp" v-tippy class="form-control " v-model="big_search.order_direction">
                             <option value="asc">Ascending</option>
                             <option value="desc">Descending</option>
                         </select>
@@ -31,7 +31,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
                             </div>
-                            <input v-model="search" type="text" class="form-control " id="inline-form-input-group"
+                            <input id="folder_input_search" v-model="search" type="text" class="form-control " 
                                 placeholder="Search by folder name">
                         </div>
                     </div>
