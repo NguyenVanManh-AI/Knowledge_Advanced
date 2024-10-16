@@ -6,11 +6,14 @@ from ..serializers import FolderSerializer
 
 class FolderListView(APIView):
     def get(self, request):
-        search = request.data.get('search')
-        page = request.data.get('page')
-        
-        if search!=None and page!=None:
-            folders = FolderService.findFolderByName(search, page)
+        # search = request.data.get('search')
+        # page = request.data.get('page')
+        search = request.query_params.get('search')
+        page = request.query_params.get('page')
+        per_page = request.query_params.get('per_page')
+
+        if search!=None and page!=None and per_page!=None:
+            folders = FolderService.findFolderByName(search, page, per_page)
             if not folders['folders']:
                 return Response(
                     {"error": "No folders found matching the search criteria."}, 
@@ -32,7 +35,9 @@ class FolderListView(APIView):
         folders = FolderService.getAllFolder()
         serializer = FolderSerializer(folders, many=True)
         return Response(
-            serializer.data,
+            {
+                'data': serializer.data,
+            },
             status=status.HTTP_200_OK
         )
 class FolderCreateView(APIView):
@@ -71,7 +76,7 @@ class FolderUpdateView(APIView):
         )
 class FolderDeleteView(APIView):
     def delete(self, request):
-        deleted = FolderService().deleteFolder(request.data.get('id'))
+        deleted = FolderService().deleteFolder(request.query_params.get('id'))
         if not deleted:
             return Response(
                 {
