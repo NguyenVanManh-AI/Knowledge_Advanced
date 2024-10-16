@@ -18,11 +18,11 @@
                                 <form @submit.prevent="updateRecord()">
                                     <div class="form-group">
                                         <label>Folder name</label>
-                                        <input v-model="record.name" type="text" class="form-control form-control-sm" id="exampleInputEmail1"
-                                            aria-describedby="emailHelp" placeholder="Tên Chapter">
-                                        <span v-if="errors.name" class="text-danger">{{ errors.name }}<br></span>
+                                        <input name="update_folder_name" v-model="record.name" type="text" class="form-control form-control-sm" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp" placeholder="Folder Name">
+                                        <span id="update_folder_errors_name" v-if="errors.name" class="text-danger">{{ errors.name }}<br></span>
                                     </div>
-                                    <button type="submit" class="mt-4 btn-pers" id="login_button"><i class="fa-solid fa-paper-plane"></i> Update</button>
+                                    <button type="submit" class="mt-4 btn-pers" id="folder_save_button"><i class="fa-solid fa-paper-plane"></i> Update</button>
                                 </form>
                             </div>
                         </div>
@@ -48,7 +48,7 @@ export default {
         return {
             record: {
                 id: null,
-                name: null,
+                name: '',
             },
             errors: {
                 id: null,
@@ -71,20 +71,23 @@ export default {
     },
     methods: {
         updateRecord: async function () {
-            try {
-                await UserRequest.put('folder/update/', this.record, true);
-                this.$emitEvent('eventSuccess', 'Folder updated successfully !');
-                var closePW = window.document.getElementById('updateRecord');
-                closePW.click();
-                this.errors.name = null;
-                this.$emitEvent('eventRegetDataRecords', '');
+            if(this.record.name === '') {
+                this.errors.name = 'Folder name cannot be empty !'
+            } else {
+                try {
+                    await UserRequest.put('folder/update/', this.record, true);
+                    this.$emitEvent('eventSuccess', 'Folder updated successfully !');
+                    var closePW = window.document.getElementById('updateRecord');
+                    closePW.click();
+                    this.errors.name = null;
+                    this.$emitEvent('eventRegetDataRecords', '');
+                }
+                catch (error) {
+                    this.errors.name = 'Error name.'
+                    console.log(error);
+                    this.$emitEvent('eventError', 'Error something !');
+                }
             }
-            catch (error) {
-                this.errors.name = 'Error name.'
-                console.log(error);
-                this.$emitEvent('eventError', 'Error something !');
-            }
-
         },
     },
     watch: {
