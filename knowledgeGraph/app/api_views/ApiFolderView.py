@@ -81,7 +81,7 @@ class FolderDeleteView(APIView):
             )
         return Response(
             {
-                "message","Delete success"
+                "message":"Delete success"
             },
             status=status.HTTP_204_NO_CONTENT
         )
