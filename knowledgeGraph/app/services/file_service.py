@@ -20,10 +20,15 @@ class FileService:
         return self.fileReposiroty.view_file_by_id(id_file)
     
     @staticmethod
-    def findFileByName(id_folder,search,page,num_item = 20) -> Dict:
+    def findFileByName(id_folder:int ,search: str, page: int,num_item: int = 20, order_by: str = 'id', order_direction: str = 'asc') -> Dict:
         files = FileRepository.find_file_by_name(id_folder,search)
+
+        if order_direction.lower() == 'desc':
+            files = files.order_by(f'-{order_by}')
+        else:
+            files = files.order_by(order_by)
+
         paginator = Paginator(files, num_item)
-        
         page = paginator.get_page(page)
         return {
             'files': page.object_list,
