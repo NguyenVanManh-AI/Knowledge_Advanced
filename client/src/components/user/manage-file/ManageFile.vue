@@ -14,12 +14,18 @@
                             <option value="20">20</option>
                         </select>
                     </div>
-                    <!-- <div class="col-2 pl-0">
-                        <select content="Sắp xếp theo" v-tippy class="form-control " v-model="big_search.order_by">
+                    <div class="col-2 pl-0">
+                        <select id="folder_sort_by" content="Sắp xếp theo" v-tippy class="form-control " v-model="big_search.order_by">
                             <option value="id">ID</option>
-                            <option value="position">Vị trí Chapter</option>
+                            <option value="name">Name</option>
                         </select>
-                    </div> -->
+                    </div>
+                    <div class="col-2 pl-0">
+                        <select id="folder_sort_direction" content="Kiểu sắp xếp" v-tippy class="form-control " v-model="big_search.order_direction">
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
                     <div class="col-2 pl-0">
                         <select content="Search by folder" v-tippy class="form-control " v-model="big_search.id_folder">
                             <option value="" >Search by folder</option>
@@ -135,8 +141,8 @@ export default {
                 per_page: 10,
                 page: 1,
                 id_folder: null,
-                // order_by: 'position',
-                // order_direction: 'asc',
+                order_by: 'id',
+                order_direction: 'desc',
             },
             query: '',
             records: [],
@@ -180,8 +186,9 @@ export default {
         this.big_search = {
             per_page: parseInt(searchParams.get('per_page')) || 10,
             page: searchParams.get('page') || 1,
-            // order_by: searchParams.get('order_by') || 'position',
-            // order_direction: searchParams.get('order_direction') || 'asc',
+            order_by: searchParams.get('order_by') || 'id',
+            order_direction: searchParams.get('order_direction') || 'desc',
+            id_folder: searchParams.get('id_folder') || null,
         }
         this.getDataRecords();
         this.$onEvent('eventRegetDataRecords', () => {
@@ -233,7 +240,7 @@ export default {
         },
         getDataRecords: async function () {
             this.isLoading = true;
-            this.query = `?search=${this.search}&page=${this.big_search.page}&per_page=${this.big_search.per_page}&id_folder=${this.big_search.id_folder}`;
+            this.query = `?search=${this.search}&page=${this.big_search.page}&per_page=${this.big_search.per_page}&order_by=${this.big_search.order_by}&order_direction=${this.big_search.order_direction}&id_folder=${this.big_search.id_folder}`;
             // window.history.pushState({}, null, this.query);
             window.history.replaceState({}, null, this.query);
             try {
@@ -241,6 +248,8 @@ export default {
                     search : this.search,
                     page : this.big_search.page,
                     per_page: this.big_search.per_page,
+                    order_by : this.big_search.order_by,
+                    order_direction : this.big_search.order_direction,
                     id_folder : this.big_search.id_folder
                 }
                 const { files, total, total_pages } = await UserRequest.post('file/', submit_search)
