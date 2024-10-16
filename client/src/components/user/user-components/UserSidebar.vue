@@ -138,7 +138,7 @@ export default {
     },
     logout: function () {
       window.localStorage.removeItem('user');
-      this.$router.push({ name: "HomeLogin" });
+      this.$router.push({ name: "UserLogin" });
       var appMain = window.document.getElementById('appMain');
       appMain.style.paddingLeft = '0px'
     },

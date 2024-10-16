@@ -1,9 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import NProgress from 'nprogress';
+import useEventBus from '@/composables/useEventBus'
+const { emitEvent } = useEventBus();
 
 // admin
 
 // user 
+import UserLogin from '@/components/user/auth/UserLogin'
 import UserMain from '@/components/user/UserMain'
 import ManageFolder from '@/components/user/manage-folder/ManageFolder'
 import ManageFile from '@/components/user/manage-file/ManageFile'
@@ -18,15 +21,15 @@ import ManageFile from '@/components/user/manage-file/ManageFile'
 // other 
 import CommonNotFound from '@/components/common/CommonNotFound'
 
-// // middleware authUser
-// const authUser = (to, from, next) => {
-//     const user = localStorage.getItem('user');
-//     if (user) next();
-//     else {
-//         next({ name: 'HomeLogin' });
-//         emitEvent('eventError', 'You need to login !');
-//     }
-// };
+// middleware authUser
+const authUser = (to, from, next) => {
+    const user = localStorage.getItem('user');
+    if (user) next();
+    else {
+        next({ name: 'UserLogin' });
+        emitEvent('eventError', 'You need to login !');
+    }
+};
 
 // // middleware authAdmin
 // const authAdmin = (to, from, next) => {
@@ -38,12 +41,12 @@ import CommonNotFound from '@/components/common/CommonNotFound'
 //     }
 // };
 
-// // check user logged 
-// const loggedUser = (to, from, next) => {
-//     const user = localStorage.getItem('user');
-//     if (user) next({ name: 'AccountSetting' });
-//     else next();
-// };
+// check user logged 
+const loggedUser = (to, from, next) => {
+    const user = localStorage.getItem('user');
+    if (user) next({ name: 'ManageFile' });
+    else next();
+};
 
 // // check amdin logged 
 // const loggedAdmin = (to, from, next) => {
@@ -54,12 +57,13 @@ import CommonNotFound from '@/components/common/CommonNotFound'
 
 const routes = [
 
-    // { path: '/login', component: UserLogin, name: 'UserLogin', beforeEnter: loggedUser },
+    { path: '/login', component: UserLogin, name: 'UserLogin', beforeEnter: loggedUser },
     // { path: '/reset-password', component: UserResetPassword, name: 'UserResetPassword', beforeEnter: loggedUser },
     {
         path: '/dashboard',
         component: UserMain,
         name: 'UserMain',
+        beforeEnter: authUser,
         children: [
             { path: 'manage-folder', name: 'ManageFolder', component: ManageFolder },
             { path: 'manage-file', name: 'ManageFile', component: ManageFile },
