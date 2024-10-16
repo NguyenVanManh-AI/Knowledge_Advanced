@@ -12,7 +12,7 @@
 					<form @submit.prevent="login()">
 						<h4>Knowledge Login </h4><br>
 						<div class="input-form">
-							<input v-model="loginUser.email" required>
+							<input name="email" v-model="loginUser.email" required>
 							<div class="underline"></div>
 							<label><i class="fa-solid fa-envelope"></i> Email</label>
 						</div>
@@ -20,7 +20,7 @@
 						<br>
 						<br>
 						<div class="input-form">
-							<input required id="inputPassword" :type="isShow ? 'text' : 'password'"
+							<input name="password" required id="inputPassword" :type="isShow ? 'text' : 'password'"
 								v-model="loginUser.password">
 							<strong id="iconEye"><i @click="isShow = !isShow"
 									:class="{ 'fa-solid': true, 'fa-eye': !isShow, 'fa-eye-slash': isShow }"></i></strong>
@@ -100,6 +100,8 @@ export default {
 			},
 			isShow: false,
 			loginUser: {
+				// email: '',
+				// password: ''
 				email: 'admin@gmail.com',
 				password: 'admin'
 			},

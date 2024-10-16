@@ -3,30 +3,33 @@
         <div class="modal fade" id="deleteRecord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel"><i class="fa-solid fa-triangle-exclamation"></i>
-                            Warning</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="text-danger"><i class="fa-regular fa-circle-xmark"></i></span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-warning" role="alert">
-                            <p>Warning: The folder and all files in this folder will be permanently deleted from the system!</p>
-                            <p>Folder name : <strong>{{ recordSelected.name }}</strong> </p>
+                <form @submit.prevent="functionDeleteRecord()">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel"><i
+                                    class="fa-solid fa-triangle-exclamation"></i>
+                                Warning</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true" class="text-danger"><i
+                                        class="fa-regular fa-circle-xmark"></i></span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-warning" role="alert">
+                                <p>Warning: The folder and all files in this folder will be permanently deleted from the
+                                    system!</p>
+                                <p>Folder name : <strong>{{ recordSelected.name }}</strong> </p>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"
+                                ref="closeButton" id="close">Close</button>
+                            <button type="submit" id="folder_delete_button" class="btn btn-outline-danger">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" ref="closeButton"
-                            id="close">Close</button>
-                        <button type="button"
-                            class="btn btn-outline-danger"
-                            @click="functionDeleteRecord">
-                            <i class="fa-solid fa-trash"></i> Delete
-                        </button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -53,8 +56,10 @@ export default {
             try {
                 await UserRequest.delete(`folder/delete/?id=${this.recordSelected.id}`, true);
                 this.$emitEvent('eventSuccess', 'Folder deleted successfully !');
-                const closeButton = this.$refs.closeButton;
-                closeButton.click();
+                // const closeButton = this.$refs.closeButton;
+                // closeButton.click();
+                var closePW = window.document.getElementById('deleteRecord');
+                closePW.click();
                 this.$emitEvent('eventRegetDataRecords', this.recordSelected.id);
             }
             catch (error) {
@@ -78,10 +83,11 @@ export default {
     .modal-dialog {
         max-width: 400px;
         margin: 10px auto;
-        font-size: 13px;;
+        font-size: 13px;
+        ;
     }
 
-    .modal-header{
+    .modal-header {
         padding: auto;
     }
 
@@ -89,7 +95,7 @@ export default {
         font-size: 20px;
     }
 
-    .btn{
+    .btn {
         font-size: 13px;
     }
 }
@@ -98,10 +104,11 @@ export default {
     .modal-dialog {
         max-width: 350px;
         margin: 10px auto;
-        font-size: 11px;;
+        font-size: 11px;
+        ;
     }
 
-    .modal-header{
+    .modal-header {
         padding: auto;
     }
 
@@ -109,11 +116,11 @@ export default {
         font-size: 18px;
     }
 
-    .btn{
+    .btn {
         font-size: 12px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 14px 14px 0 14px;
     }
 }
@@ -122,10 +129,11 @@ export default {
     .modal-dialog {
         max-width: 320px;
         margin: 10px auto;
-        font-size: 9px;;
+        font-size: 9px;
+        ;
     }
 
-    .modal-header{
+    .modal-header {
         padding: auto;
     }
 
@@ -133,14 +141,15 @@ export default {
         font-size: 11px;
     }
 
-    .btn{
+    .btn {
         font-size: 10px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 14px 14px 0 14px;
     }
-    .alert{
+
+    .alert {
         padding: 8px;
     }
 }
@@ -149,10 +158,12 @@ export default {
     .modal-dialog {
         max-width: 275px;
         margin: 10px auto;
-        font-size: 9px;;
+        font-size: 9px;
+        ;
     }
 
-    .modal-header, .modal-footer{
+    .modal-header,
+    .modal-footer {
         padding: 5px 5px;
     }
 
@@ -160,15 +171,15 @@ export default {
         font-size: 11px;
     }
 
-    .btn{
+    .btn {
         font-size: 8px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 12px 12px 0 12px;
     }
 
-    .alert{
+    .alert {
         padding: 8px;
     }
 }
@@ -177,10 +188,12 @@ export default {
     .modal-dialog {
         max-width: 180px;
         margin: 10px auto;
-        font-size: 7px;;
+        font-size: 7px;
+        ;
     }
 
-    .modal-header, .modal-footer{
+    .modal-header,
+    .modal-footer {
         padding: 5px 5px;
     }
 
@@ -188,15 +201,15 @@ export default {
         font-size: 9px;
     }
 
-    .btn{
+    .btn {
         font-size: 7px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 11px 11px 0 11px;
     }
-    
-    .alert{
+
+    .alert {
         padding: 6px 10px;
     }
 }

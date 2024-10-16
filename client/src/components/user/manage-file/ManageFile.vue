@@ -217,7 +217,7 @@ export default {
         },
         getListFolder: async function () {
             try {
-                const { data } = await UserRequest.get('folder/')
+                const { data } = await UserRequest.post('folder/')
                 console.log(data);
                 var data_folders = data;
                 data_folders.forEach((folder) => {
