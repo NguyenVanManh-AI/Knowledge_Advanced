@@ -20,7 +20,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" ref="closeButton"
                             id="close">Close</button>
-                        <button type="button"
+                        <button id="folder_delete_button" type="button"
                             class="btn btn-outline-danger"
                             @click="functionDeleteRecord">
                             <i class="fa-solid fa-trash"></i> Delete

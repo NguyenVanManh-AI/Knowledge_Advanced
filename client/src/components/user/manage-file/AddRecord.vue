@@ -19,18 +19,19 @@
                                     <div class="form-group">
                                         <label>Select folder</label>
                                         <div class="row p-2 mb-2 ">
-                                            <Multiselect v-model="record.id_folder"
+                                            <Multiselect id="select_id_folder" v-model="record.id_folder"
                                                 placeholder="Select folder" :close-on-select="true"
                                                 :searchable="true" :create-option="false" :options="folders" />
                                         </div>
-                                        <span v-if="errors.id_folder" class="text-danger">{{errors.id_folder[0] }}<br></span>
+                                        <span v-if="errors.id_folder" id="add_file_errors_id_folder" class="text-danger">{{ errors.id_folder }}<br></span>
                                     </div>
                                     <div class="form-group">
                                         <label>File Upload</label><br>
                                         <input type="file" ref="fileInput" id="file" @change="handleFileUpload" accept=".txt,.docx,.doc,.pdf" />
-                                        <span v-if="errors.document_file" class="text-danger">{{ errors.document_file[0] }}<br></span>
+                                        <br>
+                                        <span v-if="errors.file" id="add_file_errors_name" class="text-danger">{{ errors.file }}<br></span>
                                     </div>
-                                    <button type="submit" class="mt-4 btn-pers" id="login_button"><i class="fa-solid fa-plus"></i> Add</button>
+                                    <button type="submit" class="mt-4 btn-pers" id="file_add_button"><i class="fa-solid fa-plus"></i> Add</button>
                                 </form>
                             </div>
                         </div>
@@ -79,28 +80,40 @@ export default {
             this.record.file = event.target.files[0];
         },
         addRecord: async function () {
-            try {
-                const formData = new FormData();
-                for (let key in this.record) formData.append(key, this.record[key]);
-
-                await UserRequest.post('file/add/', formData, true);
-                this.$emitEvent('eventSuccess', 'File added successfully !');
-                var closePW = window.document.getElementById('addRecord');
-                closePW.click();
-                this.$refs.fileInput.value = '';
-                this.record = {
-                    id_folder: null,
-                    file: null,
-                };
-                this.errors.file = null;
-                this.$emitEvent('eventRegetDataRecords', '');
+            this.errors = {
+                id_folder: null,
+                file: null,
             }
-            catch (error) {
-                this.errors.file = 'Error name.'
-                console.log(error);
-                this.$emitEvent('eventError', 'Error something !');
-            }
+            if(this.record.file === null) {
+                this.errors.file = 'File is required !'
+            } else if(this.record.id_folder === null) {
+                this.errors.id_folder = 'Folder selection is required !'
+            } else {
+                try {
+                    const formData = new FormData();
+                    for (let key in this.record) formData.append(key, this.record[key]);
 
+                    await UserRequest.post('file/add/', formData, true);
+                    this.$emitEvent('eventSuccess', 'File added successfully !');
+                    var closePW = window.document.getElementById('addRecord');
+                    closePW.click();
+                    this.$refs.fileInput.value = '';
+                    this.record = {
+                        id_folder: null,
+                        file: null,
+                    };
+                    this.errors = {
+                        id_folder: null,
+                        file: null,
+                    }
+                    this.$emitEvent('eventRegetDataRecords', '');
+                }
+                catch (error) {
+                    this.errors.file = 'Error name.'
+                    console.log(error);
+                    this.$emitEvent('eventError', 'Error something !');
+                }
+            }
         },
     },
     watch: {
