@@ -10,6 +10,7 @@ import UserLogin from '@/components/user/auth/UserLogin'
 import UserMain from '@/components/user/UserMain'
 import ManageFolder from '@/components/user/manage-folder/ManageFolder'
 import ManageFile from '@/components/user/manage-file/ManageFile'
+import SearchPage from '@/components/user/chat/SearchPage'
 
 // import ManageContent from '@/components/user/manage-content/ManageContent'
 // import ManageBroadcast from '@/components/user/manage-broadcast/ManageBroadcast'
@@ -67,6 +68,7 @@ const routes = [
         children: [
             { path: 'manage-folder', name: 'ManageFolder', component: ManageFolder },
             { path: 'manage-file', name: 'ManageFile', component: ManageFile },
+            { path: 'search', name: 'SearchPage', component: SearchPage },
             // { path: 'manage-content', name: 'ManageContent', component: ManageContent },
             // { path: 'manage-broadcast', name: 'ManageBroadcast', component: ManageBroadcast },
             // { path: 'statistical-channel', name: 'StatisticalChannel', component: StatisticalChannel },

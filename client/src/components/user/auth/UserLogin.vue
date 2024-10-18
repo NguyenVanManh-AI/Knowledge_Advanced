@@ -133,7 +133,7 @@ export default {
 					channel_id: "C9876543210abcdef",
 					name: "Admin",
 					phone: "+1234567890",
-					avatar: "https://example.com/avatar.jpg",
+					avatar: null,
 					address: "123 Main St, Springfield, USA",
 					gender: "male",
 					date_of_birth: "1990-01-15",
@@ -149,6 +149,32 @@ export default {
 				window.localStorage.setItem('user', JSON.stringify(this.user));
 				emitEvent('eventSuccess', 'Log in successfully !');
 				this.$router.push({ name: 'ManageFile' }); 
+			}
+			else if (this.loginUser.email === 'user@gmail.com' && this.loginUser.password === 'user') {
+				this.user = {
+					id: 1,
+					email: "user@gmail.com",
+					role: "user",
+					line_user_id: "U1234567890abcdef",
+					channel_id: "C9876543210abcdef",
+					name: "User",
+					phone: "+1234567890",
+					avatar: null,
+					address: "123 Main St, Springfield, USA",
+					gender: "male",
+					date_of_birth: "1990-01-15",
+					is_block: false,
+					is_delete: false,
+					email_verified_at: "2024-10-01 12:00:00",
+					created_at: "2023-01-01 10:00:00",
+					updated_at: "2024-10-15 15:30:00",
+					expires_in: 3600,
+					token_type: "Bearer",
+					access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+				}
+				window.localStorage.setItem('user', JSON.stringify(this.user));
+				emitEvent('eventSuccess', 'Log in successfully !');
+				this.$router.push({ name: 'SearchPage' }); 
 			}
 			else {
 				emitEvent('eventError', 'Login failed !');
