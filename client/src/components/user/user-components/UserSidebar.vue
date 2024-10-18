@@ -10,14 +10,19 @@
       style="display: flex ; flex-direction:column; justify-content: space-between; flex-grow: 1; max-height: calc(100% - 60px); ">
       <div id="my-scroll" style="margin: 0px 14px 0 14px;">
         <ul class="nav-list" style="overflow: visible;">
-          <span>
+          <span :class="{ 'hide': user.role != 'admin' }">
             <li>
               <router-link class="links" data-path="manage-folder" :to="{ name: 'ManageFolder' }"><i class="fa-solid fa-folder-open"></i><span class="links_name">Manage folders</span></router-link>
             </li>
           </span>
-          <span>
+          <span :class="{ 'hide': user.role !== 'admin' }">
             <li>
               <router-link class="links" data-path="manage-file" :to="{ name: 'ManageFile' }"><i class="fa-solid fa-file-lines"></i><span class="links_name">Manage files</span></router-link>
+            </li>
+          </span>
+          <span>
+            <li>
+              <router-link class="links" data-path="search" :to="{ name: 'SearchPage' }"><i class="fa-solid fa-robot"></i><span class="links_name">Chat bot</span></router-link>
             </li>
           </span>
           <!-- <span :class="{ 'hide': user.role != 'manager' }">
@@ -57,8 +62,8 @@
           <img id="avatar_sidebar" :src="user.avatar ? user.avatar : require('@/assets/avatar.jpg')" alt="Avatar User">
           <div class="name_job">
             <!-- <div class="name">{{ user.name }}</div> -->
-            <div class="name">Admin</div>
-            <div class="job"><i class="fa-solid fa-user-tag"></i> {{ user.role === 1 ? 'Admin' : 'Admin' }}</div>
+            <div class="name">{{ user.name }}</div>
+            <div class="job"><i class="fa-solid fa-user-tag"></i> {{ user.role === 'admin' ? 'Admin' : 'User' }}</div>
           </div>
         </div>
         <i class="bx bx-log-out" id="log_out" @click="logout"></i>
@@ -164,6 +169,7 @@ export default {
     },
   },
   mounted() {
+    this.user = JSON.parse(window.localStorage.getItem('user'));
     const isUserOpened = localStorage.getItem('isUserOpened');
     if (isUserOpened) {
       this.isUserOpened = JSON.parse(isUserOpened);
