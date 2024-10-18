@@ -7,7 +7,7 @@
             <div class="mt-3">
                 <div class="row m-0 pb-2 d-flex justify-content-end" id="search-sort">
                     <div class="col-1 pl-0" id="page">
-                        <select content="Pagination" v-tippy class="form-control" v-model="big_search.per_page">
+                        <select id="file_per_page" content="Pagination" v-tippy class="form-control" v-model="big_search.per_page">
                             <option value="5">5</option>
                             <option value="10">10</option>
                             <option value="15">15</option>
@@ -15,13 +15,13 @@
                         </select>
                     </div>
                     <div class="col-2 pl-0">
-                        <select id="folder_sort_by" content="Sắp xếp theo" v-tippy class="form-control " v-model="big_search.order_by">
+                        <select id="file_sort_by" content="Sắp xếp theo" v-tippy class="form-control " v-model="big_search.order_by">
                             <option value="id">ID</option>
                             <option value="name">Name</option>
                         </select>
                     </div>
                     <div class="col-2 pl-0">
-                        <select id="folder_sort_direction" content="Kiểu sắp xếp" v-tippy class="form-control " v-model="big_search.order_direction">
+                        <select id="file_sort_direction" content="Kiểu sắp xếp" v-tippy class="form-control " v-model="big_search.order_direction">
                             <option value="asc">Ascending</option>
                             <option value="desc">Descending</option>
                         </select>
@@ -37,7 +37,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></div>
                             </div>
-                            <input v-model="search" type="text" class="form-control " id="inline-form-input-group"
+                            <input v-model="search" type="text" class="form-control " id="file_input_search"
                                 placeholder="Search by file name">
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                                 <th scope="col" class="w-30"><i class="fa-solid fa-user-pen"></i> Action</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="table_body_file">
                             <tr v-for="(record, index) in records" :key="index">
                                 <th class="table-cell text-center" scope="row">#{{ (big_search.page - 1) * big_search.per_page + index +
                                     1 }}</th>
@@ -188,7 +188,7 @@ export default {
             page: searchParams.get('page') || 1,
             order_by: searchParams.get('order_by') || 'id',
             order_direction: searchParams.get('order_direction') || 'desc',
-            id_folder: searchParams.get('id_folder') || null,
+            id_folder: searchParams.get('id_folder') || '', // null
         }
         this.getDataRecords();
         this.$onEvent('eventRegetDataRecords', () => {
