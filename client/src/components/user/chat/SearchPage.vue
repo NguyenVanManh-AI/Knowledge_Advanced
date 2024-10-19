@@ -17,11 +17,20 @@
         <div v-if="texts.length == 0" class="intro-search">
             <i class="fa-solid fa-lightbulb"></i> Search information, signs and treatment solutions for your disease on the system !
         </div>
-        <div class="container-search">
-            <input @keyup.enter="searchPaper" v-model="searchQuery" type="text" class="form-control"
-                id="formGroupExampleInput" placeholder="Enter something to Search...">
+        <div class="col-auto">
+      <label class="sr-only" for="inlineFormInputGroup">Username</label>
+      <div class="input-group container-search">
+        <div class="input-group-prepend">
+          <div class="input-group-text" @click="searchPaper"><i class="fa-solid fa-magnifying-glass"></i></div>
         </div>
+        <input @keyup.enter="searchPaper" v-model="searchQuery" type="text" class="form-control input_search" id="inlineFormInputGroup" placeholder="Enter something to Search...">
+      </div>
     </div>
+            <!-- <div class="container-search">
+                <input @keyup.enter="searchPaper" v-model="searchQuery" type="text" class="form-control"
+                    id="formGroupExampleInput" placeholder="Enter something to Search..."> 
+        </div> -->
+</div>
 </template>
 
 <script>
@@ -80,6 +89,15 @@ export default {
 </script>
 
 <style scoped>
+
+.input-group-text {
+    cursor: pointer;
+}
+.input-group-text:hover {
+    color: blue;
+}
+
+
 .intro-search {
     position: absolute;
     font-weight: bold;
@@ -108,8 +126,14 @@ export default {
 .container-search {
     position: absolute;
     width: calc(100% - 40px);
-    margin-top: 20px;
-    bottom: 10px;
+    /* margin-top: 20px; */
+    /* bottom: 10px; */
+}
+
+.input_search {
+    display: inline-block;
+    border-radius: 20px;
+    background-color: #F4F4F4;
 }
 
 .container-search input {
