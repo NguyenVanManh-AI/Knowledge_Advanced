@@ -20,6 +20,11 @@
               <router-link class="links" data-path="manage-file" :to="{ name: 'ManageFile' }"><i class="fa-solid fa-file-lines"></i><span class="links_name">Manage files</span></router-link>
             </li>
           </span>
+          <span :class="{ 'hide': user.role !== 'admin' }">
+            <li>
+              <router-link class="links" data-path="graph-database" :to="{ name: 'GraphDatabase' }"><i class="fa-solid fa-database"></i><span class="links_name">Graph Database</span></router-link>
+            </li>
+          </span>
           <span>
             <li>
               <router-link class="links" data-path="search" :to="{ name: 'SearchPage' }"><i class="fa-solid fa-robot"></i><span class="links_name">Chat bot</span></router-link>

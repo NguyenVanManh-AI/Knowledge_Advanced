@@ -10,6 +10,7 @@ import UserLogin from '@/components/user/auth/UserLogin'
 import UserMain from '@/components/user/UserMain'
 import ManageFolder from '@/components/user/manage-folder/ManageFolder'
 import ManageFile from '@/components/user/manage-file/ManageFile'
+import GraphDatabase from '@/components/user/neo4j/GraphDatabase'
 import SearchPage from '@/components/user/chat/SearchPage'
 
 // import ManageContent from '@/components/user/manage-content/ManageContent'
@@ -68,6 +69,7 @@ const routes = [
         children: [
             { path: 'manage-folder', name: 'ManageFolder', component: ManageFolder },
             { path: 'manage-file', name: 'ManageFile', component: ManageFile },
+            { path: 'graph-database', name: 'GraphDatabase', component: GraphDatabase },
             { path: 'search', name: 'SearchPage', component: SearchPage },
             // { path: 'manage-content', name: 'ManageContent', component: ManageContent },
             // { path: 'manage-broadcast', name: 'ManageBroadcast', component: ManageBroadcast },
