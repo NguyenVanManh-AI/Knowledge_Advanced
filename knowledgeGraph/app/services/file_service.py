@@ -10,8 +10,8 @@ class FileService:
     def addFile(self,file,folder):
         return self.fileReposiroty.add_file(file,folder)
     
-    def updateNameFile(self,id_file,new_name_file):
-        return self.fileReposiroty.update_name_file(id_file,new_name_file)
+    def updateFile(self,id_file,new_name_file,id_folder):
+        return self.fileReposiroty.update_file(id_file,new_name_file,id_folder)
     
     def deleteFile(self,id_file):
         return self.fileReposiroty.delete_file(id_file)

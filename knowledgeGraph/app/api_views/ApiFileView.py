@@ -12,6 +12,7 @@ class FileCreateView(APIView):
         data['file'] = file
         data['name'] = file.name
         serializer = FileSerializer(data=data)
+        print(data)
         if serializer.is_valid():
             file = FileService().addFile(
                 file,
@@ -85,14 +86,16 @@ class FileUpdateView(APIView):
     def put(self,request):
         name = request.data.get('name')
         id = request.data.get('id')
-        update_file = FileService().updateNameFile(
+        id_folder = request.data.get("id_folder")
+        update_file = FileService().updateFile(
                 id,
-                name
+                name,
+                id_folder
             )
         if not update_file:
                 return Response(
                     {
-                        "error":"File is not found"
+                        "error":"Id is not found"
                     },
                     status=status.HTTP_404_NOT_FOUND
                 )
