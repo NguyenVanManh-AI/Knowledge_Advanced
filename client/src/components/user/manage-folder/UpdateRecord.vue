@@ -86,7 +86,13 @@ export default {
                 this.errors.name = 'Folder name cannot be empty !'
             } else {
                 try {
-                    await UserRequest.put('folder/update/', this.record, true);
+                    var dataSubmit = {
+                        id: this.record.id,
+                        name: this.record.name,
+                    }
+                    if(this.record.id_parent) dataSubmit.id_parent = this.record.id_parent;
+
+                    await UserRequest.put('folder/update/', dataSubmit, true);
                     this.$emitEvent('eventSuccess', 'Folder updated successfully !');
                     var closePW = window.document.getElementById('updateRecord');
                     closePW.click();
