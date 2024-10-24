@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "304905fc-e114-44ba-82ba-a80364e87dec",
+		"_postman_id": "83bd014c-b422-43be-841c-7a78bf6608ff",
 		"name": "KnowledgeAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30999095"
+		"_exporter_id": "16738596",
+		"_collection_link": "https://api-test-fullstack-vn.postman.co/workspace/LINEBot~6c7d3726-b633-4731-ada8-822fea1a6b4d/collection/16738596-83bd014c-b422-43be-841c-7a78bf6608ff?action=share&source=collection_link&creator=16738596"
 	},
 	"item": [
 		{
@@ -36,8 +37,17 @@
 				{
 					"name": "FindFolder",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"search\": \"\",\r\n    \"page\": 1,\r\n    \"per_page\": 5,\r\n    \"order_by\": \"id\",\r\n    \"order_direction\": \"desc\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/folder/?search=&page=1",
 							"protocol": "http",
@@ -77,12 +87,12 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "new folder 1",
+									"value": "Cap 3",
 									"type": "text"
 								},
 								{
 									"key": "id_parent",
-									"value": "135",
+									"value": "146",
 									"type": "text"
 								}
 							]
@@ -117,18 +127,17 @@
 							"formdata": [
 								{
 									"key": "id",
-									"value": "9",
+									"value": "144",
 									"type": "text"
 								},
 								{
 									"key": "name",
-									"value": "New folder 10",
-									"type": "text",
-									"disabled": true
+									"value": "New folder 10acdcddsvdsvsdv",
+									"type": "text"
 								},
 								{
 									"key": "id_parent",
-									"value": "10",
+									"value": "142",
 									"type": "text"
 								}
 							]
@@ -159,7 +168,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/folder/delete/?id=116",
+							"raw": "http://127.0.0.1:8000/api/folder/delete/?id=145",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -177,7 +186,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "116"
+									"value": "145"
 								}
 							]
 						}
@@ -199,13 +208,13 @@
 							"formdata": [
 								{
 									"key": "id_folder",
-									"value": "9",
+									"value": "147",
 									"type": "text"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "postman-cloud:///1ef87e25-5546-4e50-840b-4e0b5b4f7f3d"
+									"src": "/C:/Users/ADMIN/Downloads/Knowledge Advanced/Knowledge_Advanced/knowledgeGraph/Note.txt"
 								}
 							]
 						},
@@ -266,8 +275,17 @@
 				{
 					"name": "FindFile",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"search\": \"\",\r\n    \"page\": 1,\r\n    \"per_page\": 5,\r\n    \"order_by\": \"id\",\r\n    \"order_direction\": \"desc\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/api/file/?id_folder=3&search&page=1",
 							"protocol": "http",
@@ -311,17 +329,17 @@
 							"formdata": [
 								{
 									"key": "id",
-									"value": "79",
+									"value": "80",
 									"type": "text"
 								},
 								{
 									"key": "name",
-									"value": "new file 1",
+									"value": "new file 1cssdvsdvsdvsdv",
 									"type": "text"
 								},
 								{
 									"key": "id_folder",
-									"value": "10",
+									"value": "140",
 									"type": "text"
 								}
 							]
@@ -352,7 +370,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/file/delete/?id=73",
+							"raw": "http://127.0.0.1:8000/api/file/delete/?id=80",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -370,7 +388,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "73"
+									"value": "80"
 								}
 							]
 						}
