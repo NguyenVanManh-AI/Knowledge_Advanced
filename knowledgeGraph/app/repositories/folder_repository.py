@@ -22,8 +22,6 @@ class FolderRepository:
         folder = self.get_folder_by_id(id_folder)
         if not folder:
             return None
-        if int(folder.id) == int(id_parent):
-            return None
         if new_name_folder:
             folder.update_name(new_name_folder)
         if id_parent:
