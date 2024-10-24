@@ -69,10 +69,15 @@ class FolderUpdateView(APIView):
         id = request.data.get("id")
         name = request.data.get("name")
         id_parent = request.data.get("id_parent")
+        if id == id_parent:
+            return Response(
+                {"error": "Id and id parent not same"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         updated_folder = FolderService().updateFolder(id, name, id_parent)
         if not updated_folder:
             return Response(
-                {"error": "ID Folder is fail"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "Folder is not found"}, status=status.HTTP_404_NOT_FOUND
             )
         return Response({"message": "Update success"}, status=status.HTTP_200_OK)
 
