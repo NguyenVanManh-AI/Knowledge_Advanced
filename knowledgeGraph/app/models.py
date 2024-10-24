@@ -11,9 +11,16 @@ class Folder(models.Model):
     def update_name(self, new_name):
         self.name = new_name
         self.save()
-    def update_idParent(self,id_parent):
+
+    def update_idParent(self, id_parent):
         self.id_parent = id_parent
         self.save()
+
+    def get_tree(self):
+        children = [child.get_tree() for child in self.children.all()]
+        files = list(self.files.values("name", "src"))
+
+        return {"folder": self.name, "file": files, "children": children}
 
     def __str__(self):
         return self.name
@@ -33,8 +40,8 @@ class File(models.Model):
     def update_name(self, new_name):
         self.name = new_name
         self.save()
-        
-    def update_idFolder(self,id_folder):
+
+    def update_idFolder(self, id_folder):
         self.id_folder = id_folder
 
     def update_content_construct(self, new_content):

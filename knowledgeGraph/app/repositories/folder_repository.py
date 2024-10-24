@@ -1,7 +1,5 @@
-from ..models import Folder, File
+from ..models import Folder
 from typing import List
-import os
-from django.conf import settings
 
 
 class FolderRepository:
@@ -27,7 +25,8 @@ class FolderRepository:
         if id_parent:
             if Folder.objects.filter(id=id_parent).first():
                 folder.update_idParent(Folder.objects.filter(id=id_parent).first())
-            else : return None
+            else:
+                return None
         folder.save()
         return folder
 
@@ -46,3 +45,9 @@ class FolderRepository:
     @staticmethod
     def get_all_folder() -> List[Folder]:
         return list(Folder.objects.all())
+
+    @staticmethod
+    def get_tree() -> List:
+        root_folders = Folder.objects.filter(id_parent__isnull=True)
+        folder_tree = [folder.get_tree() for folder in root_folders]
+        return folder_tree

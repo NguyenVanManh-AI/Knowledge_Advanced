@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "83bd014c-b422-43be-841c-7a78bf6608ff",
+		"_postman_id": "6249ea52-794b-4a6d-8cd3-4590757969dd",
 		"name": "KnowledgeAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "16738596",
-		"_collection_link": "https://api-test-fullstack-vn.postman.co/workspace/LINEBot~6c7d3726-b633-4731-ada8-822fea1a6b4d/collection/16738596-83bd014c-b422-43be-841c-7a78bf6608ff?action=share&source=collection_link&creator=16738596"
+		"_exporter_id": "30999095"
 	},
 	"item": [
 		{
@@ -92,7 +91,7 @@
 								},
 								{
 									"key": "id_parent",
-									"value": "146",
+									"value": "150",
 									"type": "text"
 								}
 							]
@@ -192,6 +191,30 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "GetTree",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/folder/tree",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"folder",
+								"tree"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -208,13 +231,13 @@
 							"formdata": [
 								{
 									"key": "id_folder",
-									"value": "147",
+									"value": "151",
 									"type": "text"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/ADMIN/Downloads/Knowledge Advanced/Knowledge_Advanced/knowledgeGraph/Note.txt"
+									"src": "postman-cloud:///1ef87e25-5546-4e50-840b-4e0b5b4f7f3d"
 								}
 							]
 						},

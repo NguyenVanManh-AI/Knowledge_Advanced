@@ -39,3 +39,7 @@ class FolderService:
     @staticmethod
     def getAllFolder() -> List[Folder]:
         return [folder for folder in FolderRepository.get_all_folder()]
+    
+    staticmethod
+    def getTree() -> List:
+        return FolderRepository.get_tree()

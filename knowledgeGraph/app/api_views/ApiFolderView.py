@@ -68,7 +68,7 @@ class FolderUpdateView(APIView):
         id = request.data.get("id")
         name = request.data.get("name")
         id_parent = request.data.get("id_parent")
-        updated_folder = FolderService().updateFolder(id, name,id_parent)
+        updated_folder = FolderService().updateFolder(id, name, id_parent)
         if not updated_folder:
             return Response(
                 {"error": "Folder is not found"}, status=status.HTTP_404_NOT_FOUND
@@ -85,4 +85,14 @@ class FolderDeleteView(APIView):
             )
         return Response(
             {"message": "Delete success"}, status=status.HTTP_204_NO_CONTENT
+        )
+
+
+class FolderGetTree(APIView):
+    def get(self, request):
+        result = FolderService.getTree()
+        print(result)
+        return Response(
+            result,
+            status=status.HTTP_200_OK,
         )
