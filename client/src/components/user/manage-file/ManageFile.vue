@@ -62,13 +62,18 @@
                                 <th class="table-cell text-center" scope="row">#{{ (big_search.page - 1) * big_search.per_page + index +
                                     1 }}</th>
                                 <td class="table-cell displaytext break text-center">{{ record.id }}</td>
-                                <td class="table-cell displaytext break">{{ truncatedTitle(record.name) }}</td>
+                                <td class="table-cell displaytext break"><a :href="config.URL + record.src" target="_blank">{{ truncatedTitle(record.name) }}</a></td>
                                 <td class="table-cell displaytext break"><textarea class="form-control" rows="3" v-model="record.content"></textarea></td>
                                 <!-- <td class="table-cell text-center">{{ this.$formatDate2(record.created_at) }}</td> -->
                                 <!-- <td class="table-cell text-center">{{ this.$formatDate2(record.updated_at) }}</td> -->
                                 <td class="table-cell text-center">
                                     <div class="action">
                                         <div>
+                                            <button data-toggle="modal" data-target="#viewRecord"
+                                        v-tippy="{ content: 'View Detail' }" class="viewRecord"
+                                            @click="getFileDetail(record)">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </button>
                                             <button data-toggle="modal" data-target="#updateRecord"
                                         v-tippy="{ content: 'Edit' }" class="updateRecord"
                                             @click="selectedRecord(record)">
@@ -92,11 +97,11 @@
                         :next-text="'Next'" :container-class="'pagination'" :page-class="'page-item'">
                     </paginate>
                 </div>
-                <DeleteRecord :course_id="course_id" :recordSelected="recordSelected"></DeleteRecord>
-                <!-- <LockRecord :recordSelected="recordSelected"></LockRecord>
-                <ViewRecord :recordSelected="recordSelected"></ViewRecord> -->
-                <AddRecord :course_id="course_id" :folders=folders></AddRecord>
-                <UpdateRecord :recordSelected="recordSelected" :course_id="course_id"></UpdateRecord>
+                <DeleteRecord :recordSelected="recordSelected"></DeleteRecord>
+                <!-- <LockRecord :recordSelected="recordSelected"></LockRecord> -->
+                <ViewRecord :config="config" ></ViewRecord> 
+                <AddRecord :folders=folders></AddRecord>
+                <UpdateRecord :recordSelected="recordSelected" :folders=folders></UpdateRecord>
             </div>
         </div>
     </div>
@@ -109,7 +114,7 @@ import TableLoading from '@/components/common/TableLoading'
 import _ from 'lodash';
 import DeleteRecord from '@/components/user/manage-file/DeleteRecord.vue'
 // import LockRecord from '@/components/user/manage-file/LockRecord.vue'
-// import ViewRecord from '@/components/user/manage-file/ViewRecord.vue'
+import ViewRecord from '@/components/user/manage-file/ViewRecord.vue'
 import AddRecord from '@/components/user/manage-file/AddRecord.vue'
 import UpdateRecord from '@/components/user/manage-file/UpdateRecord.vue'
 // import UpdateInformationChannel from '@/components/user/member-account/UpdateInformationChannel.vue'
@@ -121,7 +126,7 @@ export default {
         TableLoading,
         DeleteRecord,
         // LockRecord,
-        // ViewRecord,
+        ViewRecord,
         AddRecord,
         UpdateRecord,
         // UpdateInformationChannel
@@ -131,7 +136,6 @@ export default {
     },
     data() {
         return {
-            course_id: null,
             config: config,
             total: 0,
             last_page: 1,
@@ -149,11 +153,6 @@ export default {
             folders: [],
             recordSelected: {
                 id: null,
-                chapter_name: null,
-                course_id: null,
-                position: null,
-                created_at: null,
-                updated_at: null,
             },
             isLoading: false,
             isDeleteChangeMany: 0,
@@ -233,7 +232,6 @@ export default {
                 });
             }
             catch (error) {
-                this.errors.name = 'Error name.'
                 console.log(error);
                 this.$emitEvent('eventError', 'Error something !');
             }
@@ -265,6 +263,17 @@ export default {
                 this.isLoading = false;
             }
             this.reRenderPaginate();
+        },
+        getFileDetail: async function (record) {
+            try {
+                const { data } = await UserRequest.post('file/', { id: record.id })
+                console.log(data);
+                this.$emitEvent('getFileDetail', data);
+            }
+            catch (error) {
+                console.log(error);
+                this.$emitEvent('eventError', 'Error something !');
+            }
         },
         truncatedTitle(title) {
             const maxLength = 150;
