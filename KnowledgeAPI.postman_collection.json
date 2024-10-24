@@ -1,9 +1,10 @@
 {
 	"info": {
-		"_postman_id": "6249ea52-794b-4a6d-8cd3-4590757969dd",
+		"_postman_id": "cfeea3b9-5ede-4fad-9598-25ec719d6c56",
 		"name": "KnowledgeAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30999095"
+		"_exporter_id": "16738596",
+		"_collection_link": "https://api-test-fullstack-vn.postman.co/workspace/LINEBot~6c7d3726-b633-4731-ada8-822fea1a6b4d/collection/16738596-cfeea3b9-5ede-4fad-9598-25ec719d6c56?action=share&source=collection_link&creator=16738596"
 	},
 	"item": [
 		{
@@ -126,7 +127,7 @@
 							"formdata": [
 								{
 									"key": "id",
-									"value": "144",
+									"value": "158",
 									"type": "text"
 								},
 								{
@@ -136,7 +137,7 @@
 								},
 								{
 									"key": "id_parent",
-									"value": "142",
+									"value": "",
 									"type": "text"
 								}
 							]
@@ -237,7 +238,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "postman-cloud:///1ef87e25-5546-4e50-840b-4e0b5b4f7f3d"
+									"src": "/C:/Users/ADMIN/Downloads/Knowledge Advanced/Knowledge_Advanced/knowledgeGraph/note_api.txt"
 								}
 							]
 						},
