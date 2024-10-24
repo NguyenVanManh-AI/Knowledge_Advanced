@@ -22,15 +22,22 @@ class FolderRepository:
         folder = self.get_folder_by_id(id_folder)
         if not folder:
             return None
-        if int(folder.id) == int(id_parent):
+
+        # Chỉ kiểm tra nếu id_parent không phải None
+        if id_parent is not None and int(folder.id) == int(id_parent):
             return None
+
         if new_name_folder:
             folder.update_name(new_name_folder)
-        if id_parent:
-            if Folder.objects.filter(id=id_parent).first():
-                folder.update_idParent(Folder.objects.filter(id=id_parent).first())
+        
+        # Kiểm tra nếu id_parent không phải None trước khi cập nhật
+        if id_parent is not None:
+            parent_folder = Folder.objects.filter(id=id_parent).first()
+            if parent_folder:
+                folder.update_idParent(parent_folder)
             else:
                 return None
+
         folder.save()
         return folder
 
