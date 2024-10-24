@@ -8,6 +8,8 @@ class FolderRepository:
             folder = Folder(
                 name=new_name, id_parent=self.get_folder_by_id(id_parent.id)
             )
+            if id_parent == folder.id:
+                return None
         else:
             folder = Folder(name=new_name)
         folder.save()
@@ -19,6 +21,8 @@ class FolderRepository:
     def update_folder(self, id_folder, new_name_folder, id_parent) -> Folder:
         folder = self.get_folder_by_id(id_folder)
         if not folder:
+            return None
+        if int(folder.id) == int(id_parent):
             return None
         if new_name_folder:
             folder.update_name(new_name_folder)

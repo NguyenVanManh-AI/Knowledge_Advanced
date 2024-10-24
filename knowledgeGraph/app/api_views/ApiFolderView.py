@@ -60,6 +60,7 @@ class FolderCreateView(APIView):
             return Response(
                 FolderSerializer(folder).data, status=status.HTTP_201_CREATED
             )
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -71,7 +72,7 @@ class FolderUpdateView(APIView):
         updated_folder = FolderService().updateFolder(id, name, id_parent)
         if not updated_folder:
             return Response(
-                {"error": "Folder is not found"}, status=status.HTTP_404_NOT_FOUND
+                {"error": "ID Folder is fail"}, status=status.HTTP_404_NOT_FOUND
             )
         return Response({"message": "Update success"}, status=status.HTTP_200_OK)
 
