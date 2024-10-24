@@ -17,6 +17,14 @@
                             <div class="modal-body">
                                 <form @submit.prevent="addRecord()">
                                     <div class="form-group">
+                                        <label>Select folder parent</label>
+                                        <div class="row p-2 mb-2 ">
+                                            <Multiselect id="select_id_folder" v-model="record.id_parent"
+                                                placeholder="Select folder" :close-on-select="true"
+                                                :searchable="true" :create-option="false" :options="folders" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label><i class="fa-solid fa-folder"></i> Folder name</label>
                                         <input name="add_folder_name" v-model="record.name" type="text" class="form-control form-control-sm" id="exampleInputEmail1"
                                             aria-describedby="emailHelp" placeholder="Name Folder">
@@ -35,11 +43,12 @@
 
 <script>
 import UserRequest from '@/restful/UserRequest';
+import Multiselect from '@vueform/multiselect'
 
 export default {
     name: "AddRecord",
     props: {
-        course_id: String,
+        folders: Array,
     },
     setup() {
 
@@ -50,15 +59,18 @@ export default {
             updateImage: false,
             record: {
                 name: '',
+                id_parent: null,
             },
             errors: {
                 name: null,
+                id_parent: null,
             }
         }
     },
     mounted() {
     },
     components: {
+        Multiselect
     },
     computed: {
     },
@@ -92,6 +104,7 @@ export default {
 }
 </script>
 
+<style src="@vueform/multiselect/themes/default.css"></style>
 <style scoped>
 /* image upload */
 .big-container-image {
