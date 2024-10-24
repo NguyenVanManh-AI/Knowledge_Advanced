@@ -36,6 +36,7 @@
                         </div>
                     </div>
                     <button type="button" data-toggle="modal" data-target="#addRecord" class="btn btn-outline-success btn-sm"><i class="fa-solid fa-plus"></i> Create Folder</button>
+                    <button type="button" data-toggle="modal" data-target="#folderTree" class="btn btn-outline-primary btn-sm ml-1"><i class="fa-solid fa-folder-tree"></i> Folder Tree</button>
                 </div>
                 <div v-if="isLoading">
                     <TableLoading :cols="8" :rows="9"></TableLoading>
@@ -84,11 +85,11 @@
                         :next-text="'Next'" :container-class="'pagination'" :page-class="'page-item'">
                     </paginate>
                 </div>
-                <DeleteRecord :course_id="course_id" :recordSelected="recordSelected"></DeleteRecord>
-                <!-- <LockRecord :recordSelected="recordSelected"></LockRecord>
-                <ViewRecord :recordSelected="recordSelected"></ViewRecord> -->
-                <AddRecord :course_id="course_id"></AddRecord>
-                <UpdateRecord :recordSelected="recordSelected" :course_id="course_id"></UpdateRecord>
+                <DeleteRecord :recordSelected="recordSelected"></DeleteRecord>
+                <!-- <LockRecord :recordSelected="recordSelected"></LockRecord> -->
+                <FolderTree></FolderTree> 
+                <AddRecord :folders=folders></AddRecord>
+                <UpdateRecord :recordSelected="recordSelected" :folders=folders></UpdateRecord>
             </div>
         </div>
     </div>
@@ -101,7 +102,7 @@ import TableLoading from '@/components/common/TableLoading'
 import _ from 'lodash';
 import DeleteRecord from '@/components/user/manage-folder/DeleteRecord.vue'
 // import LockRecord from '@/components/user/manage-folder/LockRecord.vue'
-// import ViewRecord from '@/components/user/manage-folder/ViewRecord.vue'
+import FolderTree from '@/components/user/manage-folder/FolderTree.vue'
 import AddRecord from '@/components/user/manage-folder/AddRecord.vue'
 import UpdateRecord from '@/components/user/manage-folder/UpdateRecord.vue'
 // import UpdateInformationChannel from '@/components/user/member-account/UpdateInformationChannel.vue'
@@ -113,7 +114,7 @@ export default {
         TableLoading,
         DeleteRecord,
         // LockRecord,
-        // ViewRecord,
+        FolderTree,
         AddRecord,
         UpdateRecord,
         // UpdateInformationChannel
@@ -123,7 +124,6 @@ export default {
     },
     data() {
         return {
-            course_id: null,
             config: config,
             total: 0,
             last_page: 1,
@@ -137,13 +137,9 @@ export default {
             },
             query: '',
             records: [],
+            folders: [],
             recordSelected: {
                 id: null,
-                chapter_name: null,
-                course_id: null,
-                position: null,
-                created_at: null,
-                updated_at: null,
             },
             isLoading: false,
             isDeleteChangeMany: 0,
@@ -168,6 +164,8 @@ export default {
     mounted() {
         this.$emitEvent('eventTitleHeader', 'Manage Folder');
         this.$emitEvent('eventActiveTab', '');
+        this.getListFolder();
+        this.getFolderTree();
 
         const queryString = window.location.search;
         const searchParams = new URLSearchParams(queryString);
@@ -209,6 +207,31 @@ export default {
             if (this.big_search.page > this.last_page) this.big_search.page = this.last_page;
             this.paginateVisible = false;
             this.$nextTick(() => { this.paginateVisible = true; });
+        },
+        getListFolder: async function () {
+            try {
+                const { data } = await UserRequest.post('folder/')
+                console.log(data);
+                var data_folders = data;
+                data_folders.forEach((folder) => {
+                    var option = { value: folder.id, label: `${folder.name}`}
+                    this.folders.push(option);
+                });
+            }
+            catch (error) {
+                console.log(error);
+                this.$emitEvent('eventError', 'Error something !');
+            }
+        },
+        getFolderTree: async function () {
+            try {
+                const { data } = await UserRequest.get('folder/tree')
+                this.$emitEvent('getFolderTree', data);
+            }
+            catch (error) {
+                console.log(error);
+                this.$emitEvent('eventError', 'Get folder tree error !');
+            }
         },
         getDataRecords: async function () {
             this.isLoading = true;
@@ -314,12 +337,12 @@ tr th {
     font-size: 20px;
 }
 
-.viewRecord, .updateRecord {
+.FolderTree, .updateRecord {
     transition: all 0.5s ease;
     font-size: 20px;
 }
 
-.viewRecord i:hover {
+.FolderTree i:hover {
     transition: all 0.5s ease;
     font-size: 20px;
     color: #007BFF;

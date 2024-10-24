@@ -70,8 +70,10 @@ class FileInforView(APIView):
             serializer = FileSerializer(file_data['file'])
             return Response(
                 {
-                    "file" : serializer.data,
-                    "folder" : file_data['folder']
+                    "data": {
+                        "file" : serializer.data,
+                        "folder" : file_data['folder']
+                    }
                 },
                 status=status.HTTP_200_OK
             )
