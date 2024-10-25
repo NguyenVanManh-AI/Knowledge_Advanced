@@ -17,6 +17,14 @@
                             <div class="modal-body">
                                 <form @submit.prevent="updateRecord()">
                                     <div class="form-group">
+                                        <label>Select folder parent</label>
+                                        <div class="row p-2 mb-2 ">
+                                            <Multiselect id="select_id_folder" v-model="record.id_parent"
+                                                placeholder="Select folder" :close-on-select="true"
+                                                :searchable="true" :create-option="false" :options="folders" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label>Folder name</label>
                                         <input name="update_folder_name" v-model="record.name" type="text" class="form-control form-control-sm" id="exampleInputEmail1"
                                             aria-describedby="emailHelp" placeholder="Folder Name">
@@ -35,11 +43,12 @@
 
 <script>
 import UserRequest from '@/restful/UserRequest';
+import Multiselect from '@vueform/multiselect'
 
 export default {
     name: "UpdateRecord",
     props: {
-
+        folders: Array,
     },
     setup() {
 
@@ -49,10 +58,12 @@ export default {
             record: {
                 id: null,
                 name: '',
+                id_parent: null,
             },
             errors: {
                 id: null,
                 name: null,
+                id_parent: null,
             }
         }
     },
@@ -64,7 +75,7 @@ export default {
     created() {
     },
     components: {
-
+        Multiselect
     },
     computed: {
 
@@ -75,7 +86,13 @@ export default {
                 this.errors.name = 'Folder name cannot be empty !'
             } else {
                 try {
-                    await UserRequest.put('folder/update/', this.record, true);
+                    var dataSubmit = {
+                        id: this.record.id,
+                        name: this.record.name,
+                    }
+                    if(this.record.id_parent) dataSubmit.id_parent = this.record.id_parent;
+
+                    await UserRequest.put('folder/update/', dataSubmit, true);
                     this.$emitEvent('eventSuccess', 'Folder updated successfully !');
                     var closePW = window.document.getElementById('updateRecord');
                     closePW.click();
@@ -96,6 +113,7 @@ export default {
 }
 </script>
 
+<style src="@vueform/multiselect/themes/default.css"></style>
 <style scoped>
 
 /*  */

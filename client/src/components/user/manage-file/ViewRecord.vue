@@ -6,35 +6,35 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
-                            Xem chi tiết khóa học </h5>
+                            View File details</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="text-danger"><i class="fa-regular fa-circle-xmark"></i></span>
+                            <span aria-hidden="true" class="text-danger"><i
+                                    class="fa-regular fa-circle-xmark"></i></span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <p><label for="exampleInputEmail1"><strong>Tên Khóa học</strong></label> : {{ recordSelected.course_name }}</p>
-                        <p><label for="exampleInputEmail1"><strong>Giá khóa học</strong></label> : {{ recordSelected.course_price }} VNĐ</p>
-                        <div class="mb-2">
-                            <label for="exampleInputEmail1"><strong>Giới thiệu về khóa học</strong></label>
-                            <p>{{ recordSelected.course_introduce }}</p>
+                        <div v-if="!record.file.id" class="col-12">
+                            <flower-spinner class="loading-component" :animation-duration="2000" :size="65"
+                                color="#0680C7" />
                         </div>
-                        <div class="cover-course mb-2">
-                            <label for="exampleInputEmail1"><strong>Ảnh bìa</strong></label>
-                            <div class="inner-cover-course">
-                                <img :src="recordSelected.course_image ? recordSelected.course_image : require('@/assets/admin/image-default.jpg')" alt="">
+                        <div v-if="record.file.id" class="col-12">
+                            <div class="row mb-1">
+                                <div class="col-3"><strong><i class="fa-solid fa-file"></i> File Name</strong></div>
+                                <div class="col-9"><a class="text-success" :href="config.URL + record.file.src" target="_blank"><strong>{{record.file.name }}</strong></a></div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-3"><strong><i class="fa-solid fa-folder"></i> Folder Name</strong></div>
+                                <div class="col-9 text-success"><strong>{{ record.folder }}</strong></div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-3"><strong><i class="fa-solid fa-share-nodes"></i> Structured Data</strong></div>
+                                <div class="col-9"><textarea readonly class="col-12" rows="10" name="" id="" :value="record.file.content"></textarea></div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal"
+                                    ref="closeButton" id="close">Close</button>
                             </div>
                         </div>
-                        <div class="course-video mb-2">
-                            <label><strong>Video trailer</strong></label>
-                            <!-- sử dụng v-if để chỉ khi có record được select -->
-                            <iframe v-if="recordSelected.course_trailer" style="width: 100%;height: 300px;" :src="this.$getYouTubeEmbedUrl(recordSelected.course_trailer)" frameborder="0" allowfullscreen></iframe>
-                            <!-- <iframe width="200" :src="this.$getYouTubeEmbedUrl(recordSelected.course_trailer)" frameborder="0" allowfullscreen></iframe> -->
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" ref="closeButton"
-                            id="close">Đóng</button>
                     </div>
                 </div>
             </div>
@@ -43,19 +43,35 @@
 </template>
 <script>
 
+import { FlowerSpinner } from 'epic-spinners';
+
 export default {
     name: "ViewRecord",
-
-    props: {
-        recordSelected: Object
+    components: {
+        FlowerSpinner,
     },
-
+    props: {
+        config: Object,
+    },
     data() {
         return {
-
+            record: {
+                file: {
+                    id: null,
+                    id_folder: null,
+                    name: null,
+                    content: null,
+                    src: null,
+                },
+                folder: null,
+            }
         }
     },
-
+    mounted() {
+        this.$onEvent('getFileDetail', (record) => {
+            this.record = record;
+        });
+    },
     methods: {
 
     }
@@ -64,6 +80,12 @@ export default {
 </script>
 
 <style scoped>
+
+textarea {
+    border: 1px solid silver;
+    border-radius: 5px;
+}
+
 .modal-header .close {
     outline: none;
 }
@@ -76,6 +98,7 @@ export default {
     width: 100%;
     height: 40vh;
 }
+
 .inner-cover-course {
     border: 1px solid silver;
     padding: 10px;
@@ -100,10 +123,11 @@ export default {
     .modal-dialog {
         max-width: 400px;
         margin: 10px auto;
-        font-size: 13px;;
+        font-size: 13px;
+        ;
     }
 
-    .modal-header{
+    .modal-header {
         padding: auto;
     }
 
@@ -111,7 +135,7 @@ export default {
         font-size: 20px;
     }
 
-    .btn{
+    .btn {
         font-size: 13px;
     }
 }
@@ -120,10 +144,11 @@ export default {
     .modal-dialog {
         max-width: 350px;
         margin: 10px auto;
-        font-size: 11px;;
+        font-size: 11px;
+        ;
     }
 
-    .modal-header{
+    .modal-header {
         padding: auto;
     }
 
@@ -131,11 +156,11 @@ export default {
         font-size: 18px;
     }
 
-    .btn{
+    .btn {
         font-size: 12px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 14px 14px 0 14px;
     }
 }
@@ -144,10 +169,11 @@ export default {
     .modal-dialog {
         max-width: 320px;
         margin: 10px auto;
-        font-size: 9px;;
+        font-size: 9px;
+        ;
     }
 
-    .modal-header{
+    .modal-header {
         padding: auto;
     }
 
@@ -155,14 +181,15 @@ export default {
         font-size: 11px;
     }
 
-    .btn{
+    .btn {
         font-size: 10px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 14px 14px 0 14px;
     }
-    .alert{
+
+    .alert {
         padding: 8px;
     }
 }
@@ -171,10 +198,12 @@ export default {
     .modal-dialog {
         max-width: 275px;
         margin: 10px auto;
-        font-size: 9px;;
+        font-size: 9px;
+        ;
     }
 
-    .modal-header, .modal-footer{
+    .modal-header,
+    .modal-footer {
         padding: 5px 5px;
     }
 
@@ -182,15 +211,15 @@ export default {
         font-size: 11px;
     }
 
-    .btn{
+    .btn {
         font-size: 8px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 12px 12px 0 12px;
     }
 
-    .alert{
+    .alert {
         padding: 8px;
     }
 }
@@ -199,10 +228,12 @@ export default {
     .modal-dialog {
         max-width: 180px;
         margin: 10px auto;
-        font-size: 7px;;
+        font-size: 7px;
+        ;
     }
 
-    .modal-header, .modal-footer{
+    .modal-header,
+    .modal-footer {
         padding: 5px 5px;
     }
 
@@ -210,15 +241,15 @@ export default {
         font-size: 9px;
     }
 
-    .btn{
+    .btn {
         font-size: 7px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 11px 11px 0 11px;
     }
-    
-    .alert{
+
+    .alert {
         padding: 6px 10px;
     }
 }

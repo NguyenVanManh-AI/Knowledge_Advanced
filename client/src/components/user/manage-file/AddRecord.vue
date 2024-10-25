@@ -49,7 +49,6 @@ import Multiselect from '@vueform/multiselect'
 export default {
     name: "AddRecord",
     props: {
-        course_id: String,
         folders: Array,
     },
     setup() {

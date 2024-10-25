@@ -17,6 +17,15 @@
                             <div class="modal-body">
                                 <form @submit.prevent="updateRecord()">
                                     <div class="form-group">
+                                        <label>Select folder</label>
+                                        <div class="row p-2 mb-2 ">
+                                            <Multiselect id="select_id_folder" v-model="record.id_folder"
+                                                placeholder="Select folder" :close-on-select="true"
+                                                :searchable="true" :create-option="false" :options="folders" />
+                                        </div>
+                                        <span v-if="errors.id_folder" id="add_file_errors_id_folder" class="text-danger">{{ errors.id_folder }}<br></span>
+                                    </div>
+                                    <div class="form-group">
                                         <label>File name</label>
                                         <input name="update_file_name" v-model="record.name" type="text" class="form-control form-control-sm" id="exampleInputEmail1"
                                             aria-describedby="emailHelp" placeholder="Tên Chapter">
@@ -35,11 +44,12 @@
 
 <script>
 import UserRequest from '@/restful/UserRequest';
+import Multiselect from '@vueform/multiselect'
 
 export default {
     name: "UpdateRecord",
     props: {
-
+        folders: Array,
     },
     setup() {
 
@@ -49,10 +59,12 @@ export default {
             record: {
                 id: null,
                 name: '',
+                id_folder: null,
             },
             errors: {
                 id: null,
                 name: null,
+                id_folder: null,
             }
         }
     },
@@ -64,7 +76,7 @@ export default {
     created() {
     },
     components: {
-
+        Multiselect
     },
     computed: {
 
@@ -96,6 +108,7 @@ export default {
 }
 </script>
 
+<style src="@vueform/multiselect/themes/default.css"></style>
 <style scoped>
 
 /*  */

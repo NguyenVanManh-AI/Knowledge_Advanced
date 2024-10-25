@@ -99,6 +99,6 @@ class FolderGetTree(APIView):
         result = FolderService.getTree()
         print(result)
         return Response(
-            result,
+            {"data":result},
             status=status.HTTP_200_OK,
         )

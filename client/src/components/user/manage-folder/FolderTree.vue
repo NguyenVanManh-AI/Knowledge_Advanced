@@ -1,40 +1,24 @@
 <template>
     <div>
-        <div class="modal fade" id="viewRecord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="folderTree" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                            Xem chi tiết khóa học </h5>
+                        <h5 class="modal-title text-primary" id="exampleModalLabel">
+                            <i class="fa-solid fa-folder-tree"></i> View folders and files in tree form
+                        </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="text-danger"><i class="fa-regular fa-circle-xmark"></i></span>
+                            <span aria-hidden="true" class="text-danger"><i
+                                    class="fa-regular fa-circle-xmark"></i></span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <p><label for="exampleInputEmail1"><strong>Tên Khóa học</strong></label> : {{ recordSelected.course_name }}</p>
-                        <p><label for="exampleInputEmail1"><strong>Giá khóa học</strong></label> : {{ recordSelected.course_price }} VNĐ</p>
-                        <div class="mb-2">
-                            <label for="exampleInputEmail1"><strong>Giới thiệu về khóa học</strong></label>
-                            <p>{{ recordSelected.course_introduce }}</p>
-                        </div>
-                        <div class="cover-course mb-2">
-                            <label for="exampleInputEmail1"><strong>Ảnh bìa</strong></label>
-                            <div class="inner-cover-course">
-                                <img :src="recordSelected.course_image ? recordSelected.course_image : require('@/assets/admin/image-default.jpg')" alt="">
-                            </div>
-                        </div>
-                        <div class="course-video mb-2">
-                            <label><strong>Video trailer</strong></label>
-                            <!-- sử dụng v-if để chỉ khi có record được select -->
-                            <iframe v-if="recordSelected.course_trailer" style="width: 100%;height: 300px;" :src="this.$getYouTubeEmbedUrl(recordSelected.course_trailer)" frameborder="0" allowfullscreen></iframe>
-                            <!-- <iframe width="200" :src="this.$getYouTubeEmbedUrl(recordSelected.course_trailer)" frameborder="0" allowfullscreen></iframe> -->
-                        </div>
-
+                    <div class="modal-body p-6">
+                        <FolderTreeComponent v-for="(item, index) in folderTrees" :key="index" :folderData="item" />
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" ref="closeButton"
-                            id="close">Đóng</button>
+                            id="close">Close</button>
                     </div>
                 </div>
             </div>
@@ -43,23 +27,28 @@
 </template>
 <script>
 
+import FolderTreeComponent from '@/components/user/manage-folder/FolderTreeComponent.vue'
+
 export default {
-    name: "ViewRecord",
-
-    props: {
-        recordSelected: Object
+    name: "FolderTree",
+    components: {
+        FolderTreeComponent,
     },
-
+    props: {
+    },
     data() {
         return {
-
+            folderTrees: [],
         }
     },
-
+    mounted() {
+        this.$onEvent('getFolderTree', (folderTrees) => {
+            this.folderTrees = folderTrees;
+        });
+    },
     methods: {
 
-    }
-
+    },
 }
 </script>
 
@@ -76,6 +65,7 @@ export default {
     width: 100%;
     height: 40vh;
 }
+
 .inner-cover-course {
     border: 1px solid silver;
     padding: 10px;
@@ -100,10 +90,11 @@ export default {
     .modal-dialog {
         max-width: 400px;
         margin: 10px auto;
-        font-size: 13px;;
+        font-size: 13px;
+        ;
     }
 
-    .modal-header{
+    .modal-header {
         padding: auto;
     }
 
@@ -111,7 +102,7 @@ export default {
         font-size: 20px;
     }
 
-    .btn{
+    .btn {
         font-size: 13px;
     }
 }
@@ -120,10 +111,11 @@ export default {
     .modal-dialog {
         max-width: 350px;
         margin: 10px auto;
-        font-size: 11px;;
+        font-size: 11px;
+        ;
     }
 
-    .modal-header{
+    .modal-header {
         padding: auto;
     }
 
@@ -131,11 +123,11 @@ export default {
         font-size: 18px;
     }
 
-    .btn{
+    .btn {
         font-size: 12px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 14px 14px 0 14px;
     }
 }
@@ -144,10 +136,11 @@ export default {
     .modal-dialog {
         max-width: 320px;
         margin: 10px auto;
-        font-size: 9px;;
+        font-size: 9px;
+        ;
     }
 
-    .modal-header{
+    .modal-header {
         padding: auto;
     }
 
@@ -155,14 +148,15 @@ export default {
         font-size: 11px;
     }
 
-    .btn{
+    .btn {
         font-size: 10px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 14px 14px 0 14px;
     }
-    .alert{
+
+    .alert {
         padding: 8px;
     }
 }
@@ -171,10 +165,12 @@ export default {
     .modal-dialog {
         max-width: 275px;
         margin: 10px auto;
-        font-size: 9px;;
+        font-size: 9px;
+        ;
     }
 
-    .modal-header, .modal-footer{
+    .modal-header,
+    .modal-footer {
         padding: 5px 5px;
     }
 
@@ -182,15 +178,15 @@ export default {
         font-size: 11px;
     }
 
-    .btn{
+    .btn {
         font-size: 8px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 12px 12px 0 12px;
     }
 
-    .alert{
+    .alert {
         padding: 8px;
     }
 }
@@ -199,10 +195,12 @@ export default {
     .modal-dialog {
         max-width: 180px;
         margin: 10px auto;
-        font-size: 7px;;
+        font-size: 7px;
+        ;
     }
 
-    .modal-header, .modal-footer{
+    .modal-header,
+    .modal-footer {
         padding: 5px 5px;
     }
 
@@ -210,15 +208,15 @@ export default {
         font-size: 9px;
     }
 
-    .btn{
+    .btn {
         font-size: 7px;
     }
 
-    .modal-body{
+    .modal-body {
         padding: 11px 11px 0 11px;
     }
-    
-    .alert{
+
+    .alert {
         padding: 6px 10px;
     }
 }
