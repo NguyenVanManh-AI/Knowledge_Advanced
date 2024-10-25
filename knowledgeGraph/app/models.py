@@ -34,7 +34,7 @@ class File(models.Model):
     )
     name = models.CharField(max_length=100)
     content = models.TextField(blank=True, null=True)
-    content_construct = models.JSONField(blank=True, null=True)
+    content_cypher = models.JSONField(blank=True, null=True)
     src = models.CharField(max_length=100, null=True)
 
     def update_name(self, new_name):

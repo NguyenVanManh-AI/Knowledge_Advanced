@@ -25,13 +25,15 @@ class FileRepository:
             f"uploads/{file.name}", ContentFile(file_content)
         )
         src = f"/media/{file_path}"
+        content_ = t2n().gen_structure_data(
+                t2n().process_data(file_content.decode("utf-8"))
+            )
         newFile = File(
             id_folder=folder,
             name=file.name,
-            content=t2n().gen_structure_data(
-                t2n().process_data(file_content.decode("utf-8"))
-            ),
+            content=content_,
             src=src,
+            content_cypher=t2n().convert_to_cypher(content_)
         )
 
         newFile.save()
