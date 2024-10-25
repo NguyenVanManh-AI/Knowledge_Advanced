@@ -18,6 +18,13 @@ class FileCreateView(APIView):
                 file,
                 serializer.validated_data['id_folder']
             )
+            if not file:
+                return Response(
+                    {
+                        "Error":"Input is not valid"
+                    },
+                    status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
+                )
             return Response(
                 FileSerializer(file).data, 
                 status=status.HTTP_201_CREATED

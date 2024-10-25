@@ -1,3 +1,5 @@
+**Python - version 3.10**
+
 **Create Migration**
 - python manage.py makemigrations
 - python manage.py migrate

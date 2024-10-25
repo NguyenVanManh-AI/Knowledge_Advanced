@@ -4,6 +4,7 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
 import os
+from ..Module_Final.class_text2neo4j import Text2Neo4j as t2n
 
 
 class FileRepository:
@@ -11,11 +12,15 @@ class FileRepository:
         folder = Folder.objects.filter(id=folder.id).first()
         if not folder:
             return None
-        if file.content_type == "text/plain":
+        print("type", file.content_type)
+        if (
+            file.content_type == "text/plain"
+            or file.content_type == "application/octet-stream"
+        ):
             file_content = file.read()
         else:
             return None
-
+        # print("content", file_content)
         file_path = default_storage.save(
             f"uploads/{file.name}", ContentFile(file_content)
         )
@@ -23,7 +28,9 @@ class FileRepository:
         newFile = File(
             id_folder=folder,
             name=file.name,
-            content=file_content.decode("utf-8"),
+            content=t2n().gen_structure_data(
+                t2n().process_data(file_content.decode("utf-8"))
+            ),
             src=src,
         )
 
@@ -73,4 +80,3 @@ class FileRepository:
                 name__icontains=search_name, id_folder=id_folder
             )
         return result_files
-    
