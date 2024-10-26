@@ -26,15 +26,17 @@ class FileRepository:
         )
         src = f"/media/{file_path}"
         content_ = t2n().gen_structure_data(
-                t2n().process_data(file_content.decode("utf-8"))
-            )
+            t2n().process_data(file_content.decode("utf-8"))
+        )
         newFile = File(
             id_folder=folder,
             name=file.name,
             content=content_,
             src=src,
-            content_cypher=t2n().convert_to_cypher(content_)
+            content_cypher=t2n().convert_to_cypher(content_),
         )
+        t2n().push_to_neo4j(newFile.content_cypher)
+        print("Push to neo4j")
 
         newFile.save()
         return newFile

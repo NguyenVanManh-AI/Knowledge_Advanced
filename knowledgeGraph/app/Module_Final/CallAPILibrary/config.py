@@ -10,7 +10,7 @@ API_KEYS_PATH = os.path.join(settings.BASE_DIR,'app', 'Module_Final', 'CallAPILi
 # TEMP_LOG_FOLDER_PATH = "logs/temp"
 # API_KEYS_PATH = "Module_Final/CallAPILibrarydata/gemini_api_keys.json"
 URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent"
-MAX_CALL_COUNT = 3
+MAX_CALL_COUNT = 10
 SLEEP_TIME = 30
 HEADERS = '{"Content-Type": "application/json"}'
 
