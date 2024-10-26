@@ -1,9 +1,7 @@
 import json
 import pandas as pd
 from neo4j import GraphDatabase
-from .CallAPILibrary import CallAPI
-from django.conf import settings
-import os
+from CallAPILibrary import CallAPI
 # Example Django model class
 class Text2Neo4j():
     def __init__(self):
@@ -212,7 +210,7 @@ Kiến trúc giá trị trả về mong đợi:
         api_caller = CallAPI()
         api_caller.call_api(contents=prompts, threads_num=threads_num_value)
         # Đường dẫn file csv của thư viện call api
-        csv_path = os.path.join(settings.BASE_DIR,'app','Module_Final','CallAPILibrary','results','results.csv')
+        csv_path = "./CallAPILibrary/results/results.csv"
         # Đọc nội dung file csv
         df = pd.read_csv(csv_path)
         # Lấy nội dung cột response
@@ -285,6 +283,8 @@ SET r{index}.text = '{item['text']}'\n"""
                     session.execute_write(self.execute_cypher_block, block)
                 except Exception as e:
                     print(f"Error executing block: {e}")
+                    return False
 
         # Close the driver connection
         driver.close()
+        return True

@@ -11,7 +11,6 @@ def delete_files_on_folder_delete(sender, instance, **kwargs):
     if files:
         for file in files:
             file_path = os.path.join(settings.BASE_DIR, file.src.lstrip("/"))
-            print(file_path)
             if os.path.isfile(file_path):
                 os.remove(file_path)
             file.delete()

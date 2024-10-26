@@ -146,7 +146,39 @@ class QAUsingNeo4j():
 
         return [(record["node_id"], record["relationship_text"], record["related_id"]) for record in result]
 
+    def cypher_subgraph(self, objs, relations):
+        ids = [obj['n']['id'] for obj in objs]
+        
+        # Nếu `relations` không rỗng, thêm điều kiện cho mối quan hệ
+        if relations:
+            query = f"""
+            MATCH (n)-[r]-(related)
+            WHERE n.id IN {ids} AND type(r) IN {relations}
+            RETURN n.id AS node_id, r.text AS relationship_text, related.id AS related_id
+            """
+        else:
+            # Nếu `relations` rỗng, lấy tất cả các mối quan hệ 1 hop liên quan đến `objs`
+            query = f"""
+            MATCH (n)-[r]-(related)
+            WHERE n.id IN {ids}
+            RETURN n.id AS node_id, r.text AS relationship_text, related.id AS related_id
+            """
+        return query
+
     def objs_relations_to_fulltext(self, objs, relations):
+        driver = GraphDatabase.driver(self.uri, auth=(self.username, self.password))
+        with driver.session() as session:
+            subgraph_data = session.execute_read(self.query_subgraph, objs, relations)
+            full_text = []
+            set_text = set()
+            for node, relationship_text, related_node in subgraph_data:
+                if relationship_text not in set_text:
+                    set_text.add(relationship_text)
+                    full_text.append(f"Head: {node}\tTail: {related_node}\tText: {relationship_text}")
+        driver.close()
+        return full_text
+    
+    def objs_relations_to_cypher(self, objs, relations):
         driver = GraphDatabase.driver(self.uri, auth=(self.username, self.password))
         with driver.session() as session:
             subgraph_data = session.execute_read(self.query_subgraph, objs, relations)
@@ -221,3 +253,19 @@ query = "{query}"
         answer = self.answer_query(query, full_text)
         return answer
 
+    def full_question_answer(self, query): 
+        objs, relations =  self.query_to_objs_relations(query)
+
+        if len(objs)==0:
+            return "Rất tiết chúng tôi không tìm thấy thông tin đối tượng mà bạn đề cập trong câu hỏi."
+        
+        full_text = self.objs_relations_to_fulltext(objs, relations)
+        answer = self.answer_query(query, full_text)
+        return answer
+    
+    def query_to_cypher(self, query): 
+        objs, relations = self.query_to_objs_relations(query)
+        cypher = self.cypher_subgraph(objs, relations)
+        return cypher
+
+    
