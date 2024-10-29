@@ -1,7 +1,7 @@
 from django.urls import path
 from .api_views.ApiFolderView import *
 from .api_views.ApiFileView import *
-from .views import *
+from .views import chatbot
 
 urlpatterns = [
     path("folder/", FolderListView.as_view(), name="folder-list"),
@@ -16,5 +16,4 @@ urlpatterns = [
     path("file/delete/", FileDeleteView.as_view(), name="file-delete"),
     
     path("chatbot/", chatbot),
-    path("cypher/", cypher),  
 ]

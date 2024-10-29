@@ -18,7 +18,7 @@ class FolderListView(APIView):
         )  # Mặc định là 'asc' nếu không có
 
         if page is not None:
-            folders = FolderService.findFolderByName(
+            folders = FolderService().findFolderByName(
                 search, page, per_page, order_by, order_direction
             )
             # if not folders['folders']:
@@ -39,7 +39,7 @@ class FolderListView(APIView):
                 status=status.HTTP_200_OK,
             )
 
-        folders = FolderService.getAllFolder()
+        folders = FolderService().getAllFolder()
         serializer = FolderSerializer(folders, many=True)
         return Response(
             {
@@ -96,9 +96,9 @@ class FolderDeleteView(APIView):
 
 class FolderGetTree(APIView):
     def get(self, request):
-        result = FolderService.getTree()
+        result = FolderService().getTree()
         print(result)
         return Response(
-            {"data":result},
+            {"data": result},
             status=status.HTTP_200_OK,
         )

@@ -2,7 +2,7 @@ import json
 import time
 from neo4j import GraphDatabase
 from rank_bm25 import BM25Plus
-from .utils import bm25_tokenizer
+from utils import bm25_tokenizer
 import google.generativeai as genai
 from underthesea import text_normalize, sent_tokenize, pos_tag
 
@@ -81,7 +81,7 @@ class QAUsingNeo4j():
     def query_to_objs_relations(self, query):
         input_data = self.split_by_first_verb(query)
         print("input_data", input_data)
-        output_relationships_path = "./app/Module_Final/output_relationships.json"
+        output_relationships_path = "./output_relationships.json"
         with open(output_relationships_path, 'r', encoding='utf-8') as f:
             relationship_pairs = json.load(f)
 
