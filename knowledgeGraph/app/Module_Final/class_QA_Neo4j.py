@@ -252,16 +252,6 @@ query = "{query}"
         full_text = self.objs_relations_to_fulltext(objs, relations)
         answer = self.answer_query(query, full_text)
         return answer
-
-    def full_question_answer(self, query): 
-        objs, relations =  self.query_to_objs_relations(query)
-
-        if len(objs)==0:
-            return "Rất tiết chúng tôi không tìm thấy thông tin đối tượng mà bạn đề cập trong câu hỏi."
-        
-        full_text = self.objs_relations_to_fulltext(objs, relations)
-        answer = self.answer_query(query, full_text)
-        return answer
     
     def query_to_cypher(self, query): 
         objs, relations = self.query_to_objs_relations(query)
