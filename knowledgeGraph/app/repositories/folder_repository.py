@@ -3,13 +3,6 @@ from typing import List
 
 
 class FolderRepository:
-    _instance = None
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(FolderRepository, cls).__new__(cls)
-        return cls._instance
-
     def add_folder(self, new_name, id_parent) -> Folder:
         if id_parent:
             folder = Folder(
@@ -36,7 +29,7 @@ class FolderRepository:
 
         if new_name_folder:
             folder.update_name(new_name_folder)
-
+        
         # Kiểm tra nếu id_parent không phải None trước khi cập nhật
         if id_parent is not None:
             parent_folder = Folder.objects.filter(id=id_parent).first()
@@ -55,14 +48,17 @@ class FolderRepository:
             folder.delete()
         return folder
 
-    def find_folder_by_name(self,search_name: str) -> List[Folder]:
+    @staticmethod
+    def find_folder_by_name(search_name: str) -> List[Folder]:
         result_folders = Folder.objects.filter(name__icontains=search_name)
         return result_folders
 
-    def get_all_folder(self) -> List[Folder]:
+    @staticmethod
+    def get_all_folder() -> List[Folder]:
         return list(Folder.objects.all())
 
-    def get_tree(self) -> List:
+    @staticmethod
+    def get_tree() -> List:
         root_folders = Folder.objects.filter(id_parent__isnull=True)
         folder_tree = [folder.get_tree() for folder in root_folders]
         return folder_tree
