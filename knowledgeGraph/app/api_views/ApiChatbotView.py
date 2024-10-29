@@ -5,7 +5,6 @@ from rest_framework import status
 from ..services.chatbot_service import ChatbotService
 
 
-
 class ChatbotAnswerView(APIView):
     def format_answer(self, answer):
         sentences = re.split(r"\s*\n\s*|\s*\*\*\s*", answer)
@@ -23,6 +22,10 @@ class ChatbotAnswerView(APIView):
                 {"status": "failure", "error": "Missing 'question' in request"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+        if question is None:
+            return Response(
+                {"error": "No question"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         try:
             answer = ChatbotService().answer(question)
@@ -31,14 +34,16 @@ class ChatbotAnswerView(APIView):
                 {"status": "failure", "error": str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
+
+        print("anserrrrrrrrr", answer, "\n\n\n\n")
         if answer is None:
             return Response(
-                {"error": "No question"}, status=status.HTTP_400_BAD_REQUEST
+                {"error": "No anwser for this question"},
+                status=status.HTTP_404_NOT_FOUND,
             )
-        print("anserrrrrrrrr",answer,"\n\n\n\n")
-        print("answer",answer._result.candidates[0].content.parts[0].text,"\n\n\n\n")
         # result = self.format_answer(answer._result.candidates[0].content.parts[0].text)
         # print( result)
         return Response(
-            {"status": "success", "answer": "abc"}, status=status.HTTP_200_OK
+            {"status": "success", "answer": answer.text}, status=status.HTTP_200_OK
         )
+            
