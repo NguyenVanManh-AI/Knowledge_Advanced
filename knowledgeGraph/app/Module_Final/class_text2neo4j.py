@@ -4,6 +4,7 @@ from neo4j import GraphDatabase
 from .CallAPILibrary import CallAPI
 import os
 from django.conf import settings
+import re
 # Example Django model class
 class Text2Neo4j():
     def __init__(self):
@@ -285,6 +286,48 @@ SET r{index}.text = '{item['text']}'\n"""
                     session.execute_write(self.execute_cypher_block, block)
                 except Exception as e:
                     print(f"Error executing block: {e}")
+                    return False
+
+        # Close the driver connection
+        driver.close()
+        return True
+    def del_to_neo4j(self, cypher_querys):
+        # Thông tin kết nối Neo4j
+        uri = "neo4j+s://ffdfad2c.databases.neo4j.io"               # Địa chỉ database
+        username = "neo4j"                                          # Username
+        password = "niQisz0U5weBUMit5DuSDTxMXmDsU91qykqIEOJTA4o"    # Password
+        driver = GraphDatabase.driver(uri, auth=(username, password), max_connection_lifetime=600)
+        
+        def convert_to_delete_block(block):
+            # Chuyển đổi khối Cypher để xóa mối quan hệ
+            lines = block.split('\n')
+            delete_lines = []
+            for line in lines:
+                if line.startswith("MERGE"):
+                    # Chuyển từ MERGE sang MATCH
+                    line = line.replace("MERGE", "MATCH")
+                    line = re.sub(r"r\d+:", "r:", line)
+                    delete_lines.append(line)
+                elif line.startswith("SET"):
+                    # Bỏ qua dòng SET
+                    continue
+            # Thêm lệnh DELETE cho mối quan hệ
+            delete_lines.append("DELETE r\n")
+            return '\n'.join(delete_lines)
+        
+        # Open session and process the graph deletion
+        with driver.session() as session:
+            # Load the file and split into blocks
+            cypher_blocks = self.split_into_blocks(cypher_querys)
+            
+            # Execute each Cypher delete block separately
+            for block in cypher_blocks:
+                delete_block = convert_to_delete_block(block)
+                print(f"Executing delete block:\n{delete_block}\n")
+                try:
+                    session.execute_write(self.execute_cypher_block, delete_block)
+                except Exception as e:
+                    print(f"Error executing delete block: {e}")
                     return False
 
         # Close the driver connection

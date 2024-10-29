@@ -1,5 +1,6 @@
 
 from class_text2neo4j import Text2Neo4j
+import sys
 
 text2neo4j = Text2Neo4j()
 
@@ -21,3 +22,13 @@ if result:
     print("Đã đẩy lên neo4j thành công")
 else:
     print("Đẩy lên neo4j thất bại")
+# xoá từ đồ thị câu lệnh cypher
+is_del = input("Bạn có muốn xoá không? y/n: ")
+if is_del != 'y':
+    sys.exit(1)
+result = text2neo4j.del_to_neo4j(cypher_querys=full_cypher)
+if result:
+    print("Đã xoá khỏi neo4j thành công")
+else:
+    print("Xoá khỏi neo4j thất bại")
+
