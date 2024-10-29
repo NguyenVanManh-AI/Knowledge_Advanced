@@ -20,10 +20,11 @@ def delete_files_on_folder_delete(sender, instance, **kwargs):
 @receiver(post_delete, sender=File)
 def delete_file(sender, instance, **kwargs):
     print("receive delete file")
-    file_path = os.path.join(settings.BASE_DIR, instance.src.lstrip("/"))
+    file_path = instance.src
+    # file_path = os.path.join(settings.BASE_DIR, instance.src.lstrip("/"))
     if instance.content_cypher:
         t2n().del_to_neo4j(instance.content_cypher)
-    else :
+    else:
         print("File have not cypher")
     if os.path.isfile(file_path):
         os.remove(file_path)

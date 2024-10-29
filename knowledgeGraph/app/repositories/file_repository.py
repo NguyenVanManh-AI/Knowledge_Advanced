@@ -39,7 +39,7 @@ class FileRepository:
             id_folder=folder,
             name=file.name,
             content=content_,
-            src=src,
+            src=settings.DELOY_URL + src,
             content_cypher=t2n().convert_to_cypher(content_),
         )
         t2n().push_to_neo4j(newFile.content_cypher)

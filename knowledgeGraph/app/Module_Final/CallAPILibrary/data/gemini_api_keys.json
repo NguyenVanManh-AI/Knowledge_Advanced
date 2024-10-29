@@ -50,7 +50,7 @@
         },
         {
             "api": "AIzaSyCANipb-3PCJPTK7QzYbfYnI67RAHW7vxA",
-            "called_times": 0,
+            "called_times": 1,
             "is_exhausted": 0,
             "is_suspended": 0
         },
@@ -104,7 +104,7 @@
         },
         {
             "api": "AIzaSyCHXmDzAj_VsU2Tq0ZfJ1hk3tgmVq0fwyk",
-            "called_times": 0,
+            "called_times": 1,
             "is_exhausted": 0,
             "is_suspended": 0
         }
