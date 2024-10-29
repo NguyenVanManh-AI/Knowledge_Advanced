@@ -8,6 +8,13 @@ from ..Module_Final.class_text2neo4j import Text2Neo4j as t2n
 
 
 class FileRepository:
+    _instance = None
+    
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(FileRepository,cls).__new__(cls)
+        return cls._instance
+    
     def add_file(self, file, folder) -> File:
         folder = Folder.objects.filter(id=folder.id).first()
         if not folder:
@@ -74,8 +81,7 @@ class FileRepository:
         data = {"file": file, "folder": folder.name}
         return data
 
-    @staticmethod
-    def find_file_by_name(id_folder=None, search_name="") -> List[File]:
+    def find_file_by_name(self,id_folder=None, search_name="") -> List[File]:
         result_files = File()
         if not id_folder:
             result_files = File.objects.filter(name__icontains=search_name)

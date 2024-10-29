@@ -3,6 +3,13 @@ from typing import List
 
 
 class FolderRepository:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(FolderRepository, cls).__new__(cls)
+        return cls._instance
+
     def add_folder(self, new_name, id_parent) -> Folder:
         if id_parent:
             folder = Folder(
@@ -29,7 +36,7 @@ class FolderRepository:
 
         if new_name_folder:
             folder.update_name(new_name_folder)
-        
+
         # Kiểm tra nếu id_parent không phải None trước khi cập nhật
         if id_parent is not None:
             parent_folder = Folder.objects.filter(id=id_parent).first()
