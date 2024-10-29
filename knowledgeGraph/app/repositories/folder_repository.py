@@ -55,17 +55,14 @@ class FolderRepository:
             folder.delete()
         return folder
 
-    @staticmethod
-    def find_folder_by_name(search_name: str) -> List[Folder]:
+    def find_folder_by_name(self,search_name: str) -> List[Folder]:
         result_folders = Folder.objects.filter(name__icontains=search_name)
         return result_folders
 
-    @staticmethod
-    def get_all_folder() -> List[Folder]:
+    def get_all_folder(self) -> List[Folder]:
         return list(Folder.objects.all())
 
-    @staticmethod
-    def get_tree() -> List:
+    def get_tree(self) -> List:
         root_folders = Folder.objects.filter(id_parent__isnull=True)
         folder_tree = [folder.get_tree() for folder in root_folders]
         return folder_tree
