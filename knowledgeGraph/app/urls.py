@@ -2,7 +2,7 @@ from django.urls import path
 from .api_views.ApiFolderView import *
 from .api_views.ApiFileView import *
 from .api_views.ApiChatbotView import *
-from .views import *
+from .views import chatbot, cypher
 
 urlpatterns = [
     path("folder/", FolderListView.as_view(), name="folder-list"),
