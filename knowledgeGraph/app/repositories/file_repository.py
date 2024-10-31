@@ -33,7 +33,7 @@ class FileRepository:
         )
         src = f"/media/{file_path}"
         content_ = t2n().gen_structure_data(
-            t2n().process_data(file_content.decode("utf-8"))
+            file_content.decode("utf-8")
         )
         newFile = File(
             id_folder=folder,
