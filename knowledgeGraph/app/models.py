@@ -33,6 +33,7 @@ class File(models.Model):
         Folder, on_delete=models.CASCADE, related_name="files"
     )
     name = models.CharField(max_length=100)
+    name_os = models.CharField(max_length=100,null=True)
     content = models.TextField(blank=True, null=True)
     content_cypher = models.JSONField(blank=True, null=True)
     src = models.CharField(max_length=100, null=True)

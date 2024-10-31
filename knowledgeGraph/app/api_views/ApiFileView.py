@@ -1,3 +1,4 @@
+from django.http import FileResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
@@ -99,3 +100,16 @@ class FileDeleteView(APIView):
         return Response(
             {"message": "Delete success"}, status=status.HTTP_204_NO_CONTENT
         )
+
+
+class FileDownloadView(APIView):
+    def get(self, request):
+        id_file = request.GET.get("id")
+        path = FileService().download_file(id_file)
+        print("path os api view",path)
+        if path is None:
+            return Response(
+                {"error": "File is not exists"}, status=status.HTTP_404_NOT_FOUND
+            )
+        response = FileResponse(open(path, 'rb'), as_attachment=True)
+        return response

@@ -46,3 +46,5 @@ class FileService:
             "has_previous": page.has_previous(),
             "total": len(files),
         }
+    def download_file(self,id_file):
+        return self.fileReposiroty.download_file(id_file)
