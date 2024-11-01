@@ -1,10 +1,9 @@
 {
 	"info": {
-		"_postman_id": "cfeea3b9-5ede-4fad-9598-25ec719d6c56",
+		"_postman_id": "6938ffab-17bc-413e-afaf-3ee9fca6dd6b",
 		"name": "KnowledgeAPI",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "16738596",
-		"_collection_link": "https://api-test-fullstack-vn.postman.co/workspace/LINEBot~6c7d3726-b633-4731-ada8-822fea1a6b4d/collection/16738596-cfeea3b9-5ede-4fad-9598-25ec719d6c56?action=share&source=collection_link&creator=16738596"
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "26675063"
 	},
 	"item": [
 		{
@@ -15,22 +14,7 @@
 					"request": {
 						"method": "POST",
 						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/folder/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"folder",
-								""
-							]
-						}
+						"url": "http://127.0.0.1:8000/api/folder/"
 					},
 					"response": []
 				},
@@ -97,23 +81,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/folder/add/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"folder",
-								"add",
-								""
-							]
-						}
+						"url": "http://127.0.0.1:8000/api/folder/add/"
 					},
 					"response": []
 				},
@@ -142,23 +110,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/folder/update/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"folder",
-								"update",
-								""
-							]
-						}
+						"url": "http://127.0.0.1:8000/api/folder/update/"
 					},
 					"response": []
 				},
@@ -198,22 +150,7 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/folder/tree",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"folder",
-								"tree"
-							]
-						}
+						"url": "http://127.0.0.1:8000/api/folder/tree"
 					},
 					"response": []
 				}
@@ -242,23 +179,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/file/add/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"file",
-								"add",
-								""
-							]
-						}
+						"url": "http://127.0.0.1:8000/api/file/add/"
 					},
 					"response": []
 				},
@@ -277,22 +198,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/file/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"file",
-								""
-							]
-						}
+						"url": "http://127.0.0.1:8000/api/file/"
 					},
 					"response": []
 				},
@@ -368,23 +274,7 @@
 								}
 							]
 						},
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/file/update/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"file",
-								"update",
-								""
-							]
-						}
+						"url": "http://127.0.0.1:8000/api/file/update/"
 					},
 					"response": []
 				},
@@ -416,6 +306,164 @@
 								}
 							]
 						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chatbot",
+			"item": [
+				{
+					"name": "Chatbotv2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "question",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "question",
+									"value": "Bệnh viêm gan B có triệu chứng gì ?",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/chatbotv2/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"chatbotv2",
+								""
+							],
+							"query": [
+								{
+									"key": "question",
+									"value": "Bệnh viêm gan B có triệu chứng gì ?",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Authenticated",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/authenticated/"
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/logout/"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/token/refresh/"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"cuongtk2002\",\r\n    \"password\":\"admin@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/token/"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"cuongtk2002\",\r\n    \"email\":\"cuongtk2002@gmail.com\",\r\n    \"password\":\"admin@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/register/"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Message",
+			"item": [
+				{
+					"name": "get all lich su chat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://127.0.0.1:8000/api/histories/"
+					},
+					"response": []
+				},
+				{
+					"name": "add chat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "question",
+									"value": "bệnh bạch hầu là gì",
+									"type": "text"
+								},
+								{
+									"key": "answer",
+									"value": "Bệnh bạch hầu là bệnh nhiễm trùng cấp tính ở cổ họng và đường hô hấp trên (mũi, xoang cạnh mũi, đường mũi và hầu họng). Tác nhân gây ra bệnh là ngoại độc tố của vi khuẩn bạch hầu tiết ra tác động đến tim, thận và hệ thần kinh gây nhiễm trùng và nhiễm độc toàn thân, khiến người bệnh có nguy cơ tử vong cao.",
+									"type": "text"
+								}
+							]
+						},
+						"url": "http://127.0.0.1:8000/api/chats/"
 					},
 					"response": []
 				}
