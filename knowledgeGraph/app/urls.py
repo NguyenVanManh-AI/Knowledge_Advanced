@@ -1,8 +1,13 @@
-from django.urls import path
+from django.urls import path, include
 from .api_views.ApiFolderView import *
 from .api_views.ApiFileView import *
 from .api_views.ApiChatbotView import *
-from .views import chatbot, cypher
+# from .views import chatbot, cypher
+from .views import get_chats, logout, CustomTokenObitanPairView, CustomRefreshTokenView, is_authenticated, register, ChatViewSet
+
+from rest_framework.routers import DefaultRouter
+router = DefaultRouter()
+router.register(r'chats', ChatViewSet)
 
 urlpatterns = [
     path("folder/", FolderListView.as_view(), name="folder-list"),
@@ -22,4 +27,11 @@ urlpatterns = [
     
 
     path("chatbotv2/", ChatbotAnswerView.as_view(), name="chatbot-answer"),
+    path('token/', CustomTokenObitanPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', CustomRefreshTokenView.as_view(), name='token_refresh'),
+    path('histories/', get_chats),
+    path('logout/', logout),
+    path('authenticated/', is_authenticated),
+    path('register/', register),
+    path('', include(router.urls)),
 ]
