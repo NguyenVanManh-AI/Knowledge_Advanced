@@ -16,5 +16,13 @@ class ChatbotRepository:
             return None
         else:
             return result
+            
+    def cypher(self, question):
+        result = qa().query_to_cypher(question)
+        print(type(result))
+        if isinstance(result, str):
+            return None
+        else:
+            return result
         
             

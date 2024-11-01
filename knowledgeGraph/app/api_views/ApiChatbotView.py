@@ -29,6 +29,8 @@ class ChatbotAnswerView(APIView):
 
         try:
             answer = ChatbotService().answer(question)
+            cypher = ChatbotService().cypher(question)
+            
         except Exception as e:
             return Response(
                 {"status": "failure", "error": str(e)},
@@ -44,6 +46,6 @@ class ChatbotAnswerView(APIView):
         # result = self.format_answer(answer._result.candidates[0].content.parts[0].text)
         # print( result)
         return Response(
-            {"status": "success", "answer": answer.text}, status=status.HTTP_200_OK
+            {"status": "success", "answer": answer.text, "cypher":cypher}, status=status.HTTP_200_OK
         )
             

@@ -17,8 +17,8 @@ urlpatterns = [
     path("file/delete/", FileDeleteView.as_view(), name="file-delete"),
     path("file/download/", FileDownloadView.as_view(), name="file-download"),
 
-    path("chatbot/", chatbot),
-    path("cypher/", cypher),
+    # path("chatbot/", chatbot),
+    # path("cypher/", cypher),
     
 
     path("chatbotv2/", ChatbotAnswerView.as_view(), name="chatbot-answer"),
