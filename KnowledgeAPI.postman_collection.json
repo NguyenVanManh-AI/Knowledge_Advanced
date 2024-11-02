@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "6938ffab-17bc-413e-afaf-3ee9fca6dd6b",
+		"_postman_id": "6249ea52-794b-4a6d-8cd3-4590757969dd",
 		"name": "KnowledgeAPI",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-		"_exporter_id": "26675063"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30999095"
 	},
 	"item": [
 		{
@@ -14,7 +14,22 @@
 					"request": {
 						"method": "POST",
 						"header": [],
-						"url": "http://127.0.0.1:8000/api/folder/"
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/folder/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"folder",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -33,7 +48,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/folder/?search=&page=1",
+							"raw": "http://127.0.0.1:8000/api/folder/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -46,16 +61,6 @@
 								"api",
 								"folder",
 								""
-							],
-							"query": [
-								{
-									"key": "search",
-									"value": ""
-								},
-								{
-									"key": "page",
-									"value": "1"
-								}
 							]
 						}
 					},
@@ -71,17 +76,33 @@
 							"formdata": [
 								{
 									"key": "name",
-									"value": "Cap 3",
+									"value": "test",
 									"type": "text"
 								},
 								{
 									"key": "id_parent",
-									"value": "150",
+									"value": "10",
 									"type": "text"
 								}
 							]
 						},
-						"url": "http://127.0.0.1:8000/api/folder/add/"
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/folder/add/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"folder",
+								"add",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -95,7 +116,7 @@
 							"formdata": [
 								{
 									"key": "id",
-									"value": "158",
+									"value": "10",
 									"type": "text"
 								},
 								{
@@ -105,12 +126,28 @@
 								},
 								{
 									"key": "id_parent",
-									"value": "",
+									"value": "11",
 									"type": "text"
 								}
 							]
 						},
-						"url": "http://127.0.0.1:8000/api/folder/update/"
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/folder/update/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"folder",
+								"update",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -120,7 +157,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/folder/delete/?id=145",
+							"raw": "http://127.0.0.1:8000/api/folder/delete/?id=150",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -138,7 +175,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "145"
+									"value": "150"
 								}
 							]
 						}
@@ -150,7 +187,22 @@
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://127.0.0.1:8000/api/folder/tree"
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/folder/tree",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"folder",
+								"tree"
+							]
+						}
 					},
 					"response": []
 				}
@@ -169,17 +221,33 @@
 							"formdata": [
 								{
 									"key": "id_folder",
-									"value": "151",
+									"value": "10",
 									"type": "text"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/ADMIN/Downloads/Knowledge Advanced/Knowledge_Advanced/knowledgeGraph/note_api.txt"
+									"src": "postman-cloud:///1ef97995-12cb-4690-b289-fc76652d5349"
 								}
 							]
 						},
-						"url": "http://127.0.0.1:8000/api/file/add/"
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/file/add/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"file",
+								"add",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -193,12 +261,27 @@
 							"formdata": [
 								{
 									"key": "id",
-									"value": "79",
+									"value": "106",
 									"type": "text"
 								}
 							]
 						},
-						"url": "http://127.0.0.1:8000/api/file/"
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/file/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"file",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -259,7 +342,7 @@
 							"formdata": [
 								{
 									"key": "id",
-									"value": "80",
+									"value": "105",
 									"type": "text"
 								},
 								{
@@ -269,12 +352,28 @@
 								},
 								{
 									"key": "id_folder",
-									"value": "140",
+									"value": "10",
 									"type": "text"
 								}
 							]
 						},
-						"url": "http://127.0.0.1:8000/api/file/update/"
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/file/update/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"file",
+								"update",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -284,7 +383,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/file/delete/?id=80",
+							"raw": "http://127.0.0.1:8000/api/file/delete/?id=105",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -302,7 +401,38 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "80"
+									"value": "105"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DownloadFIle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/file/download/?id=106",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"file",
+								"download",
+								""
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "106"
 								}
 							]
 						}
@@ -315,23 +445,29 @@
 			"name": "Chatbot",
 			"item": [
 				{
-					"name": "Chatbotv2",
+					"name": "Chatbot",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "question",
-								"value": "",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "formdata",
 							"formdata": [
 								{
 									"key": "question",
-									"value": "Bệnh viêm gan B có triệu chứng gì ?",
+									"value": "Mất trí nhớ là triệu chứng của bệnh gì?",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "question",
+									"value": "Bệnh trĩ là gì ?",
 									"type": "text"
+								},
+								{
+									"key": "question",
+									"value": "Bệnh dại là gì?",
+									"type": "text",
+									"disabled": true
 								}
 							]
 						},
@@ -349,103 +485,59 @@
 								"api",
 								"chatbotv2",
 								""
-							],
-							"query": [
-								{
-									"key": "question",
-									"value": "Bệnh viêm gan B có triệu chứng gì ?",
-									"disabled": true
-								}
 							]
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "User",
-			"item": [
-				{
-					"name": "Authenticated",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": "http://127.0.0.1:8000/api/authenticated/"
-					},
-					"response": []
 				},
 				{
-					"name": "Logout",
+					"name": "History",
 					"request": {
-						"method": "POST",
-						"header": [],
-						"url": "http://127.0.0.1:8000/api/logout/"
-					},
-					"response": []
-				},
-				{
-					"name": "Refresh Token",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": "http://127.0.0.1:8000/api/token/refresh/"
-					},
-					"response": []
-				},
-				{
-					"name": "Login",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"cuongtk2002\",\r\n    \"password\":\"admin@123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxNzc5NTIxLCJpYXQiOjE3MzA1Njk5MjEsImp0aSI6IjU5NDc4MTYyNDA4NzRlMTdiNDg1YWFkYmI4YjRkOWYwIiwidXNlcl9pZCI6NH0.ko7H7kVZ6XIM0dqxjNiYNn1gHzF1iiX4KdkCotu0SKc",
+									"type": "string"
 								}
-							}
+							]
 						},
-						"url": "http://127.0.0.1:8000/api/token/"
-					},
-					"response": []
-				},
-				{
-					"name": "Register",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"username\":\"cuongtk2002\",\r\n    \"email\":\"cuongtk2002@gmail.com\",\r\n    \"password\":\"admin@123\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "http://127.0.0.1:8000/api/register/"
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Message",
-			"item": [
-				{
-					"name": "get all lich su chat",
-					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "http://127.0.0.1:8000/api/histories/"
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/chatbot/history/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"chatbot",
+								"history",
+								""
+							]
+						}
 					},
 					"response": []
 				},
 				{
-					"name": "add chat",
+					"name": "Add new chat",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxNzc5NTIxLCJpYXQiOjE3MzA1Njk5MjEsImp0aSI6IjU5NDc4MTYyNDA4NzRlMTdiNDg1YWFkYmI4YjRkOWYwIiwidXNlcl9pZCI6NH0.ko7H7kVZ6XIM0dqxjNiYNn1gHzF1iiX4KdkCotu0SKc",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -463,11 +555,250 @@
 								}
 							]
 						},
-						"url": "http://127.0.0.1:8000/api/chats/"
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/chatbot/create_new/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"chatbot",
+								"create_new",
+								""
+							]
+						}
 					},
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Dashboard",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxNzc5NTIxLCJpYXQiOjE3MzA1Njk5MjEsImp0aSI6IjU5NDc4MTYyNDA4NzRlMTdiNDg1YWFkYmI4YjRkOWYwIiwidXNlcl9pZCI6NH0.ko7H7kVZ6XIM0dqxjNiYNn1gHzF1iiX4KdkCotu0SKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/dashboard/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"dashboard",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/logout/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"logout",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/token/refresh/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"token",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "hello",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/login/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"login",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "hello",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "hello@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "Tran",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "Luyt",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/register/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"register",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxNzc5NTIxLCJpYXQiOjE3MzA1Njk5MjEsImp0aSI6IjU5NDc4MTYyNDA4NzRlMTdiNDg1YWFkYmI4YjRkOWYwIiwidXNlcl9pZCI6NH0.ko7H7kVZ6XIM0dqxjNiYNn1gHzF1iiX4KdkCotu0SKc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/profile/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"profile",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Deloy_get_tree",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
 		}
 	]
 }
