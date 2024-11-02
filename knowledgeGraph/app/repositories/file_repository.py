@@ -6,6 +6,7 @@ from django.conf import settings
 import os
 from ..Module_Final.class_text2neo4j import Text2Neo4j as t2n
 
+
 class FileRepository:
     _instance = None
 
@@ -15,8 +16,20 @@ class FileRepository:
         return cls._instance
 
     def add_file(self, file, id_folder):
-        folder = Folder.objects.filter(id=id_folder).first()
         error = {}
+        print("id_folder", id_folder)
+        print("file", file)
+        if id_folder is None:
+            error["id_folder"] = ["Field id_folder is required"]
+        elif not id_folder:
+            error["id_folder"] = ["id_folder is not empty"]
+        if file is None:
+            error["file"] = ["Field file is required"]
+
+        if error:
+            return error
+
+        folder = Folder.objects.filter(id=id_folder).first()
         if not folder:
             error["id_folder"] = ["Folder not found"]
         if file.name.endswith(".txt"):
