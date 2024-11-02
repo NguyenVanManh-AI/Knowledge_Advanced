@@ -11,15 +11,12 @@ from ..response.response_error import ResponseError
 class FileCreateView(APIView):
     def post(self, request):
         try:
-            data = request.data.copy()
+            id_folder = request.data.get("id_folder")
             file = request.FILES.get("file")
-            data["file"] = file
-            data["name"] = file.name
-            print(data)
-            file = FileService().addFile(file, data["id_folder"])
+            file = FileService().addFile(file, id_folder)
             if isinstance(file, dict):
                 return ResponseError().set_response(
-                    error=file, message=[value[0] for keys, value in file.items()]
+                    error=file, message=[e for values in file.values() for e in values]
                 )()
             if isinstance(file, Exception):
                 return ResponseError().set_response(
