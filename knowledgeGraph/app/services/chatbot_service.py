@@ -9,3 +9,9 @@ class ChatbotService:
 
     def cypher(self, question):
         return self.chatbotRepository.cypher(question)
+    
+    def get_chat_by_user(self,user):
+        return self.chatbotRepository.get_chat_by_user(user)
+    
+    def get_all_chat(self):
+        return self.chatbotRepository.get_all_chat()

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 import os
 from pathlib import Path
+from datetime import timedelta
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,14 +38,27 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         # 'app.authentication.CookiesJWTAuthentication',
+#     ),
+#     'DEFAULT_PERMISSION_CLASSES': [
+#         # 'rest_framework.permissions.IsAuthenticated',
+#     ]
+
+# }
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'app.authentication.CookiesJWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.IsAuthenticated',
-    ]
-
+}
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(weeks=2),
+    'REFRESH_TOKEN_LIFETIME': timedelta(weeks=2),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': 'your-secret-key',  # Bạn có thể đặt secret key vào đây
 }
 
 
@@ -59,7 +74,9 @@ INSTALLED_APPS = [
     "app",
     "rest_framework",
     "corsheaders",
-    'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [

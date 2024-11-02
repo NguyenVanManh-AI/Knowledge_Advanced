@@ -3,6 +3,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from ..services.chatbot_service import ChatbotService
+from ..serializers import ChatSerializer
+from rest_framework.permissions import IsAuthenticated
+from ..response.response_success import ResponseSuccess
+from ..response.response_error import ResponseError
 
 
 class ChatbotAnswerView(APIView):
@@ -18,34 +22,61 @@ class ChatbotAnswerView(APIView):
         question = request.data.get("question")
         print("question: ", question)
         if not question:
-            return Response(
-                {"status": "failure", "error": "Missing 'question' in request"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+            return ResponseError().set_response(
+                error={"question": "Missing question in request"},
+                message=["Missing question in request"],
+            )()
         if question is None:
-            return Response(
-                {"error": "No question"}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return ResponseError().set_response(
+                error={"question": "No question"},
+                message=["No question"],
+            )()
 
         try:
             answer = ChatbotService().answer(question)
             cypher = ChatbotService().cypher(question)
-            
-        except Exception as e:
-            return Response(
-                {"status": "failure", "error": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
 
-        print("anserrrrrrrrr", answer, "\n\n\n\n")
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
+
         if answer is None:
-            return Response(
-                {"error": "No anwser for this question"},
-                status=status.HTTP_404_NOT_FOUND,
-            )
-        # result = self.format_answer(answer._result.candidates[0].content.parts[0].text)
-        # print( result)
-        return Response(
-            {"status": "success", "answer": answer.text, "cypher":cypher}, status=status.HTTP_200_OK
-        )
-            
+            return ResponseSuccess().set_response(
+                data={"answer": "No answer for this question"},
+                message=["No answer for this question"],
+            )()
+        return ResponseSuccess().set_response(
+            data={"answer": answer.text, "cypher": cypher},
+            message=["Answer success"],
+        )()
+
+
+class ChatbotHistoryView(APIView):
+    permission_classes = [IsAuthenticated] 
+    def get(self, request):
+        user = request.user
+        chats = ChatbotService().get_chat_by_user(user)
+        serializer = ChatSerializer(chats, many=True)
+        return ResponseSuccess().set_response(
+            data=serializer.data, message=["Get history success"]
+        )()
+
+
+from rest_framework import viewsets
+
+
+class ChatViewSet(viewsets.ModelViewSet):
+    queryset = ChatbotService().get_all_chat()
+    serializer_class = ChatSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        # Thiết lập `owner` là người dùng hiện tại khi tạo mới
+        serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        return ChatbotService().get_chat_by_user(self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)

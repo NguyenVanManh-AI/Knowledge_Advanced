@@ -48,18 +48,21 @@ class FolderListView(APIView):
 
 class FolderCreateView(APIView):
     def post(self, request):
-        data = request.data.copy()
+        name = request.data.get("name")
+        id_parent = request.data.get("id_parent")
         try:
-            print(data)
             folder = FolderService().addFolder(
-                data["name"],
-                data["id_parent"],
+                name,
+                id_parent,
             )
             if isinstance(folder, dict):
                 return ResponseError().set_response(
-                    error=folder, message=folder["id_parent"]
+                    error=folder,
+                    message=[e for values in folder.values() for e in values],
                 )()
-            return ResponseSuccess().set_response(data=FolderSerializer(folder).data)()
+            return ResponseSuccess().set_response(
+                data=FolderSerializer(folder).data, message=["Created folder success"]
+            )()
         except Exception as e:
             return ResponseError().set_response(
                 message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -105,5 +108,5 @@ class FolderGetTree(APIView):
         result = FolderService().getTree()
         print(result)
         return ResponseSuccess().set_response(
-            data=result,message=["Get tree folder success"]
-            )()
+            data=result, message=["Get tree folder success"]
+        )()

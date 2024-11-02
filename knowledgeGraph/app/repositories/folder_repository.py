@@ -11,18 +11,33 @@ class FolderRepository:
         return cls._instance
 
     def add_folder(self, new_name, id_parent):
-        if id_parent:
-            error = {}
-            print(id_parent)
-            if self.get_folder_by_id(id_parent) is None:
-                error["id_parent"] = ["id parent is not found"]
-                return error
-            folder = Folder(name=new_name, id_parent=self.get_folder_by_id(id_parent))
-        else:
+        error = {}
+        print("name", new_name)
+        print("id_parent", id_parent)
+        if new_name is None:
+            error["name"] = ["Field name is required"]
+        if error:
+            return error
+
+        if not new_name:
+            error["name"] = ["name is not empty"]
+
+        if id_parent is None and not error:
             folder = Folder(name=new_name)
-        if not error:
             folder.save()
             return folder
+
+        if not id_parent:
+            error["id_parent"] = ["id_parent is not empty"]
+            return error
+
+        if self.get_folder_by_id(id_parent) is None:
+            error["id_parent"] = ["id parent is not found"]
+            return error
+
+        folder = Folder(name=new_name, id_parent=self.get_folder_by_id(id_parent))
+        folder.save()
+        return folder
 
     def get_folder_by_id(self, id_folder) -> Folder:
         return Folder.objects.filter(id=id_folder).first()
