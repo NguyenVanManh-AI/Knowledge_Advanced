@@ -122,3 +122,4 @@ weasel==0.4.1
 whitenoise==6.8.1
 wrapt==1.16.0
 yarl==1.16.0
+djangorestframework-simplejwt==5.3.1

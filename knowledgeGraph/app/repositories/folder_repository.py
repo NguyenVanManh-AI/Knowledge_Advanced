@@ -10,52 +10,59 @@ class FolderRepository:
             cls._instance = super(FolderRepository, cls).__new__(cls)
         return cls._instance
 
-    def add_folder(self, new_name, id_parent) -> Folder:
+    def add_folder(self, new_name, id_parent):
         if id_parent:
-            folder = Folder(
-                name=new_name, id_parent=self.get_folder_by_id(id_parent.id)
-            )
-            if id_parent == folder.id:
-                return None
+            error = {}
+            print(id_parent)
+            if self.get_folder_by_id(id_parent) is None:
+                error["id_parent"] = ["id parent is not found"]
+                return error
+            folder = Folder(name=new_name, id_parent=self.get_folder_by_id(id_parent))
         else:
             folder = Folder(name=new_name)
-        folder.save()
-        return folder
+        if not error:
+            folder.save()
+            return folder
 
     def get_folder_by_id(self, id_folder) -> Folder:
         return Folder.objects.filter(id=id_folder).first()
 
-    def update_folder(self, id_folder, new_name_folder, id_parent) -> Folder:
+    def update_folder(self, id_folder, new_name_folder, id_parent):
         folder = self.get_folder_by_id(id_folder)
+        error = {}
         if not folder:
-            return None
-
-        # Chỉ kiểm tra nếu id_parent không phải None
-        if id_parent is not None and int(folder.id) == int(id_parent):
-            return None
-
-        if new_name_folder:
-            folder.update_name(new_name_folder)
-
-        # Kiểm tra nếu id_parent không phải None trước khi cập nhật
+            error["id"] = ["Folder is not found"]
         if id_parent is not None:
-            parent_folder = Folder.objects.filter(id=id_parent).first()
-            if parent_folder:
-                folder.update_idParent(parent_folder)
-            else:
-                return None
 
-        folder.save()
-        return folder
+            if int(id_folder) == int(id_parent):
+                error.setdefault("id", []).append("Child is not same parent")
+                error["id_parent"] = ["Parent is not same child"]
+
+            parent_folder = self.get_folder_by_id(id_parent)
+            if not parent_folder:
+                error.setdefault("id_parent", []).append("Parent is not found")
+            elif not error:
+                folder.update_idParent(parent_folder)
+
+        if folder:
+            if new_name_folder:
+                folder.update_name(new_name_folder)
+        if not error:
+            folder.save()
+            return folder
+        return error
 
     def delete_folder(self, id_folder) -> Folder:
         folder = self.get_folder_by_id(id_folder)
-
-        if folder:
+        error = {}
+        if not folder:
+            error["id"] = ["id folder is not found"]
+        if not error:
             folder.delete()
-        return folder
+            return folder
+        return error
 
-    def find_folder_by_name(self,search_name: str) -> List[Folder]:
+    def find_folder_by_name(self, search_name: str) -> List[Folder]:
         result_folders = Folder.objects.filter(name__icontains=search_name)
         return result_folders
 

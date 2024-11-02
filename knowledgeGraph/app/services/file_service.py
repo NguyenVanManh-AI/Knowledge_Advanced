@@ -8,8 +8,8 @@ class FileService:
     def __init__(self):
         self.fileReposiroty = FileRepository()
 
-    def addFile(self, file, folder):
-        return self.fileReposiroty.add_file(file, folder)
+    def addFile(self, file, id_folder):
+        return self.fileReposiroty.add_file(file, id_folder)
 
     def updateFile(self, id_file, new_name_file, id_folder):
         return self.fileReposiroty.update_file(id_file, new_name_file, id_folder)

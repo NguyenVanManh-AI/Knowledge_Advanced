@@ -4,25 +4,34 @@ from rest_framework.views import APIView
 from rest_framework import status
 from ..services.file_service import FileService
 from ..serializers import FileSerializer
+from ..response.response_success import ResponseSuccess
+from ..response.response_error import ResponseError
 
 
 class FileCreateView(APIView):
     def post(self, request):
-        data = request.data.copy()
-        file = request.FILES.get("file")
-        data["file"] = file
-        data["name"] = file.name
-        serializer = FileSerializer(data=data)
-        print(data)
-        if serializer.is_valid():
-            file = FileService().addFile(file, serializer.validated_data["id_folder"])
-            if not file:
-                return Response(
-                    {"Error": "Input is not valid"},
-                    status=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-                )
-            return Response(FileSerializer(file).data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            data = request.data.copy()
+            file = request.FILES.get("file")
+            data["file"] = file
+            data["name"] = file.name
+            print(data)
+            file = FileService().addFile(file, data["id_folder"])
+            if isinstance(file, dict):
+                return ResponseError().set_response(
+                    error=file, message=[value[0] for keys, value in file.items()]
+                )()
+            if isinstance(file, Exception):
+                return ResponseError().set_response(
+                    message=[str(file)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )()
+            return ResponseSuccess().set_response(
+                data=FileSerializer(file).data, message=["Create file success"]
+            )()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
 
 
 class FileInforView(APIView):
@@ -38,43 +47,53 @@ class FileInforView(APIView):
         # search = request.query_params.get('search')
         # page = request.query_params.get('page')
         # id_folder = request.query_params.get('id_folder')
-
-        print(search, page, id_folder)
-
-        if search != None and page != None:
-            files = FileService().findFileByName(
-                id_folder, search, page, per_page, order_by, order_direction
-            )
-            # if not files['files']:
-            #     return Response(
-            #         {
-            #             "error": "No file found matching the search criteria."
-            #         },
-            #         status=status.HTTP_404_NOT_FOUND
-            #     )
-            serializer = FileSerializer(files["files"], many=True)
-            return Response(
-                {
-                    "files": serializer.data,
-                    "total_pages": files["total_pages"],
-                    "current_page": files["current_page"],
-                    "has_next": files["has_next"],
-                    "has_previous": files["has_previous"],
-                    "total": files["total"],
-                },
-                status=status.HTTP_200_OK,
-            )
-
-        # id = request.query_params.get('id')
+        try:
+            if search != None and page != None:
+                files = FileService().findFileByName(
+                    id_folder, search, page, per_page, order_by, order_direction
+                )
+                # if not files['files']:
+                #     return Response(
+                #         {
+                #             "error": "No file found matching the search criteria."
+                #         },
+                #         status=status.HTTP_404_NOT_FOUND
+                #     )
+                serializer = FileSerializer(files["files"], many=True)
+                return ResponseSuccess().set_response(
+                    data={
+                        "files": serializer.data,
+                        "total_pages": files["total_pages"],
+                        "current_page": files["current_page"],
+                        "has_next": files["has_next"],
+                        "has_previous": files["has_previous"],
+                        "total": files["total"],
+                    },
+                    message=["Find file success"],
+                )()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
+            # id = request.query_params.get('id')
         id = request.data.get("id")
-        if id != None:
-            file_data = FileService().viewFileById(id)
-            serializer = FileSerializer(file_data["file"])
-            return Response(
-                {"data": {"file": serializer.data, "folder": file_data["folder"]}},
-                status=status.HTTP_200_OK,
-            )
-        return Response({"error": "Bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            if id != None:
+                file_data = FileService().viewFileById(id)
+                if "id" in file_data.keys():
+                    return ResponseError().set_response(
+                        error=file_data, message=file_data["id"]
+                    )()
+                serializer = FileSerializer(file_data["file"])
+                return ResponseSuccess().set_response(
+                    data={"file": serializer.data, "folder": file_data["folder"]},
+                    message=["Get id file success"],
+                )()
+            return ResponseError().set_response(message=["Bad request"])()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
 
 
 class FileUpdateView(APIView):
@@ -82,34 +101,46 @@ class FileUpdateView(APIView):
         name = request.data.get("name")
         id = request.data.get("id")
         id_folder = request.data.get("id_folder")
-        update_file = FileService().updateFile(id, name, id_folder)
-        if not update_file:
-            return Response(
-                {"error": "Id is not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-        return Response({"message": "Update success"}, status=status.HTTP_200_OK)
+        try:
+            update_file = FileService().updateFile(id, name, id_folder)
+            if isinstance(update_file, dict):
+                return ResponseError().set_response(
+                    error=update_file,
+                    message=[value[0] for value in update_file.values()],
+                )()
+            return ResponseSuccess().set_response(message=["Update file success"])()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
 
 
 class FileDeleteView(APIView):
     def delete(self, request):
-        deleted = FileService().deleteFile(request.query_params.get("id"))
-        if not deleted:
-            return Response(
-                {"error": "File is not found."}, status=status.HTTP_404_NOT_FOUND
-            )
-        return Response(
-            {"message": "Delete success"}, status=status.HTTP_204_NO_CONTENT
-        )
+        try:
+            deleted = FileService().deleteFile(request.query_params.get("id"))
+            if isinstance(deleted, dict):
+                return ResponseError().set_response(
+                    error=deleted, message=[deleted["id"]]
+                )()
+            return ResponseSuccess().set_response(message=["Updated success"])()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
 
 
 class FileDownloadView(APIView):
     def get(self, request):
         id_file = request.GET.get("id")
-        path = FileService().download_file(id_file)
-        print("path os api view",path)
-        if path is None:
-            return Response(
-                {"error": "File is not exists"}, status=status.HTTP_404_NOT_FOUND
-            )
-        response = FileResponse(open(path, 'rb'), as_attachment=True)
-        return response
+        try:
+            path = FileService().download_file(id_file)
+            print("path os api view", path)
+            if isinstance(path, dict):
+                return ResponseError().set_response(error=path)()
+            response = FileResponse(open(path, "rb"), as_attachment=True)
+            return response
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()

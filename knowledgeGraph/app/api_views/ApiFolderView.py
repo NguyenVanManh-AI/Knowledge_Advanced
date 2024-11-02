@@ -3,6 +3,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 from ..services.folder_service import FolderService
 from ..serializers import FolderSerializer
+from ..response.response_success import ResponseSuccess
+from ..response.response_error import ResponseError
 
 
 class FolderListView(APIView):
@@ -16,52 +18,52 @@ class FolderListView(APIView):
         order_direction = request.data.get(
             "order_direction", "asc"
         )  # Mặc định là 'asc' nếu không có
-
-        if page is not None:
-            folders = FolderService().findFolderByName(
-                search, page, per_page, order_by, order_direction
-            )
-            # if not folders['folders']:
-            #     return Response(
-            #         {"error": "No folders found matching the search criteria."},
-            #         status=status.HTTP_404_NOT_FOUND
-            #     )
-            serializer = FolderSerializer(folders["folders"], many=True)
-            return Response(
-                {
-                    "folders": serializer.data,
-                    "total_pages": folders["total_pages"],
-                    "current_page": folders["current_page"],
-                    "has_next": folders["has_next"],
-                    "has_previous": folders["has_previous"],
-                    "total": folders["total"],
-                },
-                status=status.HTTP_200_OK,
-            )
-
-        folders = FolderService().getAllFolder()
-        serializer = FolderSerializer(folders, many=True)
-        return Response(
-            {
-                "data": serializer.data,
-            },
-            status=status.HTTP_200_OK,
-        )
+        try:
+            if page is not None:
+                folders = FolderService().findFolderByName(
+                    search, page, per_page, order_by, order_direction
+                )
+                serializer = FolderSerializer(folders["folders"], many=True)
+                return ResponseSuccess().set_response(
+                    data={
+                        "folders": serializer.data,
+                        "total_pages": folders["total_pages"],
+                        "current_page": folders["current_page"],
+                        "has_next": folders["has_next"],
+                        "has_previous": folders["has_previous"],
+                        "total": folders["total"],
+                    },
+                    message=["Find folder success"],
+                )()
+            folders = FolderService().getAllFolder()
+            serializer = FolderSerializer(folders, many=True)
+            return ResponseSuccess().set_response(
+                data=serializer.data, message=["Get all follder success"]
+            )()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
 
 
 class FolderCreateView(APIView):
     def post(self, request):
-        serializer = FolderSerializer(data=request.data)
-        if serializer.is_valid():
+        data = request.data.copy()
+        try:
+            print(data)
             folder = FolderService().addFolder(
-                serializer.validated_data["name"],
-                serializer.validated_data.get("id_parent"),
+                data["name"],
+                data["id_parent"],
             )
-            return Response(
-                FolderSerializer(folder).data, status=status.HTTP_201_CREATED
-            )
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if isinstance(folder, dict):
+                return ResponseError().set_response(
+                    error=folder, message=folder["id_parent"]
+                )()
+            return ResponseSuccess().set_response(data=FolderSerializer(folder).data)()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
 
 
 class FolderUpdateView(APIView):
@@ -69,36 +71,39 @@ class FolderUpdateView(APIView):
         id = request.data.get("id")
         name = request.data.get("name")
         id_parent = request.data.get("id_parent")
-        if id == id_parent:
-            return Response(
-                {"error": "Id and id parent not same"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        updated_folder = FolderService().updateFolder(id, name, id_parent)
-        if not updated_folder:
-            return Response(
-                {"error": "Folder is not found"}, status=status.HTTP_404_NOT_FOUND
-            )
-        return Response({"message": "Update success"}, status=status.HTTP_200_OK)
+        try:
+            updated_folder = FolderService().updateFolder(id, name, id_parent)
+            if isinstance(updated_folder, dict):
+                return ResponseError().set_response(
+                    error=updated_folder,
+                    message=[e for values in updated_folder.values() for e in values],
+                )()
+            return ResponseSuccess().set_response(message=["Updated success"])()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
 
 
 class FolderDeleteView(APIView):
     def delete(self, request):
-        deleted = FolderService().deleteFolder(request.query_params.get("id"))
-        if not deleted:
-            return Response(
-                {"error": "Folder is not found."}, status=status.HTTP_404_NOT_FOUND
-            )
-        return Response(
-            {"message": "Delete success"}, status=status.HTTP_204_NO_CONTENT
-        )
+        try:
+            deleted = FolderService().deleteFolder(request.query_params.get("id"))
+            if isinstance(deleted, dict):
+                return ResponseError().set_response(
+                    error=deleted, message=deleted["id"]
+                )()
+            return ResponseSuccess().set_response(message=["Deleted success"])()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
 
 
 class FolderGetTree(APIView):
     def get(self, request):
         result = FolderService().getTree()
         print(result)
-        return Response(
-            {"data": result},
-            status=status.HTTP_200_OK,
-        )
+        return ResponseSuccess().set_response(
+            data=result,message=["Get tree folder success"]
+            )()
