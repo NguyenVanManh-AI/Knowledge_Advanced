@@ -221,13 +221,13 @@
 							"formdata": [
 								{
 									"key": "id_folder",
-									"value": "10",
+									"value": "1",
 									"type": "text"
 								},
 								{
 									"key": "file",
 									"type": "file",
-									"src": "postman-cloud:///1ef97995-12cb-4690-b289-fc76652d5349"
+									"src": "postman-cloud:///1ef96272-2e5c-4830-be94-ff657ab9eeaa"
 								}
 							]
 						},
@@ -581,46 +581,12 @@
 			"name": "User",
 			"item": [
 				{
-					"name": "Dashboard",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxNzc5NTIxLCJpYXQiOjE3MzA1Njk5MjEsImp0aSI6IjU5NDc4MTYyNDA4NzRlMTdiNDg1YWFkYmI4YjRkOWYwIiwidXNlcl9pZCI6NH0.ko7H7kVZ6XIM0dqxjNiYNn1gHzF1iiX4KdkCotu0SKc",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/dashboard/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"dashboard",
-								""
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Logout",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/logout/",
+							"raw": "http://127.0.0.1:8000/api/user/logout/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -631,6 +597,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"user",
 								"logout",
 								""
 							]
@@ -644,7 +611,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/token/refresh/",
+							"raw": "http://127.0.0.1:8000/api/user/token/refresh/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -655,6 +622,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"user",
 								"token",
 								"refresh",
 								""
@@ -684,7 +652,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/login/",
+							"raw": "http://127.0.0.1:8000/api/user/login/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -695,6 +663,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"user",
 								"login",
 								""
 							]
@@ -712,17 +681,17 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "hello",
+									"value": "",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "123456",
+									"value": "",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "hello@gmail.com",
+									"value": "abc@gmail.com",
 									"type": "text"
 								},
 								{
@@ -738,7 +707,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/register/",
+							"raw": "http://127.0.0.1:8000/api/user/register/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -749,6 +718,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"user",
 								"register",
 								""
 							]
@@ -764,7 +734,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxNzc5NTIxLCJpYXQiOjE3MzA1Njk5MjEsImp0aSI6IjU5NDc4MTYyNDA4NzRlMTdiNDg1YWFkYmI4YjRkOWYwIiwidXNlcl9pZCI6NH0.ko7H7kVZ6XIM0dqxjNiYNn1gHzF1iiX4KdkCotu0SKc",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxODMyNTMwLCJpYXQiOjE3MzA2MjI5MzAsImp0aSI6IjJlOTcyZTJmYjNlZDRiYzhhNjQwZWI4M2EwNmM5ODI2IiwidXNlcl9pZCI6NH0.w74tQk4E2FzWzOEb3Y2s5jT4aLI7l0XAf3P515S5Gts",
 									"type": "string"
 								}
 							]
@@ -772,7 +742,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/profile/",
+							"raw": "http://127.0.0.1:8000/api/user/profile/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -783,6 +753,7 @@
 							"port": "8000",
 							"path": [
 								"api",
+								"user",
 								"profile",
 								""
 							]
