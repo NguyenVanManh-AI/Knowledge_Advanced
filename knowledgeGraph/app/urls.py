@@ -2,7 +2,7 @@ from django.urls import path, include
 from .api_views.ApiFolderView import *
 from .api_views.ApiFileView import *
 from .api_views.ApiChatbotView import *
-from .api_views.ApiUserView import RegisterView, LoginView, UserProfileView, Dashboard
+from .api_views.ApiUserView import RegisterView, LoginView, UserProfileView
 from rest_framework_simplejwt.views import TokenRefreshView
 
 # from .views import chatbot, cypher
@@ -39,5 +39,4 @@ urlpatterns = [
     path("user/login/", LoginView.as_view(), name="user-login"),
     path("user/profile/", UserProfileView.as_view(), name="user-profile"),
     path("user/token/refresh/", TokenRefreshView.as_view(), name="user-token_refresh"),
-    path("user/dashboard/", Dashboard.as_view(), name="user-dashboard"),
 ]
