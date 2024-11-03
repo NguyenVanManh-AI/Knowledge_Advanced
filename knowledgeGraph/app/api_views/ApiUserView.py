@@ -75,12 +75,12 @@ class LoginView(TokenObtainPairView):
                 user = User.objects.get(username=username)
                 if not user.check_password(password):
                     return ResponseError().set_response(
-                        error={"password": "password is wrong"},
+                        error={"password": ["password is wrong"]},
                         message=["password is wrong"],
                     )()
             except User.DoesNotExist:
                 return ResponseError().set_response(
-                    error={"username": "username is wrong"},
+                    error={"username": ["username is wrong"]},
                     message=["username is wrong"],
                 )()
         except Exception as e:
