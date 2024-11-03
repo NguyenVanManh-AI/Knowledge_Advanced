@@ -105,8 +105,13 @@ class FolderDeleteView(APIView):
 
 class FolderGetTree(APIView):
     def get(self, request):
-        result = FolderService().getTree()
-        print(result)
-        return ResponseSuccess().set_response(
-            data=result, message=["Get tree folder success"]
-        )()
+        try:
+            result = FolderService().getTree()
+            print(result)
+            return ResponseSuccess().set_response(
+                data=result, message=["Get tree folder success"]
+            )()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()

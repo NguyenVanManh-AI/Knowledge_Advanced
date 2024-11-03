@@ -1,18 +1,13 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from rest_framework import generics
-from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from ..serializers import RegisterSerializer, UserProfileSerializer
-from rest_framework.views import APIView
+from ..serializers import RegisterSerializer, UserProfileSerializer, LoginSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from ..response.response_success import ResponseSuccess
 from ..response.response_error import ResponseError
 from rest_framework import status
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth import get_user_model
-
-
 
 
 class RegisterView(generics.CreateAPIView):
@@ -44,15 +39,8 @@ class RegisterView(generics.CreateAPIView):
             )()
 
 
-class UserTokenObtainPairSerializer(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user):
-        token = super().get_token(user)
-        return token
-
-
 class LoginView(TokenObtainPairView):
-    serializer_class = UserTokenObtainPairSerializer
+    serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -69,27 +57,32 @@ class LoginView(TokenObtainPairView):
 
             token_data = serializer.validated_data
             user_serializer = UserProfileSerializer(serializer.user)
-            
+            role = serializer.user.groups.values_list("name", flat=True)
+            data_user = user_serializer.data
+            data_user["role"] = role[0]
+
             return ResponseSuccess().set_response(
-                data={"token": token_data, "user": user_serializer.data}
-                    , message=["User login success"]
+                data={"token": token_data, "user": data_user},
+                message=["User login success"],
             )()
         except AuthenticationFailed as e:
             username = request.data.get("username")
             password = request.data.get("password")
-            
+
             User = get_user_model()
 
             try:
                 user = User.objects.get(username=username)
                 if not user.check_password(password):
                     return ResponseError().set_response(
-                        error = {"password":"password is wrong"},
+                        error={"password": "password is wrong"},
+                        message=["password is wrong"],
                     )()
             except User.DoesNotExist:
                 return ResponseError().set_response(
-                        error = {"username":"username is wrong"},
-                    )()
+                    error={"username": "username is wrong"},
+                    message=["username is wrong"],
+                )()
         except Exception as e:
             return ResponseError().set_response(
                 message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -100,9 +93,9 @@ class UserProfileView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
 
-    def get(self,request):
-        try :
-            user = request.user  
+    def get(self, request):
+        try:
+            user = request.user
             return ResponseSuccess().set_response(
                 data={
                     "username": user.username,

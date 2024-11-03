@@ -21,46 +21,57 @@ class ChatbotAnswerView(APIView):
     def post(self, request):
         question = request.data.get("question")
         print("question: ", question)
-        if not question:
-            return ResponseError().set_response(
-                error={"question": "Missing question in request"},
-                message=["Missing question in request"],
-            )()
-        if question is None:
-            return ResponseError().set_response(
-                error={"question": "No question"},
-                message=["No question"],
-            )()
-
         try:
-            answer = ChatbotService().answer(question)
-            cypher = ChatbotService().cypher(question)
+            if not question:
+                return ResponseError().set_response(
+                    error={"question": "Missing question in request"},
+                    message=["Missing question in request"],
+                )()
+            if question is None:
+                return ResponseError().set_response(
+                    error={"question": "No question"},
+                    message=["No question"],
+                )()
 
+            try:
+                answer = ChatbotService().answer(question)
+                cypher = ChatbotService().cypher(question)
+
+            except Exception as e:
+                return ResponseError().set_response(
+                    message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )()
+
+            if answer is None:
+                return ResponseSuccess().set_response(
+                    data={"answer": "No answer for this question"},
+                    message=["No answer for this question"],
+                )()
+            return ResponseSuccess().set_response(
+                data={"answer": answer.text, "cypher": cypher},
+                message=["Answer success"],
+            )()
         except Exception as e:
             return ResponseError().set_response(
                 message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )()
 
-        if answer is None:
-            return ResponseSuccess().set_response(
-                data={"answer": "No answer for this question"},
-                message=["No answer for this question"],
-            )()
-        return ResponseSuccess().set_response(
-            data={"answer": answer.text, "cypher": cypher},
-            message=["Answer success"],
-        )()
-
 
 class ChatbotHistoryView(APIView):
-    permission_classes = [IsAuthenticated] 
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         user = request.user
-        chats = ChatbotService().get_chat_by_user(user)
-        serializer = ChatSerializer(chats, many=True)
-        return ResponseSuccess().set_response(
-            data=serializer.data, message=["Get history success"]
-        )()
+        try:
+            chats = ChatbotService().get_chat_by_user(user)
+            serializer = ChatSerializer(chats, many=True)
+            return ResponseSuccess().set_response(
+                data=serializer.data, message=["Get history success"]
+            )()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()
 
 
 from rest_framework import viewsets
@@ -79,4 +90,26 @@ class ChatViewSet(viewsets.ModelViewSet):
         return ChatbotService().get_chat_by_user(self.request.user)
 
     def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+        user = request.user
+        serializer = self.get_serializer(data=request.data)
+        try:
+            if not serializer.is_valid():
+                return ResponseError().set_response(
+                    error=serializer.errors,
+                    message=[
+                        e.replace("This field", keys)
+                        for keys, values in serializer.errors.items()
+                        for e in values
+                    ],
+                )()
+
+            self.perform_create(serializer)
+
+            headers = self.get_success_headers(serializer.data)
+            return ResponseSuccess().set_response(
+                data=serializer.data, message=["User registered success"]
+            )()
+        except Exception as e:
+            return ResponseError().set_response(
+                message=[str(e)], status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )()

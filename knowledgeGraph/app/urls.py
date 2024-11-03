@@ -2,7 +2,7 @@ from django.urls import path, include
 from .api_views.ApiFolderView import *
 from .api_views.ApiFileView import *
 from .api_views.ApiChatbotView import *
-from .api_views.ApiUserView import RegisterView, LoginView, UserProfileView
+from .api_views.ApiUserView import *
 from rest_framework_simplejwt.views import TokenRefreshView
 
 # from .views import chatbot, cypher

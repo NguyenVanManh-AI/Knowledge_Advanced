@@ -455,13 +455,13 @@
 								{
 									"key": "question",
 									"value": "Mất trí nhớ là triệu chứng của bệnh gì?",
-									"type": "text",
-									"disabled": true
+									"type": "text"
 								},
 								{
 									"key": "question",
 									"value": "Bệnh trĩ là gì ?",
-									"type": "text"
+									"type": "text",
+									"disabled": true
 								},
 								{
 									"key": "question",
@@ -472,7 +472,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/chatbotv2/",
+							"raw": "http://127.0.0.1:8000/api/chatbot/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -483,7 +483,7 @@
 							"port": "8000",
 							"path": [
 								"api",
-								"chatbotv2",
+								"chatbot",
 								""
 							]
 						}
@@ -498,7 +498,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxNzc5NTIxLCJpYXQiOjE3MzA1Njk5MjEsImp0aSI6IjU5NDc4MTYyNDA4NzRlMTdiNDg1YWFkYmI4YjRkOWYwIiwidXNlcl9pZCI6NH0.ko7H7kVZ6XIM0dqxjNiYNn1gHzF1iiX4KdkCotu0SKc",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxODQxNDI5LCJpYXQiOjE3MzA2MzE4MjksImp0aSI6IjhjMzkyODg2ZDg3YzQ0ZGM4YTdkYjk5ODkzMWY1MzAyIiwidXNlcl9pZCI6Nn0.l2R7OTVCRwkshes6uuGoNbv6oX_lfSLGsRAdhMxKUyo",
 									"type": "string"
 								}
 							]
@@ -533,7 +533,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxNzc5NTIxLCJpYXQiOjE3MzA1Njk5MjEsImp0aSI6IjU5NDc4MTYyNDA4NzRlMTdiNDg1YWFkYmI4YjRkOWYwIiwidXNlcl9pZCI6NH0.ko7H7kVZ6XIM0dqxjNiYNn1gHzF1iiX4KdkCotu0SKc",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxODQxNDI5LCJpYXQiOjE3MzA2MzE4MjksImp0aSI6IjhjMzkyODg2ZDg3YzQ0ZGM4YTdkYjk5ODkzMWY1MzAyIiwidXNlcl9pZCI6Nn0.l2R7OTVCRwkshes6uuGoNbv6oX_lfSLGsRAdhMxKUyo",
 									"type": "string"
 								}
 							]
@@ -580,31 +580,6 @@
 		{
 			"name": "User",
 			"item": [
-				{
-					"name": "Logout",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://127.0.0.1:8000/api/user/logout/",
-							"protocol": "http",
-							"host": [
-								"127",
-								"0",
-								"0",
-								"1"
-							],
-							"port": "8000",
-							"path": [
-								"api",
-								"user",
-								"logout",
-								""
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Refresh Token",
 					"request": {
@@ -681,17 +656,17 @@
 							"formdata": [
 								{
 									"key": "username",
-									"value": "",
+									"value": "hello",
 									"type": "text"
 								},
 								{
 									"key": "password",
-									"value": "",
+									"value": "123456",
 									"type": "text"
 								},
 								{
 									"key": "email",
-									"value": "abc@gmail.com",
+									"value": "hello@gmail.com",
 									"type": "text"
 								},
 								{
@@ -734,7 +709,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxODMyNTMwLCJpYXQiOjE3MzA2MjI5MzAsImp0aSI6IjJlOTcyZTJmYjNlZDRiYzhhNjQwZWI4M2EwNmM5ODI2IiwidXNlcl9pZCI6NH0.w74tQk4E2FzWzOEb3Y2s5jT4aLI7l0XAf3P515S5Gts",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMxODQxNDI5LCJpYXQiOjE3MzA2MzE4MjksImp0aSI6IjhjMzkyODg2ZDg3YzQ0ZGM4YTdkYjk5ODkzMWY1MzAyIiwidXNlcl9pZCI6Nn0.l2R7OTVCRwkshes6uuGoNbv6oX_lfSLGsRAdhMxKUyo",
 									"type": "string"
 								}
 							]
