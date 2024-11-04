@@ -31,7 +31,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "advanced-knowledge.vercel.app",
-    "20.2.90.6"
+    "20.2.90.6",
+    "127.0.0.1",
 ]
 
 CORS_ALLOWED_ORIGINS = [
