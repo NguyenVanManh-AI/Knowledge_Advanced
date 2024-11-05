@@ -58,12 +58,16 @@ class ChatbotAnswerView(APIView):
 
 
 class ChatbotHistoryView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        user = request.user
+        id_user = request.GET.get("id_user")
         try:
-            chats = ChatbotService().get_chat_by_user(user)
+            chats = ChatbotService().get_chat_by_user(id_user)
+            if isinstance(chats, dict):
+                return ResponseError().set_response(
+                    error=chats, message=chats["id_user"]
+                )()
             serializer = ChatSerializer(chats, many=True)
             return ResponseSuccess().set_response(
                 data=serializer.data, message=["Get history success"]
