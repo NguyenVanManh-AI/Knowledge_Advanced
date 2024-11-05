@@ -265,10 +265,15 @@ class QAUsingNeo4j():
         while(1):
             try:
                 result = model.generate_content(prompt)
+<<<<<<< HEAD
             except:
                 count += 1
                 if count > max_count:
                     break
+=======
+            except Exception as e:
+                print("check loi:" + str(e))
+>>>>>>> f1331bb72bde6c0c725a011f0bf04d2bc570f90b
                 time.sleep(3)
                 self.configure_api()
                 continue
