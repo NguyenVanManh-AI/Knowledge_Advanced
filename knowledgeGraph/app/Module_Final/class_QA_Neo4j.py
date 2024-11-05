@@ -42,20 +42,25 @@ class QAUsingNeo4j():
         sentences = sent_tokenize(normalized_text)
         results = []
         for sentence in sentences:
-            pos_tags = pos_tag(sentence)
-            first_verb_index = -1
-            for index, (word, pos) in enumerate(pos_tags):
-                if pos == 'V':
-                    if index == 0:
-                        continue
-                    first_verb_index = index
-                    break
-            if first_verb_index != -1:
-                part1 = ' '.join(word for word, _ in pos_tags[:first_verb_index]) 
-                part2 = ' '.join(word for word, _ in pos_tags[first_verb_index:])
-                results.append([part1.strip(), part2.strip()])
+            if 'là' in sentence:
+                results.append([sentence.split('là')[0][:-1], 'là ' + sentence.split('là')[1][1:]])
+            elif 'có' in sentence:
+                results.append([sentence.split('có')[0][:-1], 'có ' + sentence.split('có')[1][1:]])
             else:
-                results.append([sentence.strip()])
+                pos_tags = pos_tag(sentence)
+                first_verb_index = -1
+                for index, (word, pos) in enumerate(pos_tags):
+                    if pos == 'V':
+                        if index == 0:
+                            continue
+                        first_verb_index = index
+                        break
+                if first_verb_index != -1:
+                    part1 = ' '.join(word for word, _ in pos_tags[:first_verb_index])
+                    part2 = ' '.join(word for word, _ in pos_tags[first_verb_index:])
+                    results.append([part1.strip(), part2.strip()])
+                else:
+                    results.append([sentence.strip()])
         return results
 
     def find_node_by_text(self, tx, text):
