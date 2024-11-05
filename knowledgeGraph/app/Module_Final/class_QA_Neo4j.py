@@ -223,7 +223,8 @@ class QAUsingNeo4j():
         while(1):
             try:
                 result = model.generate_content(prompt)
-            except:
+            except Exception as e:
+                print("check loi:" + str(e))
                 time.sleep(3)
                 self.configure_api()
                 continue
