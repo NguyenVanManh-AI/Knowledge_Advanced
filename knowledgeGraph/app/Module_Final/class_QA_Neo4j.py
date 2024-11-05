@@ -18,24 +18,20 @@ class QAUsingNeo4j():
         self.current_api_index = -1
         self.GOOGLE_API_KEY = 'AIzaSyCswsFvn0wX5Zi2fbUX0MS43_1RgUSim3Y'
         self.API_KEYS = [
-            'AIzaSyCB_5BKXsp8q4pStFzu6skCDYbeGB6lxcs',
-            'AIzaSyCkvlRBlKz1SnEDHx8T4XhePUue8JaqMc8',
-            'AIzaSyBsXePpIrZI4ZcpH5YpJuel55vtLHFV9Zk',
-            'AIzaSyCHhdbmMWWZG1NVpRwYQrV9n0B11dLj2HQ',
-            'AIzaSyDUjAPc8BHrFFT3Ex1QwXZZmIyIhN2km4g',
-            'AIzaSyCdM9kHPgbTRnv9ix-2bj67EqkyGAsETAY',
-            'AIzaSyALyqLisoNquZzC25iexBEAc7X6w02uofw',
-            'AIzaSyDINdqmLRvwvXG1zav72Uth6VXbwZ5kEuI',
-            'AIzaSyDhc0o_JNaqhLXV1FAoKCSG6WIeLv-Hluw',
-            'AIzaSyBJ936xtXe_XROW6_JR_q2_CrrqW5_PNT8',
-            'AIzaSyCWSjzAsVt04q1_8yXS4ztLS_lImzqirJM',
-            'AIzaSyCHXmDzAj_VsU2Tq0ZfJ1hk3tgmVq0fwyk',
-            'AIzaSyBUsxR-tRBJkIGT2jrF47t1rGlEsSDCaK0',
-            'AIzaSyBrVuA-wejPGpdSrp0dU1H45NXtH2jB4Mk',
-            'AIzaSyCLj-aZYWWq4E-P1tpFXLan_7Q5d9BB1VU',
-            'AIzaSyAjoecH4Ehh_0vI9ZYzmkU5qrlTXOBVBdk',
-            'AIzaSyCANipb-3PCJPTK7QzYbfYnI67RAHW7vxA',
-            'AIzaSyA7E_R0VdZLbl0dQgndSQlucab9EYdOWdI',
+            'AIzaSyDmfK5ddS0zi8F6pdNaBETRUdT1vvKM_gw',
+            'AIzaSyDOMTpoMwPQcZ5sWNwyOtJXhclEnv5dSgg',
+            'AIzaSyCHta9yVQFqxmLZeOWp-WqzLakSdWtgOgs',
+            'AIzaSyCGKAIV5kasWUHAeBdHn0G1ivnsai-o_Rg',
+            'AIzaSyBF8dgYBO8Ke5OMnR67hRn_Wj7o4cySXps',
+            'AIzaSyD-zSSiRxkQJDojDVyp7qHJ08sb4u_whOY',
+            'AIzaSyDfVEwGcBdjpENJzdPrsPOGH347Nf_tkSc',
+            # 'AIzaSyD7g2Iyeeb2VmkflHMS_Fa1gk70dEOcOLg',
+            # 'AIzaSyDZBX0aTTKo_nOUyMR7DNT05UzxU7SuqaQ',
+            # 'AIzaSyAIl7q_o1Yligo9IDxp-mS8CTKIieMfpTc',
+            # 'AIzaSyAO-bb7fkWIpvf7EYjW0PPLWFQZDokrego',
+            # 'AIzaSyANA0B90NfKQQ7wZ_sID8B8T17_FY4fEVk',
+            # 'AIzaSyC3FW5DtjnDXVh7OYV8qgaEXFJ8fYHHs5Y',
+            # 'AIzaSyDvTktdV60mQJXZdl8bPuO_9BPEmgGeklM',
         ]
 
     def __str__(self):
@@ -265,15 +261,10 @@ class QAUsingNeo4j():
         while(1):
             try:
                 result = model.generate_content(prompt)
-<<<<<<< HEAD
             except:
                 count += 1
                 if count > max_count:
                     break
-=======
-            except Exception as e:
-                print("check loi:" + str(e))
->>>>>>> f1331bb72bde6c0c725a011f0bf04d2bc570f90b
                 time.sleep(3)
                 self.configure_api()
                 continue
