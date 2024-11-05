@@ -212,6 +212,23 @@ class QAUsingNeo4j():
         genai.configure(api_key=self.GOOGLE_API_KEY)
         print(f"API switched to index {self.current_api_index}: {self.GOOGLE_API_KEY}")
 
+    # def get_answer(self, prompt):
+    #     # GOOGLE_API_KEY = 'AIzaSyCswsFvn0wX5Zi2fbUX0MS43_1RgUSim3Y'
+    #     import random
+    #     random.shuffle(self.API_KEYS)
+    #     # current_api_index = -1
+    #     self.configure_api()
+    #     model = genai.GenerativeModel(
+    #         model_name='models/gemini-1.5-flash-latest')
+    #     while(1):
+    #         try:
+    #             result = model.generate_content(prompt)
+    #         except:
+    #             time.sleep(3)
+    #             self.configure_api()
+    #             continue
+    #         break
+    #     return result
     def get_answer(self, prompt):
         # GOOGLE_API_KEY = 'AIzaSyCswsFvn0wX5Zi2fbUX0MS43_1RgUSim3Y'
         import random
@@ -219,11 +236,39 @@ class QAUsingNeo4j():
         # current_api_index = -1
         self.configure_api()
         model = genai.GenerativeModel(
-            model_name='models/gemini-1.5-flash-latest')
+            model_name='models/gemini-1.5-flash-latest',
+            generation_config={
+                "temperature": 0.3,
+                "top_p": 0.5,
+                "top_k": 1
+            },
+            safety_settings = [
+                {
+                    "category": "HARM_CATEGORY_HARASSMENT",
+                    "threshold": "BLOCK_NONE"
+                },
+                {
+                    "category": "HARM_CATEGORY_HATE_SPEECH",
+                    "threshold": "BLOCK_NONE"
+                },
+                {
+                    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                    "threshold": "BLOCK_NONE"
+                },
+                {
+                    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                    "threshold": "BLOCK_NONE"
+                }
+            ])
+        max_count = 6
+        count = 0
         while(1):
             try:
                 result = model.generate_content(prompt)
             except:
+                count += 1
+                if count > max_count:
+                    break
                 time.sleep(3)
                 self.configure_api()
                 continue
