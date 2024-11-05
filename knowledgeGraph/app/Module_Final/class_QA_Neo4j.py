@@ -12,9 +12,9 @@ from django.conf import settings
 class QAUsingNeo4j():
     def __init__(self):
         self.entity_types = ['symptom', 'cause', 'disease', 'organ', 'treatment', 'lifestyle', 'test', 'food']
-        self.uri = "neo4j+s://ffdfad2c.databases.neo4j.io"                   # Địa chỉ database
+        self.uri = "neo4j+s://f895f551.databases.neo4j.io"                   # Địa chỉ database
         self.username = "neo4j"                                              # Username
-        self.password = "niQisz0U5weBUMit5DuSDTxMXmDsU91qykqIEOJTA4o"        # Password
+        self.password = "CBkTUIkK_Sf2xR82K_UIycrMXwh-l-OEdEY9dNnxro8"        # Password
         self.current_api_index = -1
         self.GOOGLE_API_KEY = 'AIzaSyCswsFvn0wX5Zi2fbUX0MS43_1RgUSim3Y'
         self.API_KEYS = [
