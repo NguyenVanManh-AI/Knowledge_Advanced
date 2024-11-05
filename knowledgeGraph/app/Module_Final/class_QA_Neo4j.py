@@ -261,7 +261,8 @@ class QAUsingNeo4j():
         while(1):
             try:
                 result = model.generate_content(prompt)
-            except:
+            except Exception as e:
+                print("Error generating content: " + str(e))
                 count += 1
                 if count > max_count:
                     break
