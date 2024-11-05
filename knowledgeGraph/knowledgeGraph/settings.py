@@ -176,4 +176,4 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_URL = "/media/uploads/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media", "uploads")
-BASE_URL_DOWNLOAD = "http://127.0.0.1:8000/api/file/download/?id="
+BASE_URL_DOWNLOAD = "/api/file/download/?id="
