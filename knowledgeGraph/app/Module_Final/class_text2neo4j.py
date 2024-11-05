@@ -270,9 +270,9 @@ SET r{index}.text = '{item['text']}'\n"""
     
     def push_to_neo4j(self, cypher_querys):
         # Thông tin kết nối Neo4j
-        uri = "neo4j+s://ffdfad2c.databases.neo4j.io"               # Địa chỉ database
+        uri = "neo4j+s://f895f551.databases.neo4j.io"               # Địa chỉ database
         username = "neo4j"                                          # Username
-        password = "niQisz0U5weBUMit5DuSDTxMXmDsU91qykqIEOJTA4o"    # Password
+        password = "CBkTUIkK_Sf2xR82K_UIycrMXwh-l-OEdEY9dNnxro8"    # Password
         driver = GraphDatabase.driver(uri, auth=(username, password), max_connection_lifetime=600)
         # Open session and process the graph creation
         with driver.session() as session:
