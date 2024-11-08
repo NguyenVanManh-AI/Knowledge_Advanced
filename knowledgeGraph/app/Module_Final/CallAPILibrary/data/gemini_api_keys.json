@@ -2,61 +2,13 @@
     "apis": [
         {
             "api": "AIzaSyDmfK5ddS0zi8F6pdNaBETRUdT1vvKM_gw",
-            "called_times": 0,
+            "called_times": 2,
             "is_exhausted": 0,
             "is_suspended": 0
         },
         {
             "api": "AIzaSyDOMTpoMwPQcZ5sWNwyOtJXhclEnv5dSgg",
-            "called_times": 0,
-            "is_exhausted": 0,
-            "is_suspended": 0
-        },
-        {
-            "api": "AIzaSyCHta9yVQFqxmLZeOWp-WqzLakSdWtgOgs",
-            "called_times": 0,
-            "is_exhausted": 0,
-            "is_suspended": 0
-        },
-        {
-            "api": "AIzaSyCGKAIV5kasWUHAeBdHn0G1ivnsai-o_Rg",
-            "called_times": 0,
-            "is_exhausted": 0,
-            "is_suspended": 0
-        },
-        {
-            "api": "AIzaSyBF8dgYBO8Ke5OMnR67hRn_Wj7o4cySXps",
-            "called_times": 0,
-            "is_exhausted": 0,
-            "is_suspended": 0
-        },
-        {
-            "api": "AIzaSyD-zSSiRxkQJDojDVyp7qHJ08sb4u_whOY",
-            "called_times": 0,
-            "is_exhausted": 0,
-            "is_suspended": 0
-        },
-        {
-            "api": "AIzaSyDfVEwGcBdjpENJzdPrsPOGH347Nf_tkSc",
-            "called_times": 0,
-            "is_exhausted": 0,
-            "is_suspended": 0
-        },
-        {
-            "api": "AIzaSyD7g2Iyeeb2VmkflHMS_Fa1gk70dEOcOLg",
-            "called_times": 0,
-            "is_exhausted": 0,
-            "is_suspended": 0
-        },
-        {
-            "api": "AIzaSyDZBX0aTTKo_nOUyMR7DNT05UzxU7SuqaQ",
-            "called_times": 0,
-            "is_exhausted": 0,
-            "is_suspended": 0
-        },
-        {
-            "api": "AIzaSyAIl7q_o1Yligo9IDxp-mS8CTKIieMfpTc",
-            "called_times": 0,
+            "called_times": 1,
             "is_exhausted": 0,
             "is_suspended": 0
         },
@@ -80,6 +32,54 @@
         },
         {
             "api": "AIzaSyDvTktdV60mQJXZdl8bPuO_9BPEmgGeklM",
+            "called_times": 1,
+            "is_exhausted": 0,
+            "is_suspended": 0
+        },
+        {
+            "api": "AIzaSyCHta9yVQFqxmLZeOWp-WqzLakSdWtgOgs",
+            "called_times": 1,
+            "is_exhausted": 0,
+            "is_suspended": 0
+        },
+        {
+            "api": "AIzaSyCGKAIV5kasWUHAeBdHn0G1ivnsai-o_Rg",
+            "called_times": 1,
+            "is_exhausted": 0,
+            "is_suspended": 0
+        },
+        {
+            "api": "AIzaSyBF8dgYBO8Ke5OMnR67hRn_Wj7o4cySXps",
+            "called_times": 1,
+            "is_exhausted": 0,
+            "is_suspended": 0
+        },
+        {
+            "api": "AIzaSyD-zSSiRxkQJDojDVyp7qHJ08sb4u_whOY",
+            "called_times": 1,
+            "is_exhausted": 0,
+            "is_suspended": 0
+        },
+        {
+            "api": "AIzaSyDfVEwGcBdjpENJzdPrsPOGH347Nf_tkSc",
+            "called_times": 1,
+            "is_exhausted": 0,
+            "is_suspended": 0
+        },
+        {
+            "api": "AIzaSyD7g2Iyeeb2VmkflHMS_Fa1gk70dEOcOLg",
+            "called_times": 1,
+            "is_exhausted": 0,
+            "is_suspended": 0
+        },
+        {
+            "api": "AIzaSyDZBX0aTTKo_nOUyMR7DNT05UzxU7SuqaQ",
+            "called_times": 1,
+            "is_exhausted": 0,
+            "is_suspended": 0
+        },
+        {
+            "api": "AIzaSyAIl7q_o1Yligo9IDxp-mS8CTKIieMfpTc",
             "called_times": 0,
             "is_exhausted": 0,
             "is_suspended": 0

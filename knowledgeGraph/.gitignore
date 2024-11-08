@@ -1,3 +1,5 @@
 myenv/
 venv/
 __pycache__/
+app/Module_Final/CallAPILibrary/logs/temp/*
+app/Module_Final/CallAPILibrary/results/temp/*

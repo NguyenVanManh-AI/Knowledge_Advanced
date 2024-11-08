@@ -1,101 +1,473 @@
 data,response,prompt_tokens,candidates_tokens
-"{'contents': [{'parts': [{'text': 'Đoạn văn: ""https://tamanhhospital.vn/an-khong-tieu/""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""Đậu mùa khỉ là gì?\nĐậu mùa khỉ (Monkey pox) là bệnh truyền nhiễm nguy hiểm do virus đậu mùa khỉ – họ hàng của virus đậu mùa – vốn đã bị xóa sổ vào những năm 1980. Đây là bệnh hiếm gặp ở người, nhưng đã và đang bùng phát ở gần 80 quốc gia trên thế giới với diễn biến vô cùng phức tạp (1).\n\nLần đầu tiên được xác định ở khỉ, bệnh đậu mùa khỉ thường phổ biến hơn ở các khu vực rừng mưa nhiệt đới ở Trung và Tây Phi và không thường thấy ở châu Âu. Vào năm 1970, trường hợp bệnh đậu mùa khỉ được ghi nhận đầu tiên ở người tại Cộng hòa Dân chủ Congo (DRC). Kể từ đó, các ca bệnh đã được báo cáo ở 11 quốc gia châu Phi: Benin, Cameroon, Cộng hòa Trung Phi, Cộng hòa Dân chủ Congo, Gabon, Bờ Biển Ngà, Liberia, Nigeria, Cộng hòa Congo, Sierra Leone và Nam Sudan.\n\nNăm 2003, Trung tâm Kiểm soát và Phòng ngừa Dịch bệnh Mỹ (CDC Hoa Kỳ) thông báo đợt bùng phát đậu mùa khỉ đầu tiên được báo cáo bên ngoài châu Phi. Đợt bùng phát này liên quan đến việc nhập khẩu động vật có vú bị nhiễm bệnh vào Mỹ.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
 [
   {
-    ""text"": ""Ăn không tiêu là tình trạng rối loạn tiêu hóa phổ biến, gây ra cảm giác khó chịu ở vùng bụng trên."",
-    ""head"": ""Ăn không tiêu"",
+    ""text"": ""Đậu mùa khỉ (Monkey pox) là bệnh truyền nhiễm nguy hiểm do virus đậu mùa khỉ – họ hàng của virus đậu mùa – vốn đã bị xóa sổ vào những năm 1980."",
+    ""head"": ""Đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""virus đậu mùa khỉ"",
+    ""tail_type"": ""cause""
+  },
+  {
+    ""text"": ""Đậu mùa khỉ (Monkey pox) là bệnh truyền nhiễm nguy hiểm do virus đậu mùa khỉ – họ hàng của virus đậu mùa – vốn đã bị xóa sổ vào những năm 1980."",
+    ""head"": ""Đậu mùa khỉ"",
     ""head_type"": ""disease"",
     ""relation"": ""relatedTo"",
-    ""tail"": ""rối loạn tiêu hóa"",
-    ""tail_type"": ""disease""
-  },
-  {
-    ""text"": ""Ăn không tiêu là tình trạng rối loạn tiêu hóa phổ biến, gây ra cảm giác khó chịu ở vùng bụng trên."",
-    ""head"": ""Ăn không tiêu"",
-    ""head_type"": ""disease"",
-    ""relation"": ""isSymptomOf"",
-    ""tail"": ""cảm giác khó chịu ở vùng bụng trên"",
-    ""tail_type"": ""symptom""
-  },
-  {
-    ""text"": ""Các triệu chứng thường gặp bao gồm đầy hơi, ợ chua, buồn nôn và đau bụng."",
-    ""head"": ""đầy hơi"",
-    ""head_type"": ""symptom"",
-    ""relation"": ""isSymptomOf"",
-    ""tail"": ""Ăn không tiêu"",
-    ""tail_type"": ""disease""
-  },
-  {
-    ""text"": ""Các triệu chứng thường gặp bao gồm đầy hơi, ợ chua, buồn nôn và đau bụng."",
-    ""head"": ""ợ chua"",
-    ""head_type"": ""symptom"",
-    ""relation"": ""isSymptomOf"",
-    ""tail"": ""Ăn không tiêu"",
-    ""tail_type"": ""disease""
-  },
-  {
-    ""text"": ""Các triệu chứng thường gặp bao gồm đầy hơi, ợ chua, buồn nôn và đau bụng."",
-    ""head"": ""buồn nôn"",
-    ""head_type"": ""symptom"",
-    ""relation"": ""isSymptomOf"",
-    ""tail"": ""Ăn không tiêu"",
-    ""tail_type"": ""disease""
-  },
-  {
-    ""text"": ""Các triệu chứng thường gặp bao gồm đầy hơi, ợ chua, buồn nôn và đau bụng."",
-    ""head"": ""đau bụng"",
-    ""head_type"": ""symptom"",
-    ""relation"": ""isSymptomOf"",
-    ""tail"": ""Ăn không tiêu"",
-    ""tail_type"": ""disease""
-  },
-  {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
-    ""head"": ""Ăn không tiêu"",
-    ""head_type"": ""disease"",
-    ""relation"": ""causedBy"",
-    ""tail"": ""ăn quá nhiều"",
-    ""tail_type"": ""lifestyle""
-  },
-  {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
-    ""head"": ""Ăn không tiêu"",
-    ""head_type"": ""disease"",
-    ""relation"": ""causedBy"",
-    ""tail"": ""ăn quá nhanh"",
-    ""tail_type"": ""lifestyle""
-  },
-  {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
-    ""head"": ""Ăn không tiêu"",
-    ""head_type"": ""disease"",
-    ""relation"": ""causedBy"",
-    ""tail"": ""thực phẩm nhiều dầu mỡ"",
-    ""tail_type"": ""food""
-  },
-  {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
-    ""head"": ""Ăn không tiêu"",
-    ""head_type"": ""disease"",
-    ""relation"": ""causedBy"",
-    ""tail"": ""uống rượu bia"",
-    ""tail_type"": ""lifestyle""
-  },
-  {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
-    ""head"": ""Ăn không tiêu"",
-    ""head_type"": ""disease"",
-    ""relation"": ""causedBy"",
-    ""tail"": ""hút thuốc lá"",
-    ""tail_type"": ""lifestyle""
-  },
-  {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
-    ""head"": ""Ăn không tiêu"",
-    ""head_type"": ""disease"",
-    ""relation"": ""causedBy"",
-    ""tail"": ""căng thẳng và lo lắng"",
-    ""tail_type"": ""symptom""
+    ""tail"": ""virus đậu mùa"",
+    ""tail_type"": ""cause""
   }
 ]
-```",1547,1159
+```",1827,222
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""Năm 2018, 2019, những du khách từ Vương Quốc Anh (2 ca), Israel (1 ca), Singapore (1 ca) có lịch sử du lịch về từ Nigeria, được chẩn đoán mắc đậu mùa khỉ.\n\nCác nhà khoa học đánh giá loạt ca đậu mùa khỉ trỗi dậy gần đây là đợt bùng phát bệnh lớn nhất ở châu Âu từ trước đến nay, đặc biệt bất thường vì bệnh xảy ra ở những quốc gia vốn không xem đây là bệnh đặc hữu. Ông Jimmy Whitworth – Giáo sư y tế công cộng tại Trường Y học Nhiệt đới London cho biết: “Các nước đang mở cửa trở lại và người dân bắt đầu đi du lịch, đây là cơ hội để các bệnh truyền nhiễm lây lan. Bệnh đậu mùa khỉ gia tăng trong những năm gần đây tại Tây và Trung Phi, có những trường hợp ủ bệnh ở Tây Phi đang đi du lịch và có thể tạo cơ hội để bệnh xuất hiện ở châu Âu”.\n\nNhiều người lo ngại rằng trong bối cảnh thế giới vẫn chưa hoàn toàn phục hồi sau sự lây lan mạnh mẽ của Covid-19, virus đậu mùa khỉ có thể tạo nên một đại dịch mới tiếp theo.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+[
+  {
+    ""text"": ""Năm 2018, 2019, những du khách từ Vương Quốc Anh (2 ca), Israel (1 ca), Singapore (1 ca) có lịch sử du lịch về từ Nigeria, được chẩn đoán mắc đậu mùa khỉ."",
+    ""head"": ""đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""du lịch về từ Nigeria"",
+    ""tail_type"": ""lifestyle""
+  },
+  {
+    ""text"": ""Các nhà khoa học đánh giá loạt ca đậu mùa khỉ trỗi dậy gần đây là đợt bùng phát bệnh lớn nhất ở châu Âu từ trước đến nay, đặc biệt bất thường vì bệnh xảy ra ở những quốc gia vốn không xem đây là bệnh đặc hữu."",
+    ""head"": ""đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""bùng phát bệnh"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các nước đang mở cửa trở lại và người dân bắt đầu đi du lịch, đây là cơ hội để các bệnh truyền nhiễm lây lan. Bệnh đậu mùa khỉ gia tăng trong những năm gần đây tại Tây và Trung Phi, có những trường hợp ủ bệnh ở Tây Phi đang đi du lịch và có thể tạo cơ hội để bệnh xuất hiện ở châu Âu."",
+    ""head"": ""đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""đi du lịch"",
+    ""tail_type"": ""lifestyle""
+  },
+    {
+    ""text"": ""Các nước đang mở cửa trở lại và người dân bắt đầu đi du lịch, đây là cơ hội để các bệnh truyền nhiễm lây lan. Bệnh đậu mùa khỉ gia tăng trong những năm gần đây tại Tây và Trung Phi, có những trường hợp ủ bệnh ở Tây Phi đang đi du lịch và có thể tạo cơ hội để bệnh xuất hiện ở châu Âu."",
+    ""head"": ""đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""bệnh truyền nhiễm"",
+    ""tail_type"": ""disease""
+  }
+]
+```",1789,524
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""Nguyên nhân gây bệnh đậu mùa khỉ\nDữ liệu từ điều tra dịch tễ cho thấy, nguyên nhân gây bệnh đậu mùa khỉ do virus đậu mùa khỉ thuộc giống Orthopoxvirus trong họ Poxviridae. Virus này có hai chủng chính là Congo và Tây Phi. Trong đó chủng Congo thường gây bệnh nặng hơn, với tỷ lệ tử vong khoảng 10%, và chủng Tây Phi là khoảng 1%.\n\nVirus đậu mùa khỉ được phát hiện lần đầu tiên vào năm 1958 khi hai đợt bùng phát bệnh giống như thủy đậu xảy ra ở những con khỉ trong phòng thí nghiệm được giữ để nghiên cứu. Do đó, tên bệnh được gọi là bệnh đậu mùa khỉ. (2)\n\nCác loại virus khác cùng họ thường gây ra các bệnh như đậu mùa, còn được gọi là bệnh đậu bò. Tuy nhiên, virus đậu mùa khỉ đã được tìm thấy ở một số loài động vật, bao gồm một số loài khỉ và động vật gặm nhấm khác. Virus cũng có thể lây sang người, nhưng con người không phải là ổ chứa tự nhiên của virus.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+[
+  {
+    ""text"": ""Nguyên nhân gây bệnh đậu mùa khỉ\nDữ liệu từ điều tra dịch tễ cho thấy, nguyên nhân gây bệnh đậu mùa khỉ do virus đậu mùa khỉ thuộc giống Orthopoxvirus trong họ Poxviridae."",
+    ""head"": ""virus đậu mùa khỉ"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Virus này có hai chủng chính là Congo và Tây Phi. Trong đó chủng Congo thường gây bệnh nặng hơn, với tỷ lệ tử vong khoảng 10%, và chủng Tây Phi là khoảng 1%."",
+    ""head"": ""Chủng Congo"",
+    ""head_type"": ""cause"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""Bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+    {
+    ""text"": ""Virus này có hai chủng chính là Congo và Tây Phi. Trong đó chủng Congo thường gây bệnh nặng hơn, với tỷ lệ tử vong khoảng 10%, và chủng Tây Phi là khoảng 1%."",
+    ""head"": ""Chủng Tây Phi"",
+    ""head_type"": ""cause"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""Bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các loại virus khác cùng họ thường gây ra các bệnh như đậu mùa, còn được gọi là bệnh đậu bò."",
+    ""head"": ""virus"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Đậu mùa"",
+    ""tail_type"": ""disease""
+  },
+    {
+    ""text"": ""Các loại virus khác cùng họ thường gây ra các bệnh như đậu mùa, còn được gọi là bệnh đậu bò."",
+    ""head"": ""virus"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Bệnh đậu bò"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Tuy nhiên, virus đậu mùa khỉ đã được tìm thấy ở một số loài động vật, bao gồm một số loài khỉ và động vật gặm nhấm khác."",
+    ""head"": ""Virus đậu mùa khỉ"",
+    ""head_type"": ""cause"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""khỉ"",
+    ""tail_type"": ""disease""
+  },
+    {
+    ""text"": ""Tuy nhiên, virus đậu mùa khỉ đã được tìm thấy ở một số loài động vật, bao gồm một số loài khỉ và động vật gặm nhấm khác."",
+    ""head"": ""Virus đậu mùa khỉ"",
+    ""head_type"": ""cause"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""động vật gặm nhấm"",
+    ""tail_type"": ""disease""
+  }
+]
+```",1769,707
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""Bệnh đậu mùa khỉ ủ bệnh bao lâu?\nTổ chức Y tế Thế giới (WHO) cho biết, sau khi xâm nhập vào cơ thể con người, thời gian ủ bệnh của đậu mùa khỉ có thể từ 6-13 ngày hoặc ở phạm vi dài hơn, cụ thể là 5-21 ngày. Sau đó, các triệu chứng đầu tiên sẽ xuất hiện, bao gồm nhiều dấu hiệu giống bệnh đậu mùa như: sốt, nhức đầu, đau cơ, đau lưng, ớn lạnh, kiệt sức và các tổn thương lan rộng trên da, nổi mủ và vỡ ra.\n\nMặt khác, miễn là không có triệu chứng, một người bệnh vẫn có thể truyền virus đậu khỉ cho người lành khác.\n\nTriệu chứng bệnh đậu mùa khỉ\nQuá trình nhiễm bệnh đậu mùa khỉ được chia làm 2 giai đoạn với các dấu hiệu đặc trưng. Giai đoạn đầu tiên là virus xâm nhập, kéo dài từ 0-5 ngày, triệu chứng đặc trưng là sốt, nhức đầu dữ dội, nổi hạch (sưng hạch bạch huyết), đau lưng đau cơ và suy nhược cơ thể (thiếu năng lượng). Nổi hạch là điểm khác biệt của đậu mùa khỉ so với những bệnh khác, có biểu hiện ban đầu tương tự như thủy đậu, sởi, đậu mùa thông thường.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+[
+  {""text"": ""Sau đó, các triệu chứng đầu tiên sẽ xuất hiện, bao gồm nhiều dấu hiệu giống bệnh đậu mùa như: sốt, nhức đầu, đau cơ, đau lưng, ớn lạnh, kiệt sức và các tổn thương lan rộng trên da, nổi mủ và vỡ ra."", ""head"": ""sốt"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""Sau đó, các triệu chứng đầu tiên sẽ xuất hiện, bao gồm nhiều dấu hiệu giống bệnh đậu mùa như: sốt, nhức đầu, đau cơ, đau lưng, ớn lạnh, kiệt sức và các tổn thương lan rộng trên da, nổi mủ và vỡ ra."", ""head"": ""nhức đầu"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""Sau đó, các triệu chứng đầu tiên sẽ xuất hiện, bao gồm nhiều dấu hiệu giống bệnh đậu mùa như: sốt, nhức đầu, đau cơ, đau lưng, ớn lạnh, kiệt sức và các tổn thương lan rộng trên da, nổi mủ và vỡ ra."", ""head"": ""đau cơ"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""Sau đó, các triệu chứng đầu tiên sẽ xuất hiện, bao gồm nhiều dấu hiệu giống bệnh đậu mùa như: sốt, nhức đầu, đau cơ, đau lưng, ớn lạnh, kiệt sức và các tổn thương lan rộng trên da, nổi mủ và vỡ ra."", ""head"": ""đau lưng"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""Sau đó, các triệu chứng đầu tiên sẽ xuất hiện, bao gồm nhiều dấu hiệu giống bệnh đậu mùa như: sốt, nhức đầu, đau cơ, đau lưng, ớn lạnh, kiệt sức và các tổn thương lan rộng trên da, nổi mủ và vỡ ra."", ""head"": ""ớn lạnh"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""Sau đó, các triệu chứng đầu tiên sẽ xuất hiện, bao gồm nhiều dấu hiệu giống bệnh đậu mùa như: sốt, nhức đầu, đau cơ, đau lưng, ớn lạnh, kiệt sức và các tổn thương lan rộng trên da, nổi mủ và vỡ ra."", ""head"": ""kiệt sức"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""Sau đó, các triệu chứng đầu tiên sẽ xuất hiện, bao gồm nhiều dấu hiệu giống bệnh đậu mùa như: sốt, nhức đầu, đau cơ, đau lưng, ớn lạnh, kiệt sức và các tổn thương lan rộng trên da, nổi mủ và vỡ ra."", ""head"": ""tổn thương lan rộng trên da"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""Sau đó, các triệu chứng đầu tiên sẽ xuất hiện, bao gồm nhiều dấu hiệu giống bệnh đậu mùa như: sốt, nhức đầu, đau cơ, đau lưng, ớn lạnh, kiệt sức và các tổn thương lan rộng trên da, nổi mủ và vỡ ra."", ""head"": ""nổi mủ"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""triệu chứng đặc trưng là sốt, nhức đầu dữ dội, nổi hạch (sưng hạch bạch huyết), đau lưng đau cơ và suy nhược cơ thể (thiếu năng lượng)."", ""head"": ""sốt"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""triệu chứng đặc trưng là sốt, nhức đầu dữ dội, nổi hạch (sưng hạch bạch huyết), đau lưng đau cơ và suy nhược cơ thể (thiếu năng lượng)."", ""head"": ""nhức đầu dữ dội"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""triệu chứng đặc trưng là sốt, nhức đầu dữ dội, nổi hạch (sưng hạch bạch huyết), đau lưng đau cơ và suy nhược cơ thể (thiếu năng lượng)."", ""head"": ""nổi hạch (sưng hạch bạch huyết)"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""triệu chứng đặc trưng là sốt, nhức đầu dữ dội, nổi hạch (sưng hạch bạch huyết), đau lưng đau cơ và suy nhược cơ thể (thiếu năng lượng)."", ""head"": ""đau lưng"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""triệu chứng đặc trưng là sốt, nhức đầu dữ dội, nổi hạch (sưng hạch bạch huyết), đau lưng đau cơ và suy nhược cơ thể (thiếu năng lượng)."", ""head"": ""đau cơ"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""},
+  {""text"": ""triệu chứng đặc trưng là sốt, nhức đầu dữ dội, nổi hạch (sưng hạch bạch huyết), đau lưng đau cơ và suy nhược cơ thể (thiếu năng lượng)."", ""head"": ""suy nhược cơ thể"", ""head_type"": ""symptom"", ""relation"": ""isSymptomOf"", ""tail"": ""đậu mùa khỉ"", ""tail_type"": ""disease""}
+]
+```",1824,1450
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""Giai đoạn thứ hai là phát ban trên da, thường biểu hiện trong 1-3 ngày kể từ khi bệnh nhân bị sốt. Phát ban có xu hướng tập trung nhiều ở mặt và tứ chi hơn là thân. Phát ban tiến triển tuần tự, từ việc rát da (chưa nổi mẩn) đến sẩn ngứa (các nốt mẩn nhô cao), sau đó là mụn nước (tổn thương chứa dịch bên trong) và mụn mủ (tổn thương chứa dịch vàng).\n\nCác chuyên gia y tế hàng đầu cho biết, một số triệu chứng đặc hiệu giúp phân biệt bệnh đậu mùa thông thường và bệnh đậu mùa khỉ: Đậu mùa khỉ khiến các hạch bạch huyết sưng lên. Khi người bệnh bị sốt, đặc trưng của virus đậu mùa khỉ là phát ban khó chịu, khởi phát sau 1-3 ngày. Các vết phát ban thường bắt đầu ở mặt, sau đó lan sang những bộ phận khác của cơ thể.\n\nCác tổn thương trên cơ thể người bệnh sẽ trải qua quá trình từ rát (tổn thương phẳng) đến sẩn (tổn thương nổi), mụn nước (tổn thương chứa đầy dịch) sau đó là mụn mủ. Cuối cùng, các vết thương đóng vảy trước khi rụng hết và khỏi bệnh, để lại sẹo. Các triệu chứng có thể tồn tại hơn 4 tuần mới hồi phục, nhưng thường biến mất sau 2 tuần. Da của người mắc bệnh sẽ hình thành sẹo do tổn thương.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+[
+  {
+    ""text"": ""Giai đoạn thứ hai là phát ban trên da, thường biểu hiện trong 1-3 ngày kể từ khi bệnh nhân bị sốt. Phát ban có xu hướng tập trung nhiều ở mặt và tứ chi hơn là thân. Phát ban tiến triển tuần tự, từ việc rát da (chưa nổi mẩn) đến sẩn ngứa (các nốt mẩn nhô cao), sau đó là mụn nước (tổn thương chứa dịch bên trong) và mụn mủ (tổn thương chứa dịch vàng)."",
+    ""head"": ""Phát ban"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Giai đoạn thứ hai là phát ban trên da, thường biểu hiện trong 1-3 ngày kể từ khi bệnh nhân bị sốt. Phát ban có xu hướng tập trung nhiều ở mặt và tứ chi hơn là thân. Phát ban tiến triển tuần tự, từ việc rát da (chưa nổi mẩn) đến sẩn ngứa (các nốt mẩn nhô cao), sau đó là mụn nước (tổn thương chứa dịch bên trong) và mụn mủ (tổn thương chứa dịch vàng)."",
+    ""head"": ""Sốt"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Phát ban có xu hướng tập trung nhiều ở mặt và tứ chi hơn là thân."",
+    ""head"": ""Phát ban"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""affects"",
+    ""tail"": ""Mặt"",
+    ""tail_type"": ""organ""
+  },
+  {
+    ""text"": ""Phát ban có xu hướng tập trung nhiều ở mặt và tứ chi hơn là thân."",
+    ""head"": ""Phát ban"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""affects"",
+    ""tail"": ""Tứ chi"",
+    ""tail_type"": ""organ""
+  },
+  {
+    ""text"": ""Đậu mùa khỉ khiến các hạch bạch huyết sưng lên."",
+    ""head"": ""Sưng hạch bạch huyết"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các vết phát ban thường bắt đầu ở mặt, sau đó lan sang những bộ phận khác của cơ thể."",
+    ""head"": ""Phát ban"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+    {
+    ""text"": ""Các tổn thương trên cơ thể người bệnh sẽ trải qua quá trình từ rát (tổn thương phẳng) đến sẩn (tổn thương nổi), mụn nước (tổn thương chứa đầy dịch) sau đó là mụn mủ. Cuối cùng, các vết thương đóng vảy trước khi rụng hết và khỏi bệnh, để lại sẹo."",
+    ""head"": ""Rát da"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các tổn thương trên cơ thể người bệnh sẽ trải qua quá trình từ rát (tổn thương phẳng) đến sẩn (tổn thương nổi), mụn nước (tổn thương chứa đầy dịch) sau đó là mụn mủ. Cuối cùng, các vết thương đóng vảy trước khi rụng hết và khỏi bệnh, để lại sẹo."",
+    ""head"": ""Sẩn"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các tổn thương trên cơ thể người bệnh sẽ trải qua quá trình từ rát (tổn thương phẳng) đến sẩn (tổn thương nổi), mụn nước (tổn thương chứa đầy dịch) sau đó là mụn mủ. Cuối cùng, các vết thương đóng vảy trước khi rụng hết và khỏi bệnh, để lại sẹo."",
+    ""head"": ""Mụn nước"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các tổn thương trên cơ thể người bệnh sẽ trải qua quá trình từ rát (tổn thương phẳng) đến sẩn (tổn thương nổi), mụn nước (tổn thương chứa đầy dịch) sau đó là mụn mủ. Cuối cùng, các vết thương đóng vảy trước khi rụng hết và khỏi bệnh, để lại sẹo."",
+    ""head"": ""Mụn mủ"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các tổn thương trên cơ thể người bệnh sẽ trải qua quá trình từ rát (tổn thương phẳng) đến sẩn (tổn thương nổi), mụn nước (tổn thương chứa đầy dịch) sau đó là mụn mủ. Cuối cùng, các vết thương đóng vảy trước khi rụng hết và khỏi bệnh, để lại sẹo. Da của người mắc bệnh sẽ hình thành sẹo do tổn thương."",
+    ""head"": ""Sẹo"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  }
+]
+```",1856,1414
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""Đậu mùa khỉ lây qua đường nào?\nChủng đậu mùa khỉ lần đầu được tìm thấy ở khỉ vào năm 1958. Hiện nay, động vật gặm nhấm là nguồn lây chính. Tại châu Phi, virus đậu mùa khỉ được tìm thấy ở nhiều loại động vật khác như sóc, chuột,… Người lành có thể nhiễm virus đậu mùa khỉ thông qua 3 con đường chính:\n\nVirus đậu mùa khỉ xâm nhập vào cơ thể qua các tổn thương (vết cắn hoặc vết xước) của động vật mang virus.\nĂn thịt chưa nấu chín kỹ và sử dụng các sản phẩm từ động vật bị nhiễm bệnh.\nTiếp xúc trực tiếp với người bệnh hoặc chạm vào giường, quần áo bị ô nhiễm. Ở người, virus lây truyền trong quá trình tiếp xúc gần người mắc bệnh, thông qua dịch thể, các tổn thương ở da hoặc niêm mạc (mắt, mũi, miệng). Virus lây truyền chủ yếu qua giọt bắn đường hô hấp, song, virus không thể văng xa, vì vậy cần phải tiếp xúc gần mới có thể lây nhiễm.\nĐợt bùng phát bệnh đậu mùa khỉ ở Anh đang khiến giới chuyên gia kinh ngạc, bởi các ca nhiễm không có bất cứ liên hệ nào với nhau. Chỉ trường hợp đầu tiên, phát hiện ngày 6/5/2022 từng di chuyển đến khu vực virus còn lưu hành là Nigeria. Một số nhà khoa học cảnh báo các ca nhiễm có thể chỉ là “phần nổi của tảng băng”, bởi một số người bệnh chưa được báo cáo.\n\nChẩn đoán bệnh đậu mùa khỉ\nĐể chẩn đoán chính xác bệnh đậu mùa khỉ, trước hết cần chẩn đoán phân biệt lâm sàng với các bệnh phát ban khác, chẳng hạn như bệnh thủy đậu, sởi, nhiễm trùng da do vi khuẩn, bệnh ghẻ, bệnh giang mai và dị ứng do thuốc. Nổi hạch trong giai đoạn tiền căn bệnh có thể là đặc điểm lâm sàng để phân biệt đậu mùa khỉ với thủy đậu hoặc đậu mùa.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+[
+  {
+    ""text"": ""Virus đậu mùa khỉ xâm nhập vào cơ thể qua các tổn thương (vết cắn hoặc vết xước) của động vật mang virus."",
+    ""head"": ""Đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Virus đậu mùa khỉ xâm nhập vào cơ thể qua các tổn thương (vết cắn hoặc vết xước) của động vật mang virus"",
+    ""tail_type"": ""cause""
+  },
+  {
+    ""text"": ""Ăn thịt chưa nấu chín kỹ và sử dụng các sản phẩm từ động vật bị nhiễm bệnh."",
+    ""head"": ""Đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Ăn thịt chưa nấu chín kỹ và sử dụng các sản phẩm từ động vật bị nhiễm bệnh"",
+    ""tail_type"": ""cause""
+  },
+  {
+    ""text"": ""Tiếp xúc trực tiếp với người bệnh hoặc chạm vào giường, quần áo bị ô nhiễm."",
+    ""head"": ""Đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Tiếp xúc trực tiếp với người bệnh hoặc chạm vào giường, quần áo bị ô nhiễm"",
+    ""tail_type"": ""cause""
+  },
+  {
+    ""text"": ""Nổi hạch trong giai đoạn tiền căn bệnh có thể là đặc điểm lâm sàng để phân biệt đậu mùa khỉ với thủy đậu hoặc đậu mùa."",
+    ""head"": ""Nổi hạch"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Để chẩn đoán chính xác bệnh đậu mùa khỉ, trước hết cần chẩn đoán phân biệt lâm sàng với các bệnh phát ban khác, chẳng hạn như bệnh thủy đậu, sởi, nhiễm trùng da do vi khuẩn, bệnh ghẻ, bệnh giang mai và dị ứng do thuốc."",
+    ""head"": ""Đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""diagnosedBy"",
+    ""tail"": ""Chẩn đoán phân biệt lâm sàng với các bệnh phát ban khác"",
+    ""tail_type"": ""test""
+  }
+]
+```",1975,557
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""Đặc biệt, nếu có các yếu tố nguy cơ dưới đây, bạn cần được chẩn đoán để sớm phát hiện và điều trị bệnh:\n\nTiếp xúc gần (sống, làm việc) với những người bị bệnh đậu mùa khỉ;\nĐã đi du lịch đến một quốc gia lưu hành bệnh đậu mùa khỉ;\nĐã tương tác với động vật nhập khẩu;\nBị cắn hoặc cào từ động vật bị nhiễm bệnh;\nĂn thịt nấu chín một phần hoặc các sản phẩm khác của động vật bị nhiễm bệnh;\nThăm hoặc sống gần khu rừng mưa nhiệt đới;\nCác bác sĩ sẽ tiến hành chẩn đoán bệnh đậu mùa khỉ bằng các phương pháp sau:\n\n1. Tiền sử bệnh: Vấn đề này bao gồm lịch sử du lịch, tiếp xúc, ăn uống của người bệnh để giúp bác sĩ xác định nguy cơ.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+[
+  {
+    ""text"": ""Tiếp xúc gần (sống, làm việc) với những người bị bệnh đậu mùa khỉ"",
+    ""head"": ""Tiếp xúc gần với người bị bệnh đậu mùa khỉ"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Đã đi du lịch đến một quốc gia lưu hành bệnh đậu mùa khỉ"",
+    ""head"": ""Đi du lịch đến quốc gia lưu hành bệnh đậu mùa khỉ"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Đã tương tác với động vật nhập khẩu"",
+    ""head"": ""Tương tác với động vật nhập khẩu"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Bị cắn hoặc cào từ động vật bị nhiễm bệnh"",
+    ""head"": ""Bị cắn hoặc cào từ động vật bị nhiễm bệnh"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Ăn thịt nấu chín một phần hoặc các sản phẩm khác của động vật bị nhiễm bệnh"",
+    ""head"": ""Ăn thịt nấu chín một phần hoặc sản phẩm của động vật bị nhiễm bệnh"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Thăm hoặc sống gần khu rừng mưa nhiệt đới"",
+    ""head"": ""Thăm hoặc sống gần khu rừng mưa nhiệt đới"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""Bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các bác sĩ sẽ tiến hành chẩn đoán bệnh đậu mùa khỉ bằng các phương pháp sau:\n\n1. Tiền sử bệnh: Vấn đề này bao gồm lịch sử du lịch, tiếp xúc, ăn uống của người bệnh để giúp bác sĩ xác định nguy cơ."",
+    ""head"": ""Bệnh đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""diagnosedBy"",
+    ""tail"": ""Tiền sử bệnh (lịch sử du lịch, tiếp xúc, ăn uống)"",
+    ""tail_type"": ""test""
+  }
+]
+```",1715,676
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""2. Xét nghiệm: Thông thường bác sĩ sẽ yêu cầu thực hiện các xét nghiệm trong phòng thí nghiệm để xác định sự hiện diện của virus đậu mùa khỉ.\n\nMột trong những xét nghiệm phổ biến là xét nghiệm tăm bông hoặc xét nghiệm phản ứng chuỗi polymerase (PCR), nhằm phân tích các mẫu lấy từ các tổn thương da hoặc các vùng da bị ảnh hưởng bởi bệnh đậu mùa khỉ.\n\n3. Sinh thiết: Xét nghiệm được thực hiện bằng việc lấy bệnh phẩm một phần của mô da, sau đó sẽ được kiểm tra dưới kính hiển vi để xác định sự hiện diện của virus, từ đó giúp chẩn đoán bệnh chính xác hơn.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+[
+  {
+    ""text"": ""Thông thường bác sĩ sẽ yêu cầu thực hiện các xét nghiệm trong phòng thí nghiệm để xác định sự hiện diện của virus đậu mùa khỉ."",
+    ""head"": ""Xét nghiệm trong phòng thí nghiệm"",
+    ""head_type"": ""test"",
+    ""relation"": ""diagnosedBy"",
+    ""tail"": ""đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Một trong những xét nghiệm phổ biến là xét nghiệm tăm bông hoặc xét nghiệm phản ứng chuỗi polymerase (PCR), nhằm phân tích các mẫu lấy từ các tổn thương da hoặc các vùng da bị ảnh hưởng bởi bệnh đậu mùa khỉ."",
+    ""head"": ""Xét nghiệm tăm bông"",
+    ""head_type"": ""test"",
+    ""relation"": ""diagnosedBy"",
+    ""tail"": ""đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Một trong những xét nghiệm phổ biến là xét nghiệm tăm bông hoặc xét nghiệm phản ứng chuỗi polymerase (PCR), nhằm phân tích các mẫu lấy từ các tổn thương da hoặc các vùng da bị ảnh hưởng bởi bệnh đậu mùa khỉ."",
+    ""head"": ""xét nghiệm phản ứng chuỗi polymerase (PCR)"",
+    ""head_type"": ""test"",
+    ""relation"": ""diagnosedBy"",
+    ""tail"": ""đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Xét nghiệm được thực hiện bằng việc lấy bệnh phẩm một phần của mô da, sau đó sẽ được kiểm tra dưới kính hiển vi để xác định sự hiện diện của virus, từ đó giúp chẩn đoán bệnh chính xác hơn."",
+    ""head"": ""Sinh thiết"",
+    ""head_type"": ""test"",
+    ""relation"": ""diagnosedBy"",
+    ""tail"": ""đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  }
+]
+```
+",1671,456
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""Bệnh đậu mùa khỉ có gây tử vong không?\nĐậu mùa khỉ thường gây phát ban, mẩn đỏ và ngứa ngáy khắp người. Hầu hết các triệu chứng có thể điều trị khỏi. Trong hai chủng đậu mùa khỉ thì chủng Congo, biểu hiện nặng hơn, tỷ lệ tử vong là 10%, còn chủng ở Tây Phi, ít nghiêm trọng, thường chỉ gây tử vong cho 1% người bệnh. Hiện các bệnh nhân ở Anh mắc chủng đậu mùa Tây Phi.\n\nTheo CDC Hoa Kỳ, cứ 10 trường hợp thì có 1 người của bệnh đậu mùa khỉ nặng sẽ dẫn đến tử vong. Các yếu tố nguy cơ đối với các trường hợp nặng bao gồm:\n\nTrẻ em nhỏ tuổi;\nTiếp xúc lâu dài với virus đậu mùa khỉ;\nCó sức khỏe kém, hệ miễn dịch suy yếu;\nDiễn tiến các biến chứng nguy hiểm;\n“Từ trước đến nay, các đợt bùng phát đậu mùa khỉ khá hiếm, chỉ xảy ra khoảng 8 lần trong quá khứ”, Ông Jimmy Whitworth – Giáo sư y tế công cộng quốc tế tại Trường Vệ sinh và Y học Nhiệt đới London, cho biết.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+[
+  {
+    ""text"": ""Đậu mùa khỉ thường gây phát ban, mẩn đỏ và ngứa ngáy khắp người."",
+    ""head"": ""phát ban"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Đậu mùa khỉ thường gây phát ban, mẩn đỏ và ngứa ngáy khắp người."",
+    ""head"": ""mẩn đỏ"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Đậu mùa khỉ thường gây phát ban, mẩn đỏ và ngứa ngáy khắp người."",
+    ""head"": ""ngứa ngáy khắp người"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Trong hai chủng đậu mùa khỉ thì chủng Congo, biểu hiện nặng hơn, tỷ lệ tử vong là 10%, còn chủng ở Tây Phi, ít nghiêm trọng, thường chỉ gây tử vong cho 1% người bệnh."",
+    ""head"": ""chủng Congo"",
+    ""head_type"": ""disease"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Trong hai chủng đậu mùa khỉ thì chủng Congo, biểu hiện nặng hơn, tỷ lệ tử vong là 10%, còn chủng ở Tây Phi, ít nghiêm trọng, thường chỉ gây tử vong cho 1% người bệnh."",
+    ""head"": ""chủng Tây Phi"",
+    ""head_type"": ""disease"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""Đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Theo CDC Hoa Kỳ, cứ 10 trường hợp thì có 1 người của bệnh đậu mùa khỉ nặng sẽ dẫn đến tử vong."",
+    ""head"": ""tử vong"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""bệnh đậu mùa khỉ nặng"",
+    ""tail_type"": ""disease""
+  },
+    {
+    ""text"": ""Các yếu tố nguy cơ đối với các trường hợp nặng bao gồm: Trẻ em nhỏ tuổi; Tiếp xúc lâu dài với virus đậu mùa khỉ; Có sức khỏe kém, hệ miễn dịch suy yếu; Diễn tiến các biến chứng nguy hiểm"",
+    ""head"": ""Trẻ em nhỏ tuổi"",
+    ""head_type"": ""lifestyle"",
+    ""relation"": ""aggravatedBy"",
+    ""tail"": ""bệnh đậu mùa khỉ nặng"",
+    ""tail_type"": ""disease""
+  },
+        {
+    ""text"": ""Các yếu tố nguy cơ đối với các trường hợp nặng bao gồm: Trẻ em nhỏ tuổi; Tiếp xúc lâu dài với virus đậu mùa khỉ; Có sức khỏe kém, hệ miễn dịch suy yếu; Diễn tiến các biến chứng nguy hiểm"",
+    ""head"": ""Tiếp xúc lâu dài với virus đậu mùa khỉ"",
+    ""head_type"": ""cause"",
+    ""relation"": ""aggravatedBy"",
+    ""tail"": ""bệnh đậu mùa khỉ nặng"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các yếu tố nguy cơ đối với các trường hợp nặng bao gồm: Trẻ em nhỏ tuổi; Tiếp xúc lâu dài với virus đậu mùa khỉ; Có sức khỏe kém, hệ miễn dịch suy yếu; Diễn tiến các biến chứng nguy hiểm"",
+    ""head"": ""Có sức khỏe kém, hệ miễn dịch suy yếu"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""aggravatedBy"",
+    ""tail"": ""bệnh đậu mùa khỉ nặng"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Các yếu tố nguy cơ đối với các trường hợp nặng bao gồm: Trẻ em nhỏ tuổi; Tiếp xúc lâu dài với virus đậu mùa khỉ; Có sức khỏe kém, hệ miễn dịch suy yếu; Diễn tiến các biến chứng nguy hiểm"",
+    ""head"": ""biến chứng nguy hiểm"",
+    ""head_type"": ""symptom"",
+    ""relation"": ""isSymptomOf"",
+    ""tail"": ""bệnh đậu mùa khỉ nặng"",
+    ""tail_type"": ""disease""
+  }
+]
+```",1792,1088
+"{'contents': [{'parts': [{'text': 'Đoạn văn: ""Các chuyên gia phỏng đoán việc các nước nới lỏng hạn chế đi lại hậu Covid-19 là nguyên nhân khiến bệnh đậu mùa khỉ trỗi dậy. Họ lo ngại bởi đậu mùa khỉ cùng họ với đậu mùa – căn bệnh nguy hiểm từng là nỗi ám ảnh với toàn thế giới.""\n\nBạn là một thuật toán hàng đầu được thiết kế để trích xuất thông tin theo định dạng cấu trúc nhằm xây dựng đồ thị tri thức.\nNhiệm vụ của bạn là xác định các thực thể và mối quan hệ được yêu cầu từ đoạn văn bản đã cho theo hướng dẫn của người dùng.\nBạn phải tạo ra đầu ra dưới dạng JSON chứa danh sách các đối tượng JSON có các khóa sau: ""text"", ""head"", ""head_type"", ""relation"", ""tail"", và ""tail_type"".\nKhóa ""text"" phải chứa câu văn bản dài của thực thể được trích xuất, có thể có nhiều câu văn bản và một câu có thể dùng cho nhiều đối tượng JSON khác nhau.\nKhóa ""head"" phải chứa văn bản của thực thể chính với một trong các loại từ danh sách mà người dùng đã cung cấp.\nKhóa ""head_type"" phải chứa loại của thực thể chính, với loại này phải thuộc một trong các loại từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nKhóa ""relation"" phải chứa loại quan hệ giữa ""head"" và ""tail"", với loại quan hệ phải thuộc một trong các loại từ [\'isSymptomOf\', \'causedBy\', \'affects\', \'treatedBy\', \'locatedIn\', \'aggravatedBy\', \'associatedWith\', \'preventedBy\', \'diagnosedBy\', \'relatedTo\'].\nKhóa ""tail"" phải đại diện cho văn bản của một thực thể được trích xuất và là đối tượng của mối quan hệ, còn khóa ""tail_type"" phải chứa loại của thực thể đối tượng từ [\'symptom\', \'cause\', \'disease\', \'organ\', \'treatment\', \'lifestyle\', \'test\', \'food\'].\nCả 6 khoá trên đều ép buộc.\n\nGiải thích và ví dụ của mỗi loại thực thể:\n- Symptom: Dấu hiệu hoặc biểu hiện của một bệnh lý hoặc vấn đề sức khỏe. Ví dụ: Đi tiểu nhiều là symptom của bệnh bàng quang tăng hoạt.\n- Cause: Yếu tố hoặc sự kiện gây ra triệu chứng hoặc bệnh lý. Ví dụ: Mức axit dạ dày cao có thể cause chứng khó tiêu.\n- Disease: Một tình trạng hoặc bệnh. Ví dụ: Tiểu đường là một disease mãn tính ảnh hưởng đến mức đường huyết.\n- Organ: Một phần của cơ thể có chức năng cụ thể. Ví dụ: Bàng quang là organ tham gia vào việc chứa nước tiểu.\n- Treatment: Một phương pháp hoặc thủ tục được sử dụng để chữa hoặc quản lý bệnh lý hoặc tình trạng. Ví dụ: Vật lý trị liệu là treatment để cải thiện sức mạnh cơ bắp.\n- Lifestyle: Thói quen hoặc hành vi có thể ảnh hưởng đến sức khỏe. Ví dụ: Hút thuốc là lifestyle làm tăng nguy cơ bệnh phổi.\n- Test: Một thủ tục hoặc phân tích y khoa được sử dụng để chẩn đoán một tình trạng. Ví dụ: Xét nghiệm máu thường được sử dụng để test chẩn đoán nhiễm trùng.\n- Food: Các chất được tiêu thụ để cung cấp dinh dưỡng, có thể ảnh hưởng đến sức khỏe. Ví dụ: Thức ăn cay có thể aggravate khó chịu dạ dày.\n\nGiải thích và ví dụ của mỗi loại quan hệ:\n- isSymptomOf: Quan hệ cho thấy một triệu chứng liên quan đến một bệnh lý cụ thể. Ví dụ: Đi tiểu nhiều isSymptomOf bệnh bàng quang tăng hoạt.\n- causedBy: Quan hệ cho thấy nguyên nhân của một triệu chứng hoặc tình trạng. Ví dụ: Chứng khó tiêu thường causedBy trào ngược axit.\n- affects: Quan hệ cho thấy một yếu tố ảnh hưởng đến một cơ quan hoặc bộ phận của cơ thể. Ví dụ: Bàng quang tăng hoạt affects hệ thống tiết niệu.\n- treatedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng được quản lý hoặc giảm nhẹ bằng phương pháp điều trị. Ví dụ: Bàng quang tăng hoạt có thể treatedBy thuốc.\n- locatedIn: Quan hệ cho thấy vị trí của một cơ quan hoặc tình trạng trong cơ thể. Ví dụ: Thận locatedIn vùng bụng trên.\n- aggravatedBy: Quan hệ cho thấy một tình trạng trở nên tồi tệ hơn do yếu tố cụ thể. Ví dụ: Chứng khó tiêu có thể aggravatedBy ăn thức ăn cay.\n- associatedWith: Quan hệ cho thấy một yếu tố hoặc tình trạng liên kết với một yếu tố khác. Ví dụ: Béo phì associatedWith tiểu đường.\n- preventedBy: Quan hệ cho thấy một bệnh lý hoặc triệu chứng có thể tránh được bằng các hành động hoặc phương pháp cụ thể. Ví dụ: Bệnh tim có thể preventedBy tập thể dục thường xuyên.\n- diagnosedBy: Quan hệ cho thấy một xét nghiệm hoặc phương pháp được sử dụng để xác định một tình trạng. Ví dụ: Nhiễm trùng thận có thể diagnosedBy xét nghiệm nước tiểu.\n- relatedTo: Quan hệ rộng, cho thấy sự kết nối giữa hai yếu tố sức khỏe, điều kiện hoặc triệu chứng. Ví dụ: Tăng huyết áp relatedTo bệnh tim.\n\nHãy cố gắng trích xuất càng nhiều thực thể và quan hệ càng tốt.\nLƯU Ý QUAN TRỌNG:\n- Không thêm bất kỳ giải thích hoặc văn bản nào.\nKiến trúc giá trị trả về mong đợi:\n[{\'text\': \'Cảm giác tê buốt bàn chân là triệu chứng của biến chứng bàn chân đái tháo đường.\', \'head\': \'Cảm giác tê buốt bàn chân\', \'head_type\': \'symptom\', \'relation\': \'isSymptomOf\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Xơ vữa mạch máu là một trong những nguyên nhân chính gây ra biến chứng bàn chân đái tháo đường.\', \'head\': \'Xơ vữa mạch máu\', \'head_type\': \'cause\', \'relation\': \'causes\', \'tail\': \'Biến chứng bàn chân đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Loét bàn chân đái tháo đường là biến chứng phức tạp của bệnh đái tháo đường.\', \'head\': \'Loét bàn chân đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'isSymptomOf\', \'tail\': \'Bệnh đái tháo đường\', \'tail_type\': \'disease\'}, {\'text\': \'Bệnh nhân đái tháo đường có thể kiểm soát được biến chứng bàn chân thông qua các biện pháp chăm sóc bàn chân.\', \'head\': \'Biến chứng bàn chân\', \'head_type\': \'disease\', \'relation\': \'treatedBy\', \'tail\': \'Chăm sóc bàn chân\', \'tail_type\': \'treatment\'}, {\'text\': \'Bệnh đái tháo đường gây tổn thương hệ mạch máu và thần kinh, làm tăng nguy cơ loét bàn chân.\', \'head\': \'Bệnh đái tháo đường\', \'head_type\': \'disease\', \'relation\': \'affects\', \'tail\': \'Hệ mạch máu và thần kinh\', \'tail_type\': \'organ\'}]'}]}], 'safetySettings': [{'category': 'HARM_CATEGORY_HARASSMENT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_HATE_SPEECH', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'threshold': 'BLOCK_NONE'}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'threshold': 'BLOCK_NONE'}], 'generationConfig': {'temperature': 0.3, 'top_p': 0.5, 'top_k': 1}}","```json
+[
+  {
+    ""text"": ""Các chuyên gia phỏng đoán việc các nước nới lỏng hạn chế đi lại hậu Covid-19 là nguyên nhân khiến bệnh đậu mùa khỉ trỗi dậy."",
+    ""head"": ""nới lỏng hạn chế đi lại hậu Covid-19"",
+    ""head_type"": ""cause"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""bệnh đậu mùa khỉ"",
+    ""tail_type"": ""disease""
+  },
+  {
+    ""text"": ""Họ lo ngại bởi đậu mùa khỉ cùng họ với đậu mùa – căn bệnh nguy hiểm từng là nỗi ám ảnh với toàn thế giới."",
+    ""head"": ""đậu mùa khỉ"",
+    ""head_type"": ""disease"",
+    ""relation"": ""relatedTo"",
+    ""tail"": ""đậu mùa"",
+    ""tail_type"": ""disease""
+  }
+]
+```
+",1594,210
