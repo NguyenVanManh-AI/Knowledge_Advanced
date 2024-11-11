@@ -1,5 +1,5 @@
 from ..Module_Final.class_QA_Neo4j import QAUsingNeo4j as qa
-from ..models import Chat
+from ..models.chatbot_model import Chat
 from django.contrib.auth.models import User
 
 
@@ -26,18 +26,7 @@ class ChatbotRepository:
         print(type(result))
         return result
 
-    def get_chat_by_user(self, id_user):
-        error = {}
-        if id_user is None:
-            error["id_user"] = ["id_user is required"]
-            return error
-        if not id_user:
-            error["id_user"] = ["id_user is not empty"]
-            return error
-        user = User.objects.filter(id=id_user).first()
-        if user is None:
-            error["id_user"] = ["user is not found"]
-            return error
+    def get_chat_by_user(self, user):
         return Chat.objects.filter(owner=user).order_by("time")
 
     def get_all_chat(self):

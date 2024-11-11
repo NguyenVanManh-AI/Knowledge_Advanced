@@ -33,11 +33,11 @@ ALLOWED_HOSTS = [
     "advanced-knowledge.vercel.app",
     "20.2.90.6",
     "127.0.0.1",
+    "bfb-pbl7.xyz"
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://localhost:8080",
+    "http://localhost:5000",
     "https://advanced-knowledge.vercel.app",
     "http://20.2.90.6"
 ]

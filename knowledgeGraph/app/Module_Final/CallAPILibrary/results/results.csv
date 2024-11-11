@@ -5,7 +5,7 @@ data,response,prompt_tokens,candidates_tokens
     ""text"": ""Ăn không tiêu là tình trạng rối loạn tiêu hóa phổ biến, gây ra cảm giác khó chịu ở vùng bụng trên."",
     ""head"": ""Ăn không tiêu"",
     ""head_type"": ""disease"",
-    ""relation"": ""relatedTo"",
+    ""relation"": ""associatedWith"",
     ""tail"": ""rối loạn tiêu hóa"",
     ""tail_type"": ""disease""
   },
@@ -19,7 +19,7 @@ data,response,prompt_tokens,candidates_tokens
   },
   {
     ""text"": ""Các triệu chứng thường gặp bao gồm đầy hơi, ợ chua, buồn nôn và đau bụng."",
-    ""head"": ""đầy hơi"",
+    ""head"": ""Đầy hơi"",
     ""head_type"": ""symptom"",
     ""relation"": ""isSymptomOf"",
     ""tail"": ""Ăn không tiêu"",
@@ -27,7 +27,7 @@ data,response,prompt_tokens,candidates_tokens
   },
   {
     ""text"": ""Các triệu chứng thường gặp bao gồm đầy hơi, ợ chua, buồn nôn và đau bụng."",
-    ""head"": ""ợ chua"",
+    ""head"": ""Ợ chua"",
     ""head_type"": ""symptom"",
     ""relation"": ""isSymptomOf"",
     ""tail"": ""Ăn không tiêu"",
@@ -35,7 +35,7 @@ data,response,prompt_tokens,candidates_tokens
   },
   {
     ""text"": ""Các triệu chứng thường gặp bao gồm đầy hơi, ợ chua, buồn nôn và đau bụng."",
-    ""head"": ""buồn nôn"",
+    ""head"": ""Buồn nôn"",
     ""head_type"": ""symptom"",
     ""relation"": ""isSymptomOf"",
     ""tail"": ""Ăn không tiêu"",
@@ -43,14 +43,14 @@ data,response,prompt_tokens,candidates_tokens
   },
   {
     ""text"": ""Các triệu chứng thường gặp bao gồm đầy hơi, ợ chua, buồn nôn và đau bụng."",
-    ""head"": ""đau bụng"",
+    ""head"": ""Đau bụng"",
     ""head_type"": ""symptom"",
     ""relation"": ""isSymptomOf"",
     ""tail"": ""Ăn không tiêu"",
     ""tail_type"": ""disease""
   },
   {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
+    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều chất béo hoặc cay, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
     ""head"": ""Ăn không tiêu"",
     ""head_type"": ""disease"",
     ""relation"": ""causedBy"",
@@ -58,7 +58,7 @@ data,response,prompt_tokens,candidates_tokens
     ""tail_type"": ""lifestyle""
   },
   {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
+    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều chất béo hoặc cay, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
     ""head"": ""Ăn không tiêu"",
     ""head_type"": ""disease"",
     ""relation"": ""causedBy"",
@@ -66,15 +66,23 @@ data,response,prompt_tokens,candidates_tokens
     ""tail_type"": ""lifestyle""
   },
   {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
+    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều chất béo hoặc cay, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
     ""head"": ""Ăn không tiêu"",
     ""head_type"": ""disease"",
     ""relation"": ""causedBy"",
-    ""tail"": ""thực phẩm nhiều dầu mỡ"",
+    ""tail"": ""thực phẩm nhiều chất béo"",
+    ""tail_type"": ""food""
+  },
+    {
+    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều chất béo hoặc cay, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
+    ""head"": ""Ăn không tiêu"",
+    ""head_type"": ""disease"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""thực phẩm cay"",
     ""tail_type"": ""food""
   },
   {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
+    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều chất béo hoặc cay, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
     ""head"": ""Ăn không tiêu"",
     ""head_type"": ""disease"",
     ""relation"": ""causedBy"",
@@ -82,7 +90,7 @@ data,response,prompt_tokens,candidates_tokens
     ""tail_type"": ""lifestyle""
   },
   {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
+    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều chất béo hoặc cay, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
     ""head"": ""Ăn không tiêu"",
     ""head_type"": ""disease"",
     ""relation"": ""causedBy"",
@@ -90,12 +98,20 @@ data,response,prompt_tokens,candidates_tokens
     ""tail_type"": ""lifestyle""
   },
   {
-    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều dầu mỡ, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
+    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều chất béo hoặc cay, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
     ""head"": ""Ăn không tiêu"",
     ""head_type"": ""disease"",
     ""relation"": ""causedBy"",
-    ""tail"": ""căng thẳng và lo lắng"",
-    ""tail_type"": ""symptom""
+    ""tail"": ""căng thẳng"",
+    ""tail_type"": ""lifestyle""
+  },
+    {
+    ""text"": ""Nguyên nhân gây ra chứng ăn không tiêu có thể bao gồm ăn quá nhiều, ăn quá nhanh, ăn thực phẩm nhiều chất béo hoặc cay, uống rượu bia, hút thuốc lá, căng thẳng và lo lắng."",
+    ""head"": ""Ăn không tiêu"",
+    ""head_type"": ""disease"",
+    ""relation"": ""causedBy"",
+    ""tail"": ""lo lắng"",
+    ""tail_type"": ""lifestyle""
   }
 ]
-```",1547,1159
+```",1547,1377

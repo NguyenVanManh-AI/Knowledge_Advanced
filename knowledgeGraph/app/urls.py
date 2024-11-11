@@ -1,8 +1,8 @@
 from django.urls import path, include
-from .api_views.ApiFolderView import *
-from .api_views.ApiFileView import *
-from .api_views.ApiChatbotView import *
-from .api_views.ApiUserView import *
+from .views.folder_view import *
+from .views.user_view import *
+from .views.chatbot_view import *
+from .views.file_view import *
 from rest_framework_simplejwt.views import TokenRefreshView
 
 # from .views import chatbot, cypher
@@ -26,15 +26,6 @@ urlpatterns = [
     path("chatbot/create_new/", ChatViewSet.as_view({"post": "create","get": "list"}), name="chatbot-create-new"),
     
     
-    # path("chatbot/", chatbot),
-    # path("cypher/", cypher),
-    # path('token/', CustomTokenObitanPairView.as_view(), name='token_obtain_pair'),
-    # path('token/refresh/', CustomRefreshTokenView.as_view(), name='token_refresh'),
-    # path('histories/', get_chats),
-    # path('logout/', logout),
-    # path('authenticated/', is_authenticated),
-    # path('register/', register),
-    # path('', include(router.urls)),
     path("user/register/", RegisterView.as_view(), name="user-register"),
     path("user/login/", LoginView.as_view(), name="user-login"),
     path("user/profile/", UserProfileView.as_view(), name="user-profile"),
