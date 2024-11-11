@@ -37,8 +37,7 @@ ALLOWED_HOSTS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://localhost:8080",
+    "http://localhost:5000",
     "https://advanced-knowledge.vercel.app",
     "http://20.2.90.6"
 ]

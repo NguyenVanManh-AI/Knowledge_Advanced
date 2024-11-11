@@ -5,4 +5,5 @@ class AppConfig(AppConfig):
     name = 'app'
     
     def ready(self):
-        import app.signals
+        import app.signals.file_signal
+        import app.signals.folder_signal

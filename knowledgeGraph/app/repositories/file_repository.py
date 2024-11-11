@@ -1,4 +1,5 @@
-from ..models import Folder, File
+from ..models.file_model import File
+from ..models.folder_model import Folder
 from typing import Dict, List
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
@@ -15,100 +16,60 @@ class FileRepository:
             cls._instance = super(FileRepository, cls).__new__(cls)
         return cls._instance
 
-    def add_file(self, file, id_folder):
-        error = {}
-        print("id_folder", id_folder)
-        print("file", file)
-        if id_folder is None:
-            error["id_folder"] = ["Field id_folder is required"]
-        elif not id_folder:
-            error["id_folder"] = ["id_folder is not empty"]
-        if file is None:
-            error["file"] = ["Field file is required"]
+    def add_file(self, file: File, file_content, content_struct, content_cypher):
+        # print("content", file_content)
+        path = default_storage.save(file.name, ContentFile(file_content))
+        # src = f"/media/{file_path}"
+        newFile = File(
+            id_folder=file.id_folder,
+            name=file.name,
+            name_os=file.name_os,
+            content=content_struct,
+            content_cypher=content_cypher,
+        )
+        try:
+            t2n().push_to_neo4j(newFile.content_cypher)
+            print("Push to neo4j")
 
-        if error:
-            return error
+            newFile.save()
+            print("url:", settings.BASE_URL_DOWNLOAD)
+            print("id:", newFile.id)
+            newFile.update_src(f"{settings.BASE_URL_DOWNLOAD}{newFile.id}")
+            print("src", newFile.src)
+            return newFile
 
-        folder = Folder.objects.filter(id=id_folder).first()
-        if not folder:
-            error["id_folder"] = ["Folder not found"]
-        if file.name.endswith(".txt"):
-            file_content = file.read()
-        else:
-            error["file"] = ["Format file is not support"]
-        if not error:
-            # print("content", file_content)
-            path = default_storage.save(file.name, ContentFile(file_content))
-            # src = f"/media/{file_path}"
-            content_ = t2n().gen_structure_data(file_content.decode("utf-8"))
-            newFile = File(
-                id_folder=folder,
-                name=file.name,
-                name_os=file.name,
-                content=content_,
-                content_cypher=t2n().convert_to_cypher(content_),
-            )
-            try:
-                t2n().push_to_neo4j(newFile.content_cypher)
-                print("Push to neo4j")
-
-                newFile.save()
-                print("url:", settings.BASE_URL_DOWNLOAD)
-                print("id:", newFile.id)
-                newFile.update_src(f"{settings.BASE_URL_DOWNLOAD}{newFile.id}")
-                print("src", newFile.src)
-                return newFile
-
-            except Exception as e:
-                return e
-        else:
-            return error
+        except Exception as e:
+            return e
 
     def get_file_by_id(self, id) -> File:
         return File.objects.filter(id=id).first()
 
-    def update_file(self, id_file, new_name_file, id_folder):
-        file = self.get_file_by_id(id_file)
-        error = {}
-        if not file:
-            error["id"] = ["File is not found"]
-        if not error:
-            if new_name_file:
-                file.update_name(new_name_file)
-        if id_folder:
-            if Folder.objects.filter(id=id_folder).first():
-                if file:
-                    file.update_idFolder(Folder.objects.filter(id=id_folder).first())
-            else:
-                error["id_folder"] = ["Folder is not found"]
-        if not error:
-            file.save()
-            return file
-        return error
+    def update_name_file(self, file: File, name):
+        try:
+            file.update_name(name)
+        except Exception as e:
+            return e
 
-    def delete_file(self, id_file):
-        file = self.get_file_by_id(id_file)
+    def update_folder(self, file: File, folder):
+        try:
+            file.update_idFolder(folder)
+        except Exception as e:
+            return e
 
-        error = {}
-        if not file:
-            error["id"] = ["File is not found"]
-        if not error:
+    def delete_file(self, file):
+        try:
             file.delete()
             return file
-        return error
+        except Exception as e:
+            return e
 
-    def view_file_by_id(self, id_file) -> Dict:
-        file = self.get_file_by_id(id_file)
-        error = {}
-        if not file:
-            error["id"] = ["File is not found"]
-        if not error:
+    def view_file_by_id(self, file) -> Dict:
+        try:
             folder = Folder.objects.filter(id=file.id_folder.id).first()
-
             data = {"file": file, "folder": folder.name}
             return data
-        else:
-            return error
+        except Exception as e:
+            return e
 
     def find_file_by_name(self, id_folder=None, search_name="") -> List[File]:
         result_files = File()
