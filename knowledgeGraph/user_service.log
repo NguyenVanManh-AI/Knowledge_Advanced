@@ -1,0 +1,6 @@
+[2024-12-01 03:53:19.473881] Method 'login' was called.
+Arguments: (LoginSerializer(context={'request': <rest_framework.request.Request: POST '/api/user/login/'>, 'format': None, 'view': <app.views.user_view.LoginView object>}, data={'username': 'admin', 'password': '123456'}):
+    role = CharField(read_only=True, source='groups__name')
+    username = CharField(write_only=True)
+    password = PasswordField(), {'username': 'admin', 'password': '123456'}), {}
+[2024-12-01 03:53:19.716887] Result of 'login': [{'refresh': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTczNDIwOTU5OSwiaWF0IjoxNzMyOTk5OTk5LCJqdGkiOiIyNWZiNGI5NGYzNGY0YjBlYmVhZTk2N2FjOTk3MDFjMyIsInVzZXJfaWQiOjd9.4EvMbo2As5-mte2tEBQIVeWWw_2UVEI8zUC1PT3ddqA', 'access': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM0MjA5NTk5LCJpYXQiOjE3MzI5OTk5OTksImp0aSI6ImI5NGRmMTRlMzc4OTQ5ZTQ5OThkY2UwNWI3Yzk0NzRmIiwidXNlcl9pZCI6N30.jMkGINeOf3KKRHwTRzoo3dZlYvkkNNCRTxnOUv81y0o'}, {'id': 7, 'username': 'admin', 'email': 'admin@gmail.com', 'first_name': 'admin', 'last_name': 'admin', 'role': 'admin'}]

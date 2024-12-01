@@ -1,5 +1,6 @@
 from typing import List, Dict
 from django.core.paginator import Paginator
+from copy import deepcopy  # Thư viện hỗ trợ sao chép sâu (deep copy)
 from ..repositories.folder_repository import FolderRepository
 from ..models.folder_model import Folder
 from ..builders.folder_builder import FolderBuilder as fb
@@ -17,6 +18,13 @@ class FolderService:
         if not hasattr(self, "folderRepository"):
             self.folderRepository = FolderRepository()
 
+    def clone(self) -> "FolderService":
+        """
+        Prototype pattern: Sao chép đối tượng FolderService.
+        """
+        return deepcopy(self)
+
+    # Các phương thức khác không thay đổi
     def addFolder(self, name, id_parent):
         error = {}
         print("name", name)

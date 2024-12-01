@@ -6,6 +6,37 @@ from ..serializers.user_serializer import (
     LoginSerializer,
 )
 
+import functools
+import logging
+from datetime import datetime
+from pathlib import Path
+
+LOG_FILE_PATH = Path("user_service.log")
+
+def log_to_file(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        method_name = func.__name__
+
+        log_message = (
+            f"[{datetime.now()}] Method '{method_name}' was called.\n"
+            f"Arguments: {args[1:]}, {kwargs}\n"
+        )
+
+        with open(LOG_FILE_PATH, "a") as file:
+            file.write(log_message)
+
+        logging.info(log_message)
+
+        result = func(*args, **kwargs)
+
+        result_message = f"[{datetime.now()}] Result of '{method_name}': {result}\n"
+        with open(LOG_FILE_PATH, "a") as file:
+            file.write(result_message)
+
+        return result
+
+    return wrapper
 
 class UserService:
     _instance = None
@@ -19,6 +50,7 @@ class UserService:
         if not hasattr(self, "userRepository"):
             self.userRepository = UserRepository()
 
+    @log_to_file
     def login(self, serializer, data):
         try:
             if not serializer.is_valid():
@@ -47,6 +79,7 @@ class UserService:
         except Exception as e:
             return str(e)
 
+    @log_to_file
     def register(self, serializer, view):
         if not serializer.is_valid():
             error = serializer.errors

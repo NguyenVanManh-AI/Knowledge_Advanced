@@ -1,8 +1,9 @@
-from ..repositories.file_repository import FileRepository
+from ..repositories.repository_factory import RepositoryFactory
+# from ..repositories.file_repository import FileRepository
 from django.core.paginator import Paginator
 from ..models.file_model import File
 from ..models.folder_model import Folder
-from ..repositories.folder_repository import FolderRepository as fr
+# from ..repositories.folder_repository import FolderRepository as fr
 from ..builders.file_builder import FileBuilder as fb
 from typing import Dict
 from django.conf import settings
@@ -18,8 +19,8 @@ class FileService:
         return cls._instance
 
     def __init__(self):
-        if not hasattr(self, "fileRepository"):
-            self.fileRepository = FileRepository()
+        if not hasattr(self, "repositoryFactory"):
+            self.repositoryFactory = RepositoryFactory()
 
     def addFile(self, file, id_folder):
         error = {}
@@ -34,7 +35,7 @@ class FileService:
         elif not file.name.endswith(".txt"):
             error.setdefault("file", []).append("Format file is not support")
         if id_folder:
-            folder = fr().get_folder_by_id(id_folder)
+            folder = RepositoryFactory.create("folder").get_folder_by_id(id_folder)
             if not folder:
                 error.setdefault("id_folder", []).append("Folder not found")
 
@@ -45,7 +46,7 @@ class FileService:
         file_content = file.read()
         content_struct = t2n().gen_structure_data(file_content.decode("utf-8"))
         content_cypher = t2n().convert_to_cypher(content_struct)
-        return self.fileRepository.add_file(
+        return self.repositoryFactory.create("file").add_file(
             file_builder, file_content, content_struct, content_cypher
         )
 
@@ -64,7 +65,7 @@ class FileService:
         elif not id_folder:
             error.setdefault("id_folder", []).append("id_folder is not empty")
         if id_file:
-            file = self.fileRepository.get_file_by_id(id_file)
+            file = self.repositoryFactory.create("file").get_file_by_id(id_file)
             if not file:
                 error["id"] = ["File is not found"]
         if id_folder:
@@ -74,12 +75,12 @@ class FileService:
         if error:
             return error
         if new_name_file:
-            self.fileRepository.update_name_file(file, new_name_file)
+            self.repositoryFactory.create("file").update_name_file(file, new_name_file)
         if id_folder:
             if folder:
-                self.fileRepository.update_folder(file, folder)
+                self.repositoryFactory.create("file").update_folder(file, folder)
 
-        return self.fileRepository.get_file_by_id(id_file)
+        return self.repositoryFactory.create("file").get_file_by_id(id_file)
 
     def deleteFile(self, id_file):
         error = {}
@@ -90,12 +91,12 @@ class FileService:
             error["id"] = ["id is not empty"]
         if error:
             return error
-        file = self.fileRepository.get_file_by_id(id_file)
+        file = self.repositoryFactory.create("file").get_file_by_id(id_file)
         if not file:
             error["id"] = ["File is not found"]
         if error:
             return error
-        return self.fileRepository.delete_file(file)
+        return self.repositoryFactory.create("file").delete_file(file)
 
     def viewFileById(self, id_file):
         error = {}
@@ -105,12 +106,12 @@ class FileService:
             error["id"] = ["id is not empty"]
         if error:
             return error
-        file = self.fileRepository.get_file_by_id(id_file)
+        file = self.repositoryFactory.create("file").get_file_by_id(id_file)
         if not file:
             error["id"] = ["File is not found"]
         if error:
             return error
-        return self.fileRepository.view_file_by_id(file)
+        return self.repositoryFactory.create("file").view_file_by_id(file)
 
     def findFileByName(
         self,
@@ -121,7 +122,7 @@ class FileService:
         order_by: str = "id",
         order_direction: str = "asc",
     ) -> Dict:
-        files = self.fileRepository.find_file_by_name(id_folder, search)
+        files = self.repositoryFactory.create("file").find_file_by_name(id_folder, search)
 
         if order_direction.lower() == "desc":
             files = files.order_by(f"-{order_by}")
@@ -140,4 +141,4 @@ class FileService:
         }
 
     def download_file(self, id_file):
-        return self.fileRepository.download_file(id_file)
+        return self.repositoryFactory.create("file").download_file(id_file)
